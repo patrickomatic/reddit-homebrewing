@@ -31,7 +31,7 @@ def signup(request):
 			auth_login(request, user)
 
 			request.user.message_set.create(message='You have successfully signed up')
-			return HttpResponseRedirect('/myhomebrewit')
+			return HttpResponseRedirect('/profile')
 	else:
 		form = SignupForm()
 
@@ -50,7 +50,7 @@ def login(request):
 		if form.is_valid():
 			user = authenticate(username=form.cleaned_data['reddit_username'], password=form.cleaned_data['password'])
 			auth_login(request, user)
-			return HttpResponseRedirect('/myhomebrewit')
+			return HttpResponseRedirect('/profile')
 	else:
 		form = SignupForm()
 

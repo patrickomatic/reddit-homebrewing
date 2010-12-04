@@ -15,3 +15,7 @@ body {
 	width: 80px;
 	line-height: 1.5em;
 }
+
+.messages {
+	background-color: yellow;
+}

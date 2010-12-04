@@ -1,0 +1,11 @@
+{% extends "homebrewit.html" %}
+
+{% block content %}
+	<p>Welcome to the /r/homebrewing app.  Would you like to:
+
+		<ul>
+			<li><a href="XXX">View contest results</a></li>
+			<li><a href="{% url homebrewit.signup.views.signup %}">Signup</a></li>
+		</ul>
+	</p>
+{% endblock %}

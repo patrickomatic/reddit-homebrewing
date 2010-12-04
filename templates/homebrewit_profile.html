@@ -1,0 +1,17 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	{{user.username}}
+{% endblock %}
+
+{% block content %}
+	<h1>{{user.username}}'s Profile</h1>
+
+	{% if user.is_authenticated %}
+		<ul>
+			<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>
+		</ul>
+	{% endif %}
+
+	show some stuff....
+{% endblock %}

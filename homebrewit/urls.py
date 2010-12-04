@@ -5,7 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-#    (r'^contest/', include('homebrewit.contest.urls')),
+    (r'^contest/', include('homebrewit.contest.urls')),
+    (r'^profile/', include('homebrewit.profile.urls')),
 #    (r'^experiencelevel/', include('homebrewit.experiencelevel.urls')),
     (r'^admin/', include(admin.site.urls)),
 

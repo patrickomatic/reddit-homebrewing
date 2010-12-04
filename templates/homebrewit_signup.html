@@ -1,0 +1,15 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	Signup
+{% endblock %}
+
+{% block content %}
+	<h1>Signup Below</h1>
+
+	<form class="signup-form" method="POST" action="{% url homebrewit.signup.views.signup %}">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="Signup" />
+	</form>
+{% endblock %}
