@@ -1,3 +1,17 @@
 body {
 
 }
+
+.signup-form label {
+	display: block;
+	float: left;
+	width: 80px;
+	line-height: 1.5em;
+}
+
+.login-form label {
+	display: block;
+	float: left;
+	width: 80px;
+	line-height: 1.5em;
+}

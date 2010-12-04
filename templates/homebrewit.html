@@ -3,12 +3,20 @@
     <head>
         <meta name="description" content="" />
         <meta name="keywords" content="" />
-        <title>homebrewit app</title>
+		<title>homebrewit app - {% block title %}{% endblock %}</title>
 		<link rel="stylesheet" src="/media/styles.css" type="text/css" />
 	</head>
 	<body>
-		{% block content %}
+		{% if messages %}
+			<div class="message">
+				{% for message in messages %}
+					<ul>
+						<li>{{message}}</li>
+					</ul>
+				{% endfor %}
+			</div>
+		{% endif %}
 
-		{% endblock %}
+		{% block content %}{% endblock %}
 	</body>
 </html>
