@@ -5,5 +5,5 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('homebrewit.contest.views',
-		(r'^register/', 'register'),
+		(r'^register', 'register'),
 )
