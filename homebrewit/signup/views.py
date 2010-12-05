@@ -45,14 +45,14 @@ class LoginForm(forms.Form):
 
 def login(request):
 	if request.method == 'POST':
-		form = SignupForm(request.POST)
+		form = LoginForm(request.POST)
 		
 		if form.is_valid():
 			user = authenticate(username=form.cleaned_data['reddit_username'], password=form.cleaned_data['password'])
 			auth_login(request, user)
 			return HttpResponseRedirect('/profile')
 	else:
-		form = SignupForm()
+		form = LoginForm()
 
 	return render_to_response('homebrewit_login.html', {'form': form},
 			context_instance=RequestContext(request))
