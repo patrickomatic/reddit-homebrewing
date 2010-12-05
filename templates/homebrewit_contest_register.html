@@ -1,0 +1,15 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	{{form.style}}
+{% endblock %}
+
+{% block content %}
+	<h1>Want to enter in the competition?</h1>
+
+	<form class="contest-entry-form" method="POST" action="{% url homebrewit.contest.views.register %}">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="Register"/>
+	</form>
+{% endblock %}
