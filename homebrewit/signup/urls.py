@@ -9,6 +9,6 @@ urlpatterns = patterns('homebrewit.signup.views',
     (r'^login', 'login'),
     (r'^logout', 'logout'),
     (r'^dashboard', 'dashboard'),
-    (r'', 'index'),
+    (r'^$', 'index'),
 )
 
