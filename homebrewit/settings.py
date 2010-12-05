@@ -109,4 +109,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'homebrewit.contest',
+    'homebrewit.experiencelevel',
+    'homebrewit.signup',
+    'homebrewit.profile',
 )
