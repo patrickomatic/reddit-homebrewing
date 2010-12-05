@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -12,18 +14,21 @@ class BeerStyle(models.Model):
 class Entry(models.Model):
 	style = models.ForeignKey('BeerStyle')
 	user = models.ForeignKey(User)
+	winner = models.BooleanField(default=False)
+	rank = models.PositiveSmallIntegerField()
+	contest_year = models.PositiveIntegerField(default=datetime.datetime.now().year)
 
 	def __unicode__(self):
 		return "%s: %s" % (user.username, style.name)
 
 
 class JudgingResult(models.Model):
-	# XXX set max_value to 10
-	taste = models.PositiveIntegerField()
-	appearance = models.PositiveIntegerField()
-	mouth_feel = models.PositiveIntegerField()
-	aroma = models.PositiveIntegerField()
+	taste = models.PositiveSmallIntegerField()
+	appearance = models.PositiveSmallIntegerField()
+	mouth_feel = models.PositiveSmallIntegerField()
+	aroma = models.PositiveSmallIntegerField()
 	entry = models.ForeignKey('Entry')
+	contest_year = models.PositiveIntegerField(default=datetime.datetime.now().year)
 
 	# XXX description, overall summary etc...
 
