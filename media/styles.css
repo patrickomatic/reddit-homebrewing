@@ -19,3 +19,18 @@ body {
 .messages {
 	background-color: yellow;
 }
+
+.small-title {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.medium-title {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+.large-title {
+	font-size: 1.5em;
+	font-weight: bold;
+}
