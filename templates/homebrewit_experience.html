@@ -1,0 +1,14 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	Set your experience level
+{% endblock %}
+
+{% block content %}
+	<div class="large-title">Set your homebrewing experience level</div>
+	<form action="{% url homebrewit.experiencelevel.views.change_level %}" method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="Set Experience Level" />
+	</form>
+{% endblock %}

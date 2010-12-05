@@ -1,14 +1,34 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render_to_response
 
+from homebrewit.contest.models import *
+from homebrewit.experiencelevel.models import *
 
-def profile(request, username=None):
-	if username:
-		user = User.objects.get(username=username)
-	elif request.user.is_authenticated():
-		user = request.user
-	else:
+
+def anonymous_profile(request, username):
+	try:
+		return profile(request, User.objects.get(username=username))
+	except User.DoesNotExist:
 		raise Http404
 
-	return render_to_response('homebrewit_profile.html', {'user': user})
+
+@login_required
+def logged_in_profile(request):
+	return profile(request, request.user)
+
+
+def profile(request, user):
+	try:
+		level = UserExperienceLevel.objects.get(user__id=request.user.id)
+	except UserExperienceLevel.DoesNotExist:
+		level = None
+
+	contest_entries = Entry.objects.filter(user__username=user.username)
+
+	is_profile_owner = request.user.is_authenticated() and user.username == request.user.username
+
+	return render_to_response('homebrewit_profile.html', {'user': user,
+		'level': level, 'contest_entries': contest_entries, 
+		'is_profile_owner': is_profile_owner})

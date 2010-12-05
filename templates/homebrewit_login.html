@@ -6,9 +6,10 @@
 
 
 {% block content %}
-	<h1>Login</h1>
+	<div class="large-title">Login</div>
 
 	<form class="login-form" method="POST" action="{% url homebrewit.signup.views.login %}">
+		{% csrf_token %}
 		{{form.as_p}}
 		<input type="submit" value="Login" />
 	</form>

@@ -12,7 +12,7 @@ class ExperienceLevel(models.Model):
 
 
 class UserExperienceLevel(models.Model):
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User, unique=True)
 	experience_level = models.ForeignKey(ExperienceLevel)
 
 	def __unicode__(self):

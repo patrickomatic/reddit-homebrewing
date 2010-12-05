@@ -5,13 +5,36 @@
 {% endblock %}
 
 {% block content %}
-	<h1>{{user.username}}'s Profile</h1>
+	<div class="large-title">{{user.username}}'s /r/homebrewing Profile</div>
+	{{messages}}
 
-	{% if user.is_authenticated %}
+	{% if is_profile_owner %}
 		<ul>
 			<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>
+			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}">Set your experience level</a></li>
 		</ul>
 	{% endif %}
 
-	show some stuff....
+
+	<div class="medium-title">Experience Level</div>
+	{% if level %}
+		<img src="{{level.img_url}}" /> {{level.experience_level}}
+	{% else %}
+		{% if user.is_authenticated and is_profile_owner %}
+
+		{% endif %}
+	{% endif %}
+
+	<div class="medium-title">Contest Entries</div>
+	<p>
+		{% if contest_entries %}
+			<ul>
+				{% for contest_entry in contest_entries %}
+					<li><a href="XXX">{{contest_entry}}</a></li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			{{user.username}} hasn't participated in any contests.
+		{% endif %}
+	</p>
 {% endblock %}

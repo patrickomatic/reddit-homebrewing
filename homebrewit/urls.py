@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^contest/', include('homebrewit.contest.urls')),
     (r'^profile/', include('homebrewit.profile.urls')),
-#    (r'^experiencelevel/', include('homebrewit.experiencelevel.urls')),
+    (r'^experience/', include('homebrewit.experiencelevel.urls')),
     (r'^admin/', include(admin.site.urls)),
 
     (r'', include('homebrewit.signup.urls')),
