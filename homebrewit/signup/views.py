@@ -110,10 +110,3 @@ def login(request):
 def logout(request):
 	auth_logout(request)
 	return HttpResponseRedirect("/")
-	
-
-@login_required
-# XXX don't need this - user profile page
-def dashboard(request):
-	return render_to_response('homebrewit_dashboard.html', {},
-			context_instance=RequestContext(request))
