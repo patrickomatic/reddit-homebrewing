@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 from homebrewit.contest.models import *
 from homebrewit.experiencelevel.models import *
@@ -31,4 +32,5 @@ def profile(request, user):
 
 	return render_to_response('homebrewit_profile.html', {'user': user,
 		'level': level, 'contest_entries': contest_entries, 
-		'is_profile_owner': is_profile_owner})
+		'is_profile_owner': is_profile_owner},
+		context_instance=RequestContext(request))
