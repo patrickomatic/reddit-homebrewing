@@ -1,15 +1,17 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.decorators.cache import cache_page
 
 from homebrewit.contest.models import *
 
 
 class EntryForm(forms.Form):
 	style = forms.ModelChoiceField(queryset=BeerStyle.objects.all())
-
 
 @login_required
 def register(request):
@@ -34,18 +36,27 @@ def styles(request):
 
 
 def contest_year(request, year):
-	entries = Entry.objects.filter(year=year)
-	return render_to_response('homebrewit_contest_winners.html', 
+	entries = Entry.objects.filter(contest_year=year)
+	return render_to_response('homebrewit_contest_year.html', 
 			{'entries': entries, 'year': year},
 			context_instance=RequestContext(request))
 
 
 def entry(request, year, entry_id):
 	try:
-		entry = Entry.objects.get(id=entry_id, year=year)
+		entry = Entry.objects.get(id=entry_id, contest_year=year)
 	except Entry.DoesNotExist:
 		raise Http404
 
 	return render_to_response('homebrewit_contest_entry.html',
 			{'year': year, 'entry': entry},
 			context_instance=RequestContext(request))
+
+
+@cache_page(60 * 10)
+def winner_styles(request):
+	current_year = datetime.datetime.now().year
+	# XXX get a unique list of users who have 
+	winners = []
+
+	return render_to_response('winner_styles.css', {'winners': winners})

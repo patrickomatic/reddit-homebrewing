@@ -18,6 +18,7 @@ def index(request):
 			{'years': [2010], 'current_year': datetime.datetime.now().year}, 
 			context_instance=RequestContext(request))
 
+
 class SignupForm(forms.Form):
 	reddit_username = forms.CharField(max_length=255)
 	password = forms.CharField(widget=forms.PasswordInput())
@@ -44,14 +45,13 @@ class AddressForm(forms.ModelForm):
 
 def create_user(email, username, password, profile=None):
 	user = User.objects.create_user(username, email, password)
-	user = authenticate(username=username, password=password)
 	user.save()
 
 	if profile:
 		profile.user = user
 		profile.save()
 
-	return user
+	return authenticate(username=username, password=password)
 
 
 def signup(request):
@@ -76,10 +76,11 @@ def signup(request):
 						signup_form.cleaned_data['reddit_username'], 
 						signup_form.cleaned_data['password']) 
 
-			auth_login(request, user)
+			if user:
+				auth_login(request, user)
 
-			request.user.message_set.create(message='You have successfully signed up')
-			return HttpResponseRedirect('/profile')
+				request.user.message_set.create(message='You have successfully signed up')
+				return HttpResponseRedirect('/profile')
 	else:
 		signup_form, address_form = SignupForm(), AddressForm()
 

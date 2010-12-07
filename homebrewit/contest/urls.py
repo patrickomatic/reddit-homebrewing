@@ -4,6 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('homebrewit.contest.views',
+		(r'^winner-styles.css$', 'winner_styles'),
 		(r'^register$', 'register'),
 		(r'^styles$', 'styles'),
 		(r'^(?P<year>\d+)/$', 'contest_year'),

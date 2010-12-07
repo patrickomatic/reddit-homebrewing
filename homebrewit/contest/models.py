@@ -4,6 +4,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+def rating_description_str(rating):
+	if rating > 44:
+		return "Outstanding (%d / 50)" % rating
+	elif rating > 37:
+		return "Excellent (%d / 50)" % rating
+	elif rating > 29:
+		return "Very Good (%d / 50)" % rating
+	elif rating > 20:
+		return "Good (%d / 50)" % rating
+	elif rating > 13:
+		return "Fair (%d / 50)" % rating
+	else:
+		return "Problematic (%d / 50)" % rating
+
+
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
 
@@ -22,6 +37,9 @@ class Entry(models.Model):
 	class Meta:
 		ordering = ['style', 'score']
 
+
+	def get_rating_description(self):
+		return rating_description_str(self.score)
 
 	def __unicode__(self):
 		return "%s: %s" % (user.username, style.name)
@@ -78,19 +96,7 @@ class JudgingResult(models.Model):
 
 
 	def get_description(self):
-		rating = self.overall_rating()
-		if rating > 44:
-			return "Outstanding (%d / 50)" % rating
-		elif rating > 37:
-			return "Excellent (%d / 50)" % rating
-		elif rating > 29:
-			return "Very Good (%d / 50)" % rating
-		elif rating > 20:
-			return "Good (%d / 50)" % rating
-		elif rating > 13:
-			return "Fair (%d / 50)" % rating
-		else:
-			return "Problematic (%d / 50)" % rating
+		return rating_description_str(self.overall_rating())
 
 
 	def __unicode__(self):
