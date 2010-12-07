@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from homebrewit.signup.reddit import reddit_login
+
 
 def index(request):
 	return render_to_response('homebrewit_index.html', {}, 
@@ -19,6 +21,12 @@ class SignupForm(forms.Form):
 	email = forms.EmailField()
 	# XXX address
 
+	def clean(self):
+		if not reddit_login(self.cleaned_data['reddit_username'], self.cleaned_data['password']):
+			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
+
+		return self.cleaned_data
+			
 
 def signup(request):
 	if request.method == 'POST':
@@ -65,6 +73,7 @@ def logout(request):
 	
 
 @login_required
+# XXX don't need this - user profile page
 def dashboard(request):
 	return render_to_response('homebrewit_dashboard.html', {},
 			context_instance=RequestContext(request))
