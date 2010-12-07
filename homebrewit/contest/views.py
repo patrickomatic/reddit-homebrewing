@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -10,12 +11,14 @@ class EntryForm(forms.Form):
 	style = forms.ModelChoiceField(queryset=BeerStyle.objects.all())
 
 
+@login_required
 def register(request):
 	if request.method == 'POST':
 		form = EntryForm(request.POST)
 		if form.is_valid():
-			entry = Entry(style=form.cleaned_data['style'])
+			entry = Entry(style=form.cleaned_data['style'], user=request.user)
 			entry.save()
+
 			request.user.message_set.create(message='You are now entered in the %s category' % entry.style)
 	else:
 		form = EntryForm()
