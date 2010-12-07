@@ -1,3 +1,4 @@
+import datetime
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout as auth_logout
@@ -13,7 +14,8 @@ from homebrewit.signup.models import UserProfile
 
 
 def index(request):
-	return render_to_response('homebrewit_index.html', {}, 
+	return render_to_response('homebrewit_index.html', 
+			{'years': [2010], 'current_year': datetime.datetime.now().year}, 
 			context_instance=RequestContext(request))
 
 class SignupForm(forms.Form):

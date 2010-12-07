@@ -33,8 +33,8 @@ def styles(request):
 			context_instance=RequestContext(request))
 
 
-def winners(request, year):
-	entries = Entry.objects.filter(winner=True, year=year)
+def contest_year(request, year):
+	entries = Entry.objects.filter(year=year)
 	return render_to_response('homebrewit_contest_winners.html', 
 			{'entries': entries, 'year': year},
 			context_instance=RequestContext(request))

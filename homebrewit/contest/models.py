@@ -20,7 +20,7 @@ class Entry(models.Model):
 	score = models.PositiveIntegerField(null=True, blank=True)
 
 	class Meta:
-		ordering = ['score']
+		ordering = ['style', 'score']
 
 
 	def __unicode__(self):
@@ -35,39 +35,39 @@ class JudgingResult(models.Model):
 
 	entry = models.ForeignKey(Entry)
 
-	special_ingredients = models.CharField(blank=True, null=True)
+	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 
 	# out of 12 points XXX
-	aroma_description = models.CharField()
+	aroma_description = models.CharField(max_length=5000)
 	aroma_score = models.PositiveSmallIntegerField()
 
 	# out of 3 points XXX
-	appearance_description = models.CharField()
+	appearance_description = models.CharField(max_length=5000)
 	appearance_score = models.PositiveSmallIntegerField()
 
 	# out of 20 points XXX
-	flavor_description = models.CharField()
+	flavor_description = models.CharField(max_length=5000)
 	flavor_score = models.PositiveSmallIntegerField()
 
 	# out of 5 points XXX
-	mouthfeel_description = models.CharField()
+	mouthfeel_description = models.CharField(max_length=5000)
 	mouthfeel_score = models.PositiveSmallIntegerField()
 
 	# out of 10 points XXX
-	overall_impression_description = models.CharField()
-	overall_impression_score = models.CharField()
+	overall_impression_description = models.CharField(max_length=5000)
+	overall_impression_score = models.PositiveSmallIntegerField()
 
 	# XXX put a help text:
 	# (1 = not to style, 5 = classic example)
-	stylistic_accuracy = models.SmallPositiveIntegerField()
+	stylistic_accuracy = models.PositiveSmallIntegerField()
 
 	# XXX put a help text:
 	# (1 = significant flaws, 5 = flawless)
-	technical_merit = models.SmallPositiveIntegerField()
+	technical_merit = models.PositiveSmallIntegerField()
 
 	# XXX put a help text:
 	# (1 = lifeless, 5 = wonderful)
-	intangibles = models.SmallPositiveIntegerField()
+	intangibles = models.PositiveSmallIntegerField()
 
 
 	def overall_rating(self):
@@ -80,17 +80,17 @@ class JudgingResult(models.Model):
 	def get_description(self):
 		rating = self.overall_rating()
 		if rating > 44:
-			return "Outstanding"
+			return "Outstanding (%d / 50)" % rating
 		elif rating > 37:
-			return "Excellent"
+			return "Excellent (%d / 50)" % rating
 		elif rating > 29:
-			return "Very Good"
+			return "Very Good (%d / 50)" % rating
 		elif rating > 20:
-			return "Good"
+			return "Good (%d / 50)" % rating
 		elif rating > 13:
-			return "Fair"
+			return "Fair (%d / 50)" % rating
 		else:
-			return "Problematic"
+			return "Problematic (%d / 50)" % rating
 
 
 	def __unicode__(self):

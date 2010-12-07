@@ -1,12 +1,21 @@
 {% extends "homebrewit.html" %}
 
 {% block content %}
-	<p>Welcome to the /r/homebrewing app.  Would you like to:
+	<div class="large-title">/r/homebrewing Competition Results</div>
+	<ul>
+		{% if years|length_is:"1" %}
+			<p><a title="{{years|first}} Competition" href="{% url homebrewit.contest.views.contest_year years|first %}">{{years|first}}</a></p>
+		{% else %}
+			{% for year in years %}
+				<li><a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}">{{year}}</a></li>
+			{% endfor %}
+		{% endif %}
+	</ul>
 
-		<ul>
-			<li><a href="XXX">View contest results</a></li>
-			<li><a href="{% url homebrewit.signup.views.login %}">Login</a></li>
-			<li><a href="{% url homebrewit.signup.views.signup %}">Signup</a></li>
-		</ul>
-	</p>
+
+	{% if user.is_authenticated %}
+		<p>Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}">registered</a> for the /r/homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level</a>?</p>
+	{% else %}
+		<p>Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the /r/homebrewing competition.</p>
+	{% endif %}
 {% endblock %}
