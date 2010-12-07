@@ -9,7 +9,10 @@
 
 	<form class="signup-form" method="POST" action="{% url homebrewit.signup.views.signup %}">
 		{% csrf_token %}
-		{{form.as_p}}
+
+		{{signup_form.as_p}}
+		{{address_form.as_p}}
+
 		<input type="submit" value="Signup" />
 	</form>
 {% endblock %}

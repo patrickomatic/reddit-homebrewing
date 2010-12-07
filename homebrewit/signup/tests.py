@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+
 class SignupViewsTest(TestCase):
 	def setUp(self):
 		self.user = User.objects.create_user('patrick', 'patrick@patrickomatic.com', 'pass')
@@ -18,11 +19,21 @@ class SignupViewsTest(TestCase):
 		response = self.client.get('/signup')
 
 		self.assertTemplateUsed(response, 'homebrewit_signup.html')
-		self.assert_(response.context['form'])
+		self.assert_(response.context['address_form'])
+		self.assert_(response.context['signup_form'])
 
 	def test_signup__post(self):
 		self.client.logout()
 		# XXX have to mock out call to reddit
+	
+	def test_signup__post_with_address_form(self):
+		self.client.logout()
+		# XXX have to mock out call to reddit
+
+	def test_signup__post_with_bad_address_form(self):
+		self.client.logout()
+		# XXX have to mock out call to reddit
+
 
 	def test_login(self):
 		response = self.client.get('/login')

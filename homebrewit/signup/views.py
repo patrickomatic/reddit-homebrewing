@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from homebrewit.signup.reddit import reddit_login
+from homebrewit.signup.models import UserProfile
 
 
 def index(request):
@@ -19,31 +20,70 @@ class SignupForm(forms.Form):
 	reddit_username = forms.CharField(max_length=255)
 	password = forms.CharField(widget=forms.PasswordInput())
 	email = forms.EmailField()
-	# XXX address
 
 	def clean(self):
+		try:
+			User.objects.get(username=self.cleaned_data['reddit_username'])
+			raise forms.ValidationError('The given username already exists')
+		except User.DoesNotExist:
+			pass
+
 		if not reddit_login(self.cleaned_data['reddit_username'], self.cleaned_data['password']):
 			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
 
 		return self.cleaned_data
-			
+	
+
+class AddressForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		exclude = ('user',)
+
+
+def create_user(email, username, password, profile=None):
+	user = User.objects.create_user(username, email, password)
+	user = authenticate(username=username, password=password)
+	user.save()
+
+	if profile:
+		profile.user = user
+		profile.save()
+
+	return user
+
 
 def signup(request):
 	if request.method == 'POST':
-		form = SignupForm(request.POST)
-		if form.is_valid():
-			# XXX reddit has an api for validating username/password
-			user = User.objects.create_user(form.cleaned_data['reddit_username'], form.cleaned_data['email'], form.cleaned_data['password'])
-			user = authenticate(username=form.cleaned_data['reddit_username'], password=form.cleaned_data['password'])
-			user.save()
+		signup_form, address_form = SignupForm(request.POST), AddressForm(request.POST)
+
+		if signup_form.is_valid():
+			submitted_address_form = False
+			for label in address_form:
+				if label.html_name in request.POST:
+					submitted_address_form = True
+					break
+				
+			user = None
+			if submitted_address_form and address_form.is_valid():
+				user = create_user(signup_form.cleaned_data['email'],
+						signup_form.cleaned_data['reddit_username'],
+						signup_form.cleaned_data['password'],
+						address_form.save(commit=False))
+			elif not submitted_address_form:
+				user = create_user(signup_form.cleaned_data['email'],
+						signup_form.cleaned_data['reddit_username'], 
+						signup_form.cleaned_data['password']) 
+
 			auth_login(request, user)
 
 			request.user.message_set.create(message='You have successfully signed up')
 			return HttpResponseRedirect('/profile')
 	else:
-		form = SignupForm()
+		signup_form, address_form = SignupForm(), AddressForm()
 
-	return render_to_response('homebrewit_signup.html', {'form': form},
+
+	return render_to_response('homebrewit_signup.html', 
+			{'signup_form': signup_form, 'address_form': address_form},
 			context_instance=RequestContext(request))
 
 

@@ -108,3 +108,6 @@ CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
+
+AUTH_PROFILE_MODULE = 'signup.UserProfile'
+
