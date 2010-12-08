@@ -1,23 +1,35 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
+from django.contrib.auth.models import User
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from homebrewit.experiencelevel.models import *
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
 
->>> 1 + 1 == 2
-True
-"""}
+class ProfileViewsTest(TestCase):
+	fixtures = ['users']
 
+	def setUp(self):
+		self.user = User.objects.get(username='patrick')
+
+
+	def test_anonymous_profile(self):
+		response = self.client.get('/profile/%s' % self.user.username)
+
+		self.assertTemplateUsed(response, 'homebrewit_profile.html')
+		self.assert_(not response.context['is_profile_owner'])
+		self.assert_(response.context['user'] == self.user)
+		self.assert_(len(response.context['contest_entries']) == 0)
+
+	def test_anonymous_profile__404(self):
+		response = self.client.get('/profile/doesntexist')
+		self.assert_(response.status_code == 404)
+
+
+	def test_logged_in_profile(self):
+		self.client.login(username=self.user.username, password='password')
+		response = self.client.get('/profile/')
+
+		self.assertTemplateUsed(response, 'homebrewit_profile.html')
+		self.assert_(response.context['level'] is None)
+		self.assert_(len(response.context['contest_entries']) == 0)
+		self.assert_(response.context['is_profile_owner'])
+		self.assert_(response.context['user'] == self.user)

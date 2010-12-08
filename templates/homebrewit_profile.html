@@ -29,7 +29,7 @@
 		{% if contest_entries %}
 			<ul>
 				{% for contest_entry in contest_entries %}
-					<li><a href="XXX">{{contest_entry}}</a></li>
+					<li><a href="{% url homebrewit.contest.views.contest.entry contest_entry.contest_year contest_entry.id %}">{{contest_entry}}</a></li>
 				{% endfor %}
 			</ul>
 		{% else %}

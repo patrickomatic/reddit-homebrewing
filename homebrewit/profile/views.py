@@ -8,18 +8,6 @@ from homebrewit.contest.models import *
 from homebrewit.experiencelevel.models import *
 
 
-def anonymous_profile(request, username):
-	try:
-		return profile(request, User.objects.get(username=username))
-	except User.DoesNotExist:
-		raise Http404
-
-
-@login_required
-def logged_in_profile(request):
-	return profile(request, request.user)
-
-
 def profile(request, user):
 	try:
 		level = UserExperienceLevel.objects.get(user__id=request.user.id)
@@ -34,3 +22,15 @@ def profile(request, user):
 		'level': level, 'contest_entries': contest_entries, 
 		'is_profile_owner': is_profile_owner},
 		context_instance=RequestContext(request))
+
+
+def anonymous_profile(request, username):
+	try:
+		return profile(request, User.objects.get(username=username))
+	except User.DoesNotExist:
+		raise Http404
+
+
+@login_required
+def logged_in_profile(request):
+	return profile(request, request.user)
