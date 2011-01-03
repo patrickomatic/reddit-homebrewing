@@ -5,18 +5,18 @@ from django.contrib.auth.models import User
 
 
 def rating_description_str(rating):
-	if rating > 44:
-		return "Outstanding (%d / 50)" % rating
-	elif rating > 37:
-		return "Excellent (%d / 50)" % rating
-	elif rating > 29:
-		return "Very Good (%d / 50)" % rating
-	elif rating > 20:
-		return "Good (%d / 50)" % rating
-	elif rating > 13:
-		return "Fair (%d / 50)" % rating
+	if rating > 54:
+		return "Outstanding (%d / 65)" % rating
+	elif rating > 44:
+		return "Excellent (%d / 65)" % rating
+	elif rating > 34:
+		return "Very Good (%d / 65)" % rating
+	elif rating > 24:
+		return "Good (%d / 65)" % rating
+	elif rating > 14:
+		return "Fair (%d / 65)" % rating
 	else:
-		return "Problematic (%d / 50)" % rating
+		return "Problematic (%d / 65)" % rating
 
 
 class BeerStyleManager(models.Manager):
