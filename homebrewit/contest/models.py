@@ -1,6 +1,6 @@
 import datetime
 
-from django.db import models
+from django.db import models, connection
 from django.contrib.auth.models import User
 
 
@@ -19,9 +19,21 @@ def rating_description_str(rating):
 		return "Problematic (%d / 50)" % rating
 
 
+class BeerStyleManager(models.Manager):
+	def get_contest_years(self):
+		cursor = connection.cursor()
+		cursor.execute("""
+			SELECT distinct(contest_year)
+			FROM contest_beerstyle 
+			ORDER BY contest_year DESC """)
+		return [row[0] for row in cursor.fetchall()]
+
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
 	contest_year = models.PositiveSmallIntegerField(default=datetime.datetime.now().year)
+
+	objects = BeerStyleManager()
+
 
 	def __unicode__(self):
 		return "%s (contest year: %d)" % (self.name, self.contest_year)

@@ -1,4 +1,5 @@
 import datetime
+
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout as auth_logout
@@ -9,13 +10,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from homebrewit.contest.models import BeerStyle
 from homebrewit.signup.reddit import reddit_login
 from homebrewit.signup.models import UserProfile
 
 
 def index(request):
 	return render_to_response('homebrewit_index.html', 
-			{'years': [2010], 'current_year': datetime.datetime.now().year}, 
+			{'years': BeerStyle.objects.get_contest_years(), 
+				'current_year': datetime.datetime.now().year}, 
 			context_instance=RequestContext(request))
 
 
