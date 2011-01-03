@@ -21,9 +21,10 @@ def rating_description_str(rating):
 
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
+	contest_year = models.PositiveSmallIntegerField(default=datetime.datetime.now().year)
 
 	def __unicode__(self):
-		return self.name
+		return "%s (contest year: %d)" % (self.name, self.contest_year)
 
 
 class Entry(models.Model):
@@ -31,7 +32,6 @@ class Entry(models.Model):
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
-	contest_year = models.PositiveIntegerField(default=datetime.datetime.now().year)
 	score = models.PositiveIntegerField(null=True, blank=True)
 
 	class Meta:
@@ -42,7 +42,7 @@ class Entry(models.Model):
 		return rating_description_str(self.score)
 
 	def __unicode__(self):
-		return "%s: %s" % (self.user.username, self.style.name)
+		return "%s: %s" % (self.user.username, self.style)
 
 
 def integer_range(max_int):

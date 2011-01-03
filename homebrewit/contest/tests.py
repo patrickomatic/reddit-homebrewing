@@ -29,7 +29,7 @@ class ContestViewsTest(TestCase):
 
 
 	def test_contest_year(self):
-		response = self.client.get('/contest/2010/')
+		response = self.client.get('/contest/2011/')
 		self.assertTemplateUsed(response, 'homebrewit_contest_year.html')
 
 
