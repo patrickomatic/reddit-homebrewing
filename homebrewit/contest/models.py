@@ -42,7 +42,7 @@ class Entry(models.Model):
 		return rating_description_str(self.score)
 
 	def __unicode__(self):
-		return "%s: %s" % (user.username, style.name)
+		return "%s: %s" % (self.user.username, self.style.name)
 
 
 def integer_range(max_int):
