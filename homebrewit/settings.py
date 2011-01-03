@@ -91,6 +91,13 @@ TEMPLATE_DIRS = (
 	os.path.join(PROJECT_PATH, 'templates')
 )
 
+OUR_APPS = (
+    'contest',
+    'experiencelevel',
+    'signup',
+    'profile',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,13 +105,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-    'homebrewit.contest',
-    'homebrewit.experiencelevel',
-    'homebrewit.signup',
-    'homebrewit.profile',
-)
+) + OUR_APPS
 
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+
+# for some reason, when allowing django to run all tests, some of them
+# fail with a NoReverseMatch exception
+TEST_RUNNER = 'local_tests.run_tests'
 
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
