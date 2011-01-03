@@ -3,15 +3,19 @@ from django.test import TestCase
 
 
 class SignupViewsTest(TestCase):
+	fixtures = ['beerstyles', 'users']
+
 	def setUp(self):
-		self.user = User.objects.create_user('patrick', 'patrick@patrickomatic.com', 'pass')
-		self.client.login(username=self.user.username, password='pass')
+		self.user = User.objects.get(username='patrick')
+		self.client.login(username=self.user.username, password='password')
 
 
 	def test_index(self):
 		self.client.logout()
 		response = self.client.get('/')
+
 		self.assertTemplateUsed(response, 'homebrewit_index.html')
+		self.assert_(response.context['years'] == [2011])
 
 
 	def test_signup(self):
