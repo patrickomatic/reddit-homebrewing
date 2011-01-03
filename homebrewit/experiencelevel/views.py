@@ -44,5 +44,5 @@ def change_level(request):
 
 @cache_page(60 * 10)
 def experience_styles(request):
-	return render_to_response('experience.css', 
+	return render_to_response('experience_styles.css', 
 			{'levels': UserExperienceLevel.objects.all()})
