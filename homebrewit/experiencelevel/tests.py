@@ -1,23 +1,32 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
+from django.contrib.auth.models import User
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from homebrewit.experiencelevel.models import *
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
 
->>> 1 + 1 == 2
-True
-"""}
+class ExperienceViewsTest(TestCase):
+	fixtures = ['users', 'experiencelevels', 'userexperiencelevels']
 
+	def setUp(self):
+		self.user = User.objects.get(username='patrick')
+		self.client.login(username='patrick', password='password')
+
+
+	def test_change_level(self):
+		response = self.client.get('/experience/level')
+
+		self.assertTemplateUsed(response, 'homebrewit_experience.html')
+		self.assert_(response.context['form'])
+
+	def test_change_level__post(self):
+		response = self.client.post('/experience/level', {'experience_level': 4})
+
+		self.assertRedirects(response, '/profile/')
+		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4))
+
+
+	def test_experience_styles(self):
+		response = self.client.get('/experience/experience-styles.css')
+
+		self.assert_('Cache-Control' in str(response))
+		self.assertTemplateUsed(response, 'experience_styles.css')
