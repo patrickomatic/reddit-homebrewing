@@ -46,7 +46,7 @@ class Entry(models.Model):
 
 
 def integer_range(max_int):
-	return [(str(x), x) for x in xrange(1, max_int + 1)]
+	return [(x, str(x)) for x in xrange(1, max_int + 1)]
 
 class JudgingResult(models.Model):
 	judge = models.ForeignKey(User)
@@ -90,4 +90,4 @@ class JudgingResult(models.Model):
 
 
 	def __unicode__(self):
-		return "%s: %s" % (self.entry.user.username, self.overall_rating())
+		return "%s (score: %s)" % (self.entry, self.overall_rating())
