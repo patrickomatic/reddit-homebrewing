@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "experiencelevel.userexperiencelevel", "fields": {"experience_level": 3, "user": 1}}]
+[{"pk": 1, "model": "experiencelevel.userexperiencelevel", "fields": {"experience_level": 3, "user": 1}}, {"pk": 2, "model": "experiencelevel.userexperiencelevel", "fields": {"experience_level": 4, "user": 2}}, {"pk": 3, "model": "experiencelevel.userexperiencelevel", "fields": {"experience_level": 2, "user": 3}}, {"pk": 4, "model": "experiencelevel.userexperiencelevel", "fields": {"experience_level": 1, "user": 4}}]
