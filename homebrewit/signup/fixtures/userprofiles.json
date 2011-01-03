@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "signup.userprofile", "fields": {"city": "Cordova", "country": "US", "state": "MD", "user": 1, "address_2": "", "zip_code": 21625, "address_1": "12594 Blades Rd"}}, {"pk": 2, "model": "signup.userprofile", "fields": {"city": "Silver Spring", "country": "USA", "state": "MD", "user": 2, "address_2": "", "zip_code": 20910, "address_1": "128 Hilltop Rd"}}]
