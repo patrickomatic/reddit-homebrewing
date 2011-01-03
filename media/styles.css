@@ -16,17 +16,27 @@ body {
 	margin: 20px;
 }
 
+input[type="text"] {
+	width: 300px;
+	border: 1px solid #7A7A7A;
+}
+
+input[type="password"] {
+	width: 300px;
+	border: 1px solid #7A7A7A;
+}
+
 .signup-form label {
 	display: block;
 	float: left;
-	width: 80px;
+	width: 150px;
 	line-height: 1.5em;
 }
 
 .login-form label {
 	display: block;
 	float: left;
-	width: 80px;
+	width: 150px;
 	line-height: 1.5em;
 }
 
