@@ -9,10 +9,13 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 		for year in args:
+			year = int(year)
+
 			# calculate the score of each entry for the year
-			for entry in Entry.objects.filter(contest_year=int(year)):
+			for entry in Entry.objects.filter(entry__contest_year=year):
 				total, num = 0, 0
 
+				# get the average of each judge who judged this entry
 				for result in JudgingResult.objects.filter(entry=entry):
 					num += 1
 					total += result.overall_rating()
@@ -22,9 +25,9 @@ class Command(BaseCommand):
 
 
 			# now for each style, assign winners
-			for style in Style.objects.all():
+			for style in BeerStyle.objects.filter(contest_year=year):
 				place = 1
-				for entry in Entry.objects.filter(contest_year=int(year), style=style)[:3]:
+				for entry in Entry.objects.get_top_3(year, style):
 					entry.winner = True
 					entry.rank = place
 					entry.save()

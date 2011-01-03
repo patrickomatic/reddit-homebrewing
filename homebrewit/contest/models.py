@@ -39,12 +39,21 @@ class BeerStyle(models.Model):
 		return "%s (contest year: %d)" % (self.name, self.contest_year)
 
 
+class EntryManager(models.Model):
+	def get_top_n(year, style, n):
+		return Entry.objects.get(contest_year=year, style=style)[:n]
+
+	def get_top_3(year, style): return get_top_n(year, style, 3)
+	def get_top_2(year, style): return get_top_n(year, style, 2)
+
 class Entry(models.Model):
 	style = models.ForeignKey('BeerStyle', db_index=True)
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
 	score = models.PositiveIntegerField(null=True, blank=True)
+
+	objects = EntryManager()
 
 	class Meta:
 		ordering = ['style', 'score']
