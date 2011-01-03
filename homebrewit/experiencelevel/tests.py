@@ -22,11 +22,15 @@ class ExperienceViewsTest(TestCase):
 		response = self.client.post('/experience/level', {'experience_level': 4})
 
 		self.assertRedirects(response, '/profile/')
-		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4))
+		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
 
 
 	def test_experience_styles(self):
 		response = self.client.get('/experience/experience-styles.css')
-
 		self.assert_('Cache-Control' in str(response))
-		self.assertTemplateUsed(response, 'experience_styles.css')
+		self.assert_('ETag' in str(response))
+
+	# XXX how to test this with caching
+	def test_experience_styles__no_cache(self):
+		response = self.client.get('/experience/experience-styles.css')
+#		self.assertTemplateUsed(response, 'experience_styles.css')
