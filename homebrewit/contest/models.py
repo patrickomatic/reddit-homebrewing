@@ -45,8 +45,9 @@ class Entry(models.Model):
 		return "%s: %s" % (user.username, style.name)
 
 
+def integer_range(max_int):
+	return [(str(x), x) for x in xrange(1, max_int + 1)]
 
-# XXX need to make some kind of PositiveInteger range model thing
 class JudgingResult(models.Model):
 	judge = models.ForeignKey(User)
 	judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
@@ -55,37 +56,26 @@ class JudgingResult(models.Model):
 
 	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 
-	# out of 12 points XXX
 	aroma_description = models.CharField(max_length=5000)
-	aroma_score = models.PositiveSmallIntegerField()
+	aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
 
-	# out of 3 points XXX
 	appearance_description = models.CharField(max_length=5000)
-	appearance_score = models.PositiveSmallIntegerField()
+	appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
 
-	# out of 20 points XXX
 	flavor_description = models.CharField(max_length=5000)
-	flavor_score = models.PositiveSmallIntegerField()
+	flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
 
-	# out of 5 points XXX
 	mouthfeel_description = models.CharField(max_length=5000)
-	mouthfeel_score = models.PositiveSmallIntegerField()
+	mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
 
-	# out of 10 points XXX
 	overall_impression_description = models.CharField(max_length=5000)
-	overall_impression_score = models.PositiveSmallIntegerField()
+	overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
 
-	# XXX put a help text:
-	# (1 = not to style, 5 = classic example)
-	stylistic_accuracy = models.PositiveSmallIntegerField()
+	stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
 
-	# XXX put a help text:
-	# (1 = significant flaws, 5 = flawless)
-	technical_merit = models.PositiveSmallIntegerField()
+	technical_merit = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = significant flaws, 5 = flawless')
 
-	# XXX put a help text:
-	# (1 = lifeless, 5 = wonderful)
-	intangibles = models.PositiveSmallIntegerField()
+	intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
 
 
 	def overall_rating(self):
