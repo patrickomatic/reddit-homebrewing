@@ -24,7 +24,7 @@ class ContestViewsTest(TestCase):
 
 
 	def test_styles(self):
-		response = self.client.get('/contest/styles')
+		response = self.client.get('/contest/2011/styles')
 		self.assertTemplateUsed(response, 'homebrewit_contest_styles.html')
 
 
@@ -51,16 +51,16 @@ class ContestModelsTest(TestCase):
 
 
 	def test_get_top_n(self):
-		top_2 = Entry.objects.get_top_n(2011, self.ipa_style, 2)
+		top_2 = Entry.objects.get_top_n(self.ipa_style, 2)
 		self.assert_(2 == len(top_2))
 		self.assert_('patrick' 			== top_2[0].user.username)
 		self.assert_('patrickomatic' 	== top_2[1].user.username)
 
 	def test_get_top_2(self):
-		self.assert_(2 == len(Entry.objects.get_top_2(2011, self.ipa_style)))
+		self.assert_(2 == len(Entry.objects.get_top_2(self.ipa_style)))
 
 	def test_get_top_3(self):
-		self.assert_(3 == len(Entry.objects.get_top_3(2011, self.ipa_style)))
+		self.assert_(3 == len(Entry.objects.get_top_3(self.ipa_style)))
 
 
 	def test_get_all_winners(self):

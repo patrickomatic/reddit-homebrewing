@@ -44,14 +44,14 @@ class BeerStyle(models.Model):
 
 
 class EntryManager(models.Manager):
-	def get_top_n(self, year, style, n):
-		return Entry.objects.filter(style__contest_year=year, style=style)[:n]
+	def get_top_n(self, style, n):
+		return Entry.objects.filter(style=style)[:n]
 
-	def get_top_3(self, year, style): 
-		return self.get_top_n(year, style, 3)
+	def get_top_3(self, style): 
+		return self.get_top_n(style, 3)
 
-	def get_top_2(self, year, style): 
-		return self.get_top_n(year, style, 2)
+	def get_top_2(self, style): 
+		return self.get_top_n(style, 2)
 
 
 	# XXX is the datetime keyword ineficient? when does it get executed?
