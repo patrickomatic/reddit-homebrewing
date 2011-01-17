@@ -8,7 +8,6 @@ class ExperienceLevel(models.Model):
 	img_url = models.FilePathField(path=settings.MEDIA_ROOT)
 
 	def get_absolute_url(self):
-		print "it is", self.img_url.replace(settings.MEDIA_ROOT, '/media')
 		return self.img_url.replace(settings.MEDIA_ROOT, '/media')
 
 	def __unicode__(self):
