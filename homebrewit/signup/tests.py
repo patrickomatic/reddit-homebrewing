@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -16,6 +17,7 @@ class SignupViewsTest(TestCase):
 
 		self.assertTemplateUsed(response, 'homebrewit_index.html')
 		self.assert_(response.context['years'] == [2011])
+		self.assert_(response.context['current_year'] == datetime.datetime.now().year)
 
 
 	def test_signup(self):
@@ -48,7 +50,7 @@ class SignupViewsTest(TestCase):
 	def test_login__post(self):
 		self.client.logout()
 		response = self.client.post('/login', 
-				{'username': self.user.username, 'password': 'pass'})
+				{'username': self.user.username, 'password': 'password'})
 
 		self.assertTemplateUsed(response, 'homebrewit_login.html')
 		self.assert_(self.user.is_authenticated())

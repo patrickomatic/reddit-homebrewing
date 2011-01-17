@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -44,5 +44,8 @@ def change_level(request):
 
 @cache_page(60 * 10)
 def experience_styles(request):
-	return render_to_response('experience_styles.css', 
-			{'levels': UserExperienceLevel.objects.all()})
+	resp = HttpResponse("\n".join(map(UserExperienceLevel.to_css, 
+								UserExperienceLevel.objects.all())),
+						mimetype='text/css')
+	resp['Content-Type'] = 'text/css'
+	return resp
