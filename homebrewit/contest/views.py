@@ -2,7 +2,7 @@ import datetime
 
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -55,8 +55,14 @@ def entry(request, year, entry_id):
 
 @cache_page(60 * 10)
 def winner_styles(request):
-	current_year = datetime.datetime.now().year
-	# XXX get a unique list of users who have 
-	winners = []
+	resp = HttpResponse("\n".join(["""
+a[href*="user/%(username)s":after {
+	content: url(%(icon_url)s);
+}
+	""" % {
+			'username': winner.username,
+			'icon_url': settings.WINNER_ICON,
+		} for winner in Entry.objects.get_all_winners()]), mimetype='text/css')
 
-	return render_to_response('winner_styles.css', {'winners': winners})
+	resp['Content-Type'] = 'text/css'
+	return resp

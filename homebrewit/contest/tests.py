@@ -42,6 +42,34 @@ class ContestViewsTest(TestCase):
 		pass
 
 
+class ContestModelsTest(TestCase):
+	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
+
+	def setUp(self):
+		self.ipa_style = BeerStyle.objects.get(name='IPA')
+		self.ipa_style = BeerStyle.objects.get(name='IPA')
+
+
+	def test_get_top_n(self):
+		top_2 = Entry.objects.get_top_n(2011, self.ipa_style, 2)
+		self.assert_(2 == len(top_2))
+		self.assert_('patrick' 			== top_2[0].user.username)
+		self.assert_('patrickomatic' 	== top_2[1].user.username)
+
+	def test_get_top_2(self):
+		self.assert_(2 == len(Entry.objects.get_top_2(2011, self.ipa_style)))
+
+	def test_get_top_3(self):
+		self.assert_(3 == len(Entry.objects.get_top_3(2011, self.ipa_style)))
+
+
+	def test_get_all_winners(self):
+		winners = Entry.objects.get_all_winners()
+		self.assert_(User.objects.get(username='patrick') in winners)
+		self.assert_(User.objects.get(username='patrickomatic') in winners)
+		self.assert_(User.objects.get(username='musashiXXX') in winners)
+
+
 class JudgeContestCommandTest(TestCase):
 	fixtures = ['beerstyles']
 

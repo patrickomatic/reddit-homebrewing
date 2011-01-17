@@ -118,3 +118,4 @@ LOGOUT_URL = '/logout'
 
 AUTH_PROFILE_MODULE = 'signup.UserProfile'
 
+WINNER_ICON = '/media/winner.png'

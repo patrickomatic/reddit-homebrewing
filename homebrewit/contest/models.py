@@ -43,12 +43,22 @@ class BeerStyle(models.Model):
 		return "%s (contest year: %d)" % (self.name, self.contest_year)
 
 
-class EntryManager(models.Model):
-	def get_top_n(year, style, n):
-		return Entry.objects.get(contest_year=year, style=style)[:n]
+class EntryManager(models.Manager):
+	def get_top_n(self, year, style, n):
+		return Entry.objects.filter(style__contest_year=year, style=style)[:n]
 
-	def get_top_3(year, style): return get_top_n(year, style, 3)
-	def get_top_2(year, style): return get_top_n(year, style, 2)
+	def get_top_3(self, year, style): 
+		return self.get_top_n(year, style, 3)
+
+	def get_top_2(self, year, style): 
+		return self.get_top_n(year, style, 2)
+
+
+	# XXX is the datetime keyword ineficient? when does it get executed?
+	def get_all_winners(self, contest_year=datetime.datetime.now().year):
+		return set([entry.user for entry in Entry.objects.filter(winner=True, 
+										style__contest_year=contest_year)])
+
 
 class Entry(models.Model):
 	style = models.ForeignKey('BeerStyle', db_index=True)
