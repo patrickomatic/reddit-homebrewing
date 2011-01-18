@@ -70,7 +70,7 @@ class Entry(models.Model):
 	objects = EntryManager()
 
 	class Meta:
-		ordering = ['style', 'score']
+		ordering = ['style', '-score']
 
 
 	def get_rating_description(self):
