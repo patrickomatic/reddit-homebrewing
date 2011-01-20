@@ -10,14 +10,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from homebrewit.contest.models import BeerStyle
+from homebrewit.contest.models import BeerStyle, ContestYear
 from homebrewit.signup.reddit import reddit_login
 from homebrewit.signup.models import UserProfile
 
 
 def index(request):
 	return render_to_response('homebrewit_index.html', 
-			{'years': BeerStyle.objects.get_contest_years(), 
+			{'years': [y.contest_year for y in ContestYear.objects.all()], 
 				'current_year': datetime.datetime.now().year}, 
 			context_instance=RequestContext(request))
 

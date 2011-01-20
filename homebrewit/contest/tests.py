@@ -7,11 +7,10 @@ from homebrewit.contest.views import *
 
 
 class ContestViewsTest(TestCase):
-	fixtures = ['beerstyles']
+	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
 
 	def setUp(self):
-		self.user = User.objects.create_user('patrick', 'patrick@patrickomatic.com', 'pass')
-		self.client.login(username=self.user.username, password='pass')
+		pass
 
 
 	def test_register(self):

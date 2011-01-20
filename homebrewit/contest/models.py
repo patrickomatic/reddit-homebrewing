@@ -23,24 +23,22 @@ def integer_range(max_int):
 	return [(x, str(x)) for x in xrange(1, max_int + 1)]
 
 
-class BeerStyleManager(models.Manager):
-	def get_contest_years(self):
-		cursor = connection.cursor()
-		cursor.execute("""
-			SELECT distinct(contest_year)
-			FROM contest_beerstyle 
-			ORDER BY contest_year DESC """)
-		return [row[0] for row in cursor.fetchall()]
+class ContestYear(models.Model):
+	contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now())
+
+	class Meta:
+		ordering = ('-contest_year',)
+
+	def __unicode__(self):
+		return unicode(self.contest_year)
+
 
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
-	contest_year = models.PositiveSmallIntegerField(default=datetime.datetime.now().year)
-
-	objects = BeerStyleManager()
-
+	contest_year = models.ForeignKey('ContestYear')
 
 	def __unicode__(self):
-		return "%s (contest year: %d)" % (self.name, self.contest_year)
+		return "%s (contest year: %s)" % (self.name, self.contest_year)
 
 
 class EntryManager(models.Manager):
@@ -53,11 +51,10 @@ class EntryManager(models.Manager):
 	def get_top_2(self, style): 
 		return self.get_top_n(style, 2)
 
-
 	# XXX is the datetime keyword ineficient? when does it get executed?
 	def get_all_winners(self, contest_year=datetime.datetime.now().year):
 		return set([entry.user for entry in Entry.objects.filter(winner=True, 
-										style__contest_year=contest_year)])
+										style__contest_year__contest_year=contest_year)])
 
 
 class Entry(models.Model):
@@ -70,7 +67,7 @@ class Entry(models.Model):
 	objects = EntryManager()
 
 	class Meta:
-		ordering = ['style', '-score']
+		ordering = ('style', '-score')
 
 
 	def get_rating_description(self):

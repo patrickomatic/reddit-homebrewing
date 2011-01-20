@@ -29,14 +29,28 @@ def register(request):
 		context_instance=RequestContext(request))
 
 
-def styles(request):
-	styles = BeerStyle.objects.all()
+def styles(request, year):
+	styles = BeerStyle.objects.filter(contest_year__contest_year=year)
 	return render_to_response('homebrewit_contest_styles.html', {'styles': styles},
 			context_instance=RequestContext(request))
 
 
+def style(request, year, style_id):
+	try:
+		style = BeerStyle.objects.get(pk=style_id, contest_year__contest_year=int(year))
+	except BeerStyle.DoesNotExist:
+		raise Http404
+
+	top_11 = Entry.objects.get_top_n(style, 11)
+
+	return render_to_response('homebrewit_contest_style.html',
+			{'style': style, 'top_10_entries': top_11[:10], 
+				'more_entries': len(top_11) > 10},
+			context_instance=RequestContext(request))
+
+
 def contest_year(request, year):
-	entries = Entry.objects.filter(style__contest_year=year)
+	entries = Entry.objects.filter(style__contest_year__contest_year=int(year))
 	return render_to_response('homebrewit_contest_year.html', 
 			{'entries': entries, 'year': year},
 			context_instance=RequestContext(request))
@@ -44,13 +58,13 @@ def contest_year(request, year):
 
 def entry(request, year, entry_id):
 	try:
-		entry = Entry.objects.get(id=entry_id, contest_year=year)
+		entry = Entry.objects.get(pk=entry_id)
+		assert entry.style.year.year == year
 	except Entry.DoesNotExist:
 		raise Http404
 
 	return render_to_response('homebrewit_contest_entry.html',
-			{'year': year, 'entry': entry},
-			context_instance=RequestContext(request))
+			{'entry': entry}, context_instance=RequestContext(request))
 
 
 @cache_page(60 * 10)

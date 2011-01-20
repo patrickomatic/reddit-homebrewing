@@ -8,7 +8,7 @@
 	<div class="large-title">{{year}} /r/homebrewing Contest</div>
 	{% for entry in entries %}
 		<ul>
-			<li><a title="{{entry}}" href="{% url homebrewit.contest.views.entry %}">{{entry}}</a> - {{entry.get_rating_description}}</li>
+			<li><a title="{{entry}}" href="{% url homebrewit.contest.views.entry entry.style.contest_year entry.id %}">{{entry}}</a> - {{entry.get_rating_description}}</li>
 		</ul>
 	{% endfor %}
 {% endblock %}
