@@ -11,7 +11,7 @@ from homebrewit.contest.models import *
 
 
 class EntryForm(forms.Form):
-	style = forms.ModelChoiceField(queryset=BeerStyle.objects.all())
+	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year__contest_year=datetime.datetime.now()))
 
 @login_required
 def register(request):
