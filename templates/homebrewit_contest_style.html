@@ -1,0 +1,28 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	{{style.contest_year}} Reddit Homebrewing Contest - {{style.name}}
+{% endblock %}
+
+{% block content %}
+	<div class="large-title">{{style.contest_year}} - {{style.name}}</div>
+	<table>
+		<tr>
+			<th>Beer</th>
+			<th>Score</th>
+		</tr>
+		{% for entry in data.entries %}
+			<tr>
+				<td>
+					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year entry.id %}">
+						{{entry.user}} 
+						{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
+					</a>
+				</td>
+				<td>
+					{{entry.get_rating_description}}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

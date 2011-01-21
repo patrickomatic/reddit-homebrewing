@@ -5,10 +5,38 @@
 {% endblock %}
 
 {% block content %}
-	<div class="large-title">{{year}} /r/homebrewing Contest</div>
-	{% for entry in entries %}
-		<ul>
-			<li><a title="{{entry}}" href="{% url homebrewit.contest.views.entry entry.style.contest_year entry.id %}">{{entry}}</a> - {{entry.get_rating_description}}</li>
-		</ul>
+	<div class="large-title">{{year}}'s Contest Styles</div>
+
+	{% for style, data in styles.iteritems %}
+		<div class="medium-title">
+			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}">
+				{{style.name}}
+			</a>
+		</div>
+
+		<table>
+			<tr>
+				<th>Beer</th>
+				<th>Score</th>
+			</tr>
+			{% for entry in data.entries %}
+				<tr>
+					<td>
+						<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year entry.id %}">
+							{{entry.user}} 
+							{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
+						</a>
+					</td>
+					<td>
+						{{entry.get_rating_description}}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		{% if data.has_more %}
+			<a title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
+				More entries...
+			</a>
+		{% endif %}
 	{% endfor %}
 {% endblock %}

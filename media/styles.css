@@ -50,16 +50,19 @@ input[type="password"] {
 }
 
 .small-title {
+	padding-top: 10px;
 	font-size: 1.1em;
 	font-weight: bold;
 }
 
 .medium-title {
+	padding-top: 10px;
 	font-size: 1.3em;
 	font-weight: bold;
 }
 
 .large-title {
+	padding-top: 10px;
 	font-size: 1.5em;
 	font-weight: bold;
 }
