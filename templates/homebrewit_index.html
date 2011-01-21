@@ -1,10 +1,12 @@
 {% extends "homebrewit.html" %}
 
 {% block content %}
+	<div class="large-title">Welcome to the reddit.com/r/Homebrewing app!</div>
+
 	{% if user.is_authenticated %}
-		<p>Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}">registered</a> for the /r/homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level</a>?</p>
+		<p>Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}">registered</a> for the annual homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level</a>?</p>
 	{% else %}
-		<p>Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the /r/homebrewing competition.</p>
+		<p>Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the annual homebrewing competition.</p>
 	{% endif %}
 
 	<div class="large-title">/r/homebrewing Competition Results</div>
