@@ -19,10 +19,6 @@ def rating_description_str(rating):
 		return "Problematic (%d / 65)" % rating
 
 
-def integer_range(max_int):
-	return [(x, str(x)) for x in xrange(1, max_int + 1)]
-
-
 class ContestYear(models.Model):
 	contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now())
 
@@ -75,6 +71,10 @@ class Entry(models.Model):
 
 	def __unicode__(self):
 		return "%s: %s" % (self.user.username, self.style)
+
+
+def integer_range(max_int):
+	return [(x, str(x)) for x in xrange(1, max_int + 1)]
 
 
 class JudgingResult(models.Model):

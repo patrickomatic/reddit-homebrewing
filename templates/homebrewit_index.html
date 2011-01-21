@@ -1,21 +1,46 @@
 {% extends "homebrewit.html" %}
 
 {% block content %}
-	<div class="large-title">/r/homebrewing Competition Results</div>
-	<ul>
-		{% if years|length_is:"1" %}
-			<p><a title="{{years|first}} Competition" href="{% url homebrewit.contest.views.contest_year years|first %}">{{years|first}}</a></p>
-		{% else %}
-			{% for year in years %}
-				<li><a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}">{{year}}</a></li>
-			{% endfor %}
-		{% endif %}
-	</ul>
-
-
 	{% if user.is_authenticated %}
 		<p>Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}">registered</a> for the /r/homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level</a>?</p>
 	{% else %}
 		<p>Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the /r/homebrewing competition.</p>
 	{% endif %}
+
+	<div class="large-title">/r/homebrewing Competition Results</div>
+	<ul>
+		{% for year, style_data in contest_data.iteritems %}
+			<div class="large-title">
+				<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}">
+					{{year}}'s Competition
+				</a>
+			</div>
+
+			<table>
+				<tr>
+					<th>Style</th>
+					<th>Entries</th>
+					<th>Winner</th>
+				</tr>
+
+				{% for style in style_data %}
+					<tr>
+						<td>
+							<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}">
+								{{style.style.name}}
+							</a>
+						</td>
+						<td align="center">{{style.n_entries}}</td>
+						<td align="center">
+							{% if style.winner %}
+								<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.winner.id %}">
+									{{style.winner.winner}}
+								</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endfor %}
+	</ul>
 {% endblock %}

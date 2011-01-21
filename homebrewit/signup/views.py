@@ -10,14 +10,39 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from homebrewit.contest.models import BeerStyle, ContestYear
+from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
 from homebrewit.signup.reddit import reddit_login
 from homebrewit.signup.models import UserProfile
 
 
 def index(request):
+	contest_data = {}
+
+	for style in BeerStyle.objects.all():
+		year = style.contest_year.contest_year
+
+		top_entry = Entry.objects.filter(style=style).order_by('-score')
+		if top_entry and top_entry[0].winner:
+			winner_data = {
+					'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
+					'id': top_entry[0].id,
+			}
+		else:
+			winner_data = None
+
+		data = {
+				'n_entries': Entry.objects.filter(style=style).count(),
+				'winner': winner_data,
+				'style': style,
+		}
+
+		if year in contest_data:
+			contest_data[year].append(data)
+		else:
+			contest_data[year] = [data]
+
 	return render_to_response('homebrewit_index.html', 
-			{'years': [y.contest_year for y in ContestYear.objects.all()], 
+			{'contest_data': contest_data, 
 				'current_year': datetime.datetime.now().year}, 
 			context_instance=RequestContext(request))
 

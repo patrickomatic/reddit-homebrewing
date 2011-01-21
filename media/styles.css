@@ -8,6 +8,11 @@ body {
 	padding: 10px;
 }
 
+table {
+	width: 70%;
+	border: 1px solid #000000;
+}
+
 #header {
 	text-align: right;
 	font-size: 0.8em;
