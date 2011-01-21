@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
+from homebrewit.contest.models import BeerStyle, Entry 
 from homebrewit.signup.reddit import reddit_login
 from homebrewit.signup.models import UserProfile
 
