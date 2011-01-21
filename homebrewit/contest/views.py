@@ -35,11 +35,11 @@ def register(request):
 def style(request, year, style_id):
 	try:
 		style = BeerStyle.objects.get(pk=style_id)
-		assert style.contest_year.contest_year == year
+		assert style.contest_year.contest_year == int(year)
 	except BeerStyle.DoesNotExist:
 		raise Http404
 
-	entries = Entry.objects.get(style=style)
+	entries = Entry.objects.filter(style=style)
 
 	return render_to_response('homebrewit_contest_style.html',
 			{'style': style, 'entries': entries}, 

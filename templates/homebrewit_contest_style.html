@@ -11,7 +11,7 @@
 			<th>Beer</th>
 			<th>Score</th>
 		</tr>
-		{% for entry in data.entries %}
+		{% for entry in entries %}
 			<tr>
 				<td>
 					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year entry.id %}">
