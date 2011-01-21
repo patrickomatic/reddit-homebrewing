@@ -54,6 +54,7 @@ class EntryManager(models.Manager):
 
 
 class Entry(models.Model):
+	beer_name = models.CharField(max_length=255, null=True, blank=True)
 	style = models.ForeignKey('BeerStyle', db_index=True)
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)

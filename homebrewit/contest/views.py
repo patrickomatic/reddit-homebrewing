@@ -11,6 +11,7 @@ from homebrewit.contest.models import *
 
 
 class EntryForm(forms.Form):
+	beer_name = forms.CharField(max_length=255, required=False)
 	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year__contest_year=datetime.datetime.now().year))
 
 @login_required
@@ -18,7 +19,9 @@ def register(request):
 	if request.method == 'POST':
 		form = EntryForm(request.POST)
 		if form.is_valid():
-			entry = Entry(style=form.cleaned_data['style'], user=request.user)
+			entry = Entry(style=form.cleaned_data['style'], 
+					beer_name=form.cleaned_data['beer_name'], 
+					user=request.user)
 			entry.save()
 
 			request.user.message_set.create(message='You are now entered in the %s category' % entry.style)
@@ -29,30 +32,32 @@ def register(request):
 		context_instance=RequestContext(request))
 
 
-def styles(request, year):
-	styles = BeerStyle.objects.filter(contest_year__contest_year=year)
-	return render_to_response('homebrewit_contest_styles.html', {'styles': styles},
-			context_instance=RequestContext(request))
-
-
 def style(request, year, style_id):
 	try:
-		style = BeerStyle.objects.get(pk=style_id, contest_year__contest_year=int(year))
+		style = BeerStyle.objects.get(pk=style_id)
+		assert style.contest_year.contest_year == year
 	except BeerStyle.DoesNotExist:
 		raise Http404
 
-	top_11 = Entry.objects.get_top_n(style, 11)
+	entries = Entry.objects.get(style=style)
 
 	return render_to_response('homebrewit_contest_style.html',
-			{'style': style, 'top_10_entries': top_11[:10], 
-				'more_entries': len(top_11) > 10},
+			{'style': style, 'entries': entries}, 
 			context_instance=RequestContext(request))
 
 
 def contest_year(request, year):
-	entries = Entry.objects.filter(style__contest_year__contest_year=int(year))
+	styles = {}
+	for style in BeerStyle.objects.filter(contest_year__contest_year=year):
+		top_11 = Entry.objects.get_top_n(style, 11)
+		styles[style] = {
+			'entries': top_11[:10],
+			'has_more': len(top_11) > 10,
+		}
+
+
 	return render_to_response('homebrewit_contest_year.html', 
-			{'entries': entries, 'year': year},
+			{'styles': styles, 'year': year},
 			context_instance=RequestContext(request))
 
 
