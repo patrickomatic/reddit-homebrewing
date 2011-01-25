@@ -6,8 +6,8 @@
 
 {% block content %}
 	<div class="large-title">
-		<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.profile entry.user.username %}">{{entry.user}}</a>: 
-		{% if entry.beer_name %}{{entry.beer_name}}({% endif %}{{entry.style}}{% if entry.beername %}){% endif %}
+		<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>: 
+		{% if entry.beer_name %}{{entry.beer_name}} ({% endif %}{{entry.style.name}}{% if entry.beer_name %}){% endif %}
 	</div>	
 
 	<div class="small-title">Score: 
