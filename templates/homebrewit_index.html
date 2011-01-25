@@ -9,7 +9,7 @@
 		<p>Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the annual homebrewing competition.</p>
 	{% endif %}
 
-	<div class="large-title">/r/homebrewing Competition Results</div>
+	<div class="large-title">/r/homebrewing Competition</div>
 	<ul>
 		{% for year, style_data in contest_data.iteritems %}
 			<div class="large-title">
