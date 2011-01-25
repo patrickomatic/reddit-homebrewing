@@ -1,0 +1,5 @@
+{% for winner in winners %}
+	a[href*="user/{{winner.username}}"]:after {
+		content: url({{icon_url}});
+	}
+{% endfor %}

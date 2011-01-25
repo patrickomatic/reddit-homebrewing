@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 class SignupViewsTest(TestCase):
-	fixtures = ['beerstyles', 'users']
+	fixtures = ['beerstyles', 'entries', 'judgingresults', 'users']
 
 	def setUp(self):
 		self.user = User.objects.get(username='patrick')
@@ -16,7 +16,8 @@ class SignupViewsTest(TestCase):
 		response = self.client.get('/')
 
 		self.assertTemplateUsed(response, 'homebrewit_index.html')
-		self.assert_(response.context['years'] == [2011])
+		self.assert_(len(response.context['contest_data']) == 1)
+		self.assert_(len(response.context['contest_data'][2011]) == 8)
 		self.assert_(response.context['current_year'] == datetime.datetime.now().year)
 
 

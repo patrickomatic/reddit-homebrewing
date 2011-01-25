@@ -22,7 +22,7 @@
 			{% for entry in data.entries %}
 				<tr>
 					<td>
-						<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year entry.id %}">
+						<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}">
 							{{entry.user}} 
 							{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
 						</a>

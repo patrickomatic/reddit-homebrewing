@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
@@ -61,10 +62,11 @@ def contest_year(request, year):
 			context_instance=RequestContext(request))
 
 
-def entry(request, year, entry_id):
+def entry(request, year, style_id, entry_id):
 	try:
 		entry = Entry.objects.get(pk=entry_id)
-		assert entry.style.year.year == year
+		assert entry.style.id == int(style_id)
+		assert entry.style.contest_year.contest_year == int(year)
 	except Entry.DoesNotExist:
 		raise Http404
 
@@ -72,16 +74,8 @@ def entry(request, year, entry_id):
 			{'entry': entry}, context_instance=RequestContext(request))
 
 
-@cache_page(60 * 10)
+# XXX @cache_page(600)
 def winner_styles(request):
-	resp = HttpResponse("\n".join(["""
-a[href*="user/%(username)s":after {
-	content: url(%(icon_url)s);
-}
-	""" % {
-			'username': winner.username,
-			'icon_url': settings.WINNER_ICON,
-		} for winner in Entry.objects.get_all_winners()]), mimetype='text/css')
-
-	resp['Content-Type'] = 'text/css'
-	return resp
+	return render_to_response('winner_styles.css', 
+			{'icon_url': settings.WINNER_ICON, 'winners': Entry.objects.get_all_winners()},
+			mimetype='text/css')

@@ -25,10 +25,10 @@ class ExperienceViewsTest(TestCase):
 		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
 
 
-	def test_cached_experience_styles(self):
+	def test_experience_styles(self):
 		response = self.client.get('/experience/experience-styles.css')
-		self.assert_('Cache-Control' in str(response))
-		self.assert_('ETag' in str(response))
+#		self.assert_('Cache-Control' in str(response))
+#		self.assert_('ETag' in str(response))
 
 		content = response.content
 		self.assert_('a[href*="user/patrickomatic"]:after' in content)

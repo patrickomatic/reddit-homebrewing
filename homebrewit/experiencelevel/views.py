@@ -42,10 +42,10 @@ def change_level(request):
 			context_instance=RequestContext(request))
 
 
-@cache_page(60 * 10)
+# XXX @cache_page(600)
 def experience_styles(request):
 	resp = HttpResponse("\n".join(map(UserExperienceLevel.to_css, 
 								UserExperienceLevel.objects.all())),
 						mimetype='text/css')
-	resp['Content-Type'] = 'text/css'
+#	resp['Content-Type'] = 'text/css'
 	return resp

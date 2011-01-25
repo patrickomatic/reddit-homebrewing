@@ -10,7 +10,7 @@ class ContestViewsTest(TestCase):
 	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
 
 	def setUp(self):
-		pass
+		self.client.login(username='patrick', password='password')
 
 
 	def test_register(self):
@@ -18,13 +18,9 @@ class ContestViewsTest(TestCase):
 		self.assert_(response.context['form'])
 
 	def test_register__post(self):
-		pass
-#		response = self.client.post('/contest/register', {'
-
-
-	def test_styles(self):
-		response = self.client.get('/contest/2011/styles')
-		self.assertTemplateUsed(response, 'homebrewit_contest_styles.html')
+		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+		entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
+		self.assert_(entry.user.username == 'patrick')
 
 
 	def test_contest_year(self):
@@ -36,9 +32,20 @@ class ContestViewsTest(TestCase):
 		#response = self.client.get('/contest/entries/
 		pass
 
+
+	def test_style(self):
+		pass
+
 	
 	def test_winner_styles(self):
-		pass
+		response = self.client.get('/contest/winner-styles.css')
+#		self.assert_('Cache-Control' in str(response))
+#		self.assert_('ETag' in str(response))
+
+		content = response.content
+		self.assert_('a[href*="user/patrickomatic"]:after' in content)
+		self.assert_('a[href*="user/musashiXXX"]:after' in content)
+		self.assert_(not 'a[href*="user/loser"]:after' in content)
 
 
 class ContestModelsTest(TestCase):

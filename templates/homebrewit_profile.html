@@ -28,8 +28,8 @@
 	<p>
 		{% if contest_entries %}
 			<ul>
-				{% for contest_entry in contest_entries %}
-					<li><a href="{% url homebrewit.contest.views.contest.entry contest_entry.contest_year contest_entry.id %}">{{contest_entry}}</a></li>
+				{% for entry in contest_entries %}
+					<li><a href="{% url homebrewit.contest.views.entry entry.style.contest_year.contest_year entry.style.id entry.id %}">{{contest_entry}}</a></li>
 				{% endfor %}
 			</ul>
 		{% else %}

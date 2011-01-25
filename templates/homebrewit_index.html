@@ -35,7 +35,7 @@
 						<td align="center">{{style.n_entries}}</td>
 						<td align="center">
 							{% if style.winner %}
-								<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.winner.id %}">
+								<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}">
 									{{style.winner.winner}}
 								</a>
 							{% endif %}
