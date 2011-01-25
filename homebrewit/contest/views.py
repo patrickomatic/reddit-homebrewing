@@ -14,6 +14,7 @@ from homebrewit.contest.models import *
 class EntryForm(forms.Form):
 	beer_name = forms.CharField(max_length=255, required=False)
 	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year__contest_year=datetime.datetime.now().year))
+	special_ingredients = forms.CharField(max_length=1000, required=False)
 
 @login_required
 def register(request):
@@ -22,6 +23,7 @@ def register(request):
 		if form.is_valid():
 			entry = Entry(style=form.cleaned_data['style'], 
 					beer_name=form.cleaned_data['beer_name'], 
+					special_ingredients=form.cleaned_data['special_ingredients'],
 					user=request.user)
 			entry.save()
 
@@ -58,7 +60,7 @@ def contest_year(request, year):
 
 
 	return render_to_response('homebrewit_contest_year.html', 
-			{'styles': styles, 'year': year},
+			{'styles': styles, 'year': int(year)},
 			context_instance=RequestContext(request))
 
 
@@ -71,7 +73,8 @@ def entry(request, year, style_id, entry_id):
 		raise Http404
 
 	return render_to_response('homebrewit_contest_entry.html',
-			{'entry': entry}, context_instance=RequestContext(request))
+			{'entry': entry, 'judging_results': JudgingResult.objects.filter(entry=entry)}, 
+			context_instance=RequestContext(request))
 
 
 # XXX @cache_page(600)

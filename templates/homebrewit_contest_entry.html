@@ -1,9 +1,88 @@
 {% extends "homebrewit.html" %}
 
 {% block title %}
-	{{entry.style}} - {{entry.user}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
+	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
 {% endblock %}
 
 {% block content %}
-	
+	<div class="large-title">
+		<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.profile entry.user.username %}">{{entry.user}}</a>: 
+		{% if entry.beer_name %}{{entry.beer_name}}({% endif %}{{entry.style}}{% if entry.beername %}){% endif %}
+	</div>	
+
+	<div class="small-title">Score: 
+		{% if entry.score %}
+			{{entry.score_description}} ({{entry.score}})
+		{% endif %}
+	</div>
+
+	{% if entry.special_ingredients %}
+		<div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div>
+	{% endif %}
+
+	{% if judging_results %}
+		<div class="medium-title">
+			Judging Results
+		</div>
+
+		{% for result in judging_results %}
+			<div class="small-title">
+				Judge: {{result.judge.username}}
+
+				{% if results.bjcp_id %}
+					(BJCP ID#: {{results.bjcp_id}})
+				{% endif %}
+			</div>
+
+			<table>
+				<tr>
+					<td width="15%" class="judging-category">Aroma</td>
+					<td>{{result.aroma_description}}</td>
+					<td width="10%">{{result.aroma_score}} / 12</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Appearance</td>
+					<td>{{result.appearance_description}}</td>
+					<td width="10%">{{result.appearance_score}} / 3</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Flavor</td>
+					<td>{{result.flavor_description}}</td>
+					<td width="10%">{{result.flavor_score}} / 20</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Mouthfeel</td>
+					<td>{{result.mouthfeel_description}}</td>
+					<td width="10%">{{result.mouthfeel_score}} / 5</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Overall Impression</td>
+					<td>{{result.overall_impression_description}}</td>
+					<td width="10%">{{result.overall_impression_score}} / 10</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Stylistic Accuracy</td>
+					<td></td>
+					<td width="10%">{{result.stylistic_accuracy}} / 5</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Technical Merit</td>
+					<td></td>
+					<td width="10%">{{result.technical_merit}} / 5</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Technical Merit</td>
+					<td></td>
+					<td width="10%">{{result.technical_merit}} / 5</td>
+				</tr>
+				<tr>
+					<td width="15%" class="judging-category">Intangibles</td>
+					<td></td>
+					<td width="10%">{{result.intangibles}} / 5</td>
+				</tr>
+		</table>
+		{% endfor %}
+	{% else %}
+		<div class="small-title">Entry not yet judged</div>
+	{% endif %}
 {% endblock %}
