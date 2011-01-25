@@ -19,15 +19,5 @@ class UserExperienceLevel(models.Model):
 	experience_level = models.ForeignKey(ExperienceLevel)
 
 
-	def to_css(self):
-		return """
-a[href*="user/%(username)s"]:after {
-	content: url(%(icon_url)s);
-}
-		""" % {
-				'username': self.user.username, 
-				'icon_url': self.experience_level.get_absolute_url(),
-				}
-
 	def __unicode__(self):
 		return "%s: %s" % (self.user, self.experience_level)
