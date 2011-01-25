@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from homebrewit.contest.management.commands import *
+from homebrewit.contest.management.commands.judgecontest import JudgeContestCommand
 from homebrewit.contest.models import *
 from homebrewit.contest.views import *
 
@@ -26,15 +26,26 @@ class ContestViewsTest(TestCase):
 	def test_contest_year(self):
 		response = self.client.get('/contest/2011/')
 		self.assertTemplateUsed(response, 'homebrewit_contest_year.html')
+		self.assert_(response.context['year'] == 2011)
+		self.assert_(len(response.context['styles']) == 8)
+
+		ipa = BeerStyle.objects.get(name='IPA')
+		self.assert_(len(response.context['styles'][ipa]['entries']) == 4)
+		self.assert_(not response.context['styles'][ipa]['has_more'])
 
 
 	def test_entry(self):
-		#response = self.client.get('/contest/entries/
-		pass
+		response = self.client.get('/contest/2011/styles/1/entries/1')
+		self.assertTemplateUsed(response, 'homebrewit_contest_entry.html')
+		self.assert_(response.context['entry'].beer_name == 'Beer name')
+		self.assert_(len(response.context['judging_results']) == 1)
 
 
 	def test_style(self):
-		pass
+		response = self.client.get('/contest/2011/styles/1')
+		self.assertTemplateUsed(response, 'homebrewit_contest_style.html')
+		self.assert_(response.context['style'].name == 'IPA')
+		self.assert_(len(response.context['entries']) == 4)
 
 	
 	def test_winner_styles(self):
@@ -77,8 +88,19 @@ class ContestModelsTest(TestCase):
 
 
 class JudgeContestCommandTest(TestCase):
-	fixtures = ['beerstyles']
+	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
+
+	def setUp(self):
+		self.command = JudgeContestCommand()
+
 
 	def test_handle(self):
-		# XXX
-		pass
+		self.assert_(Entry.objects.filter(winner=True).count() == 3)
+		self.command.handle(2011)
+		self.assert_(Entry.objects.filter(winner=True).count() == 6)
+
+		# the ipa should now be judged as first place
+		ipa = Entry.objects.get(pk=1)
+		self.assert_(ipa.winner)
+		self.assert_(ipa.rank == 1)
+		self.assert_(ipa.score == 63)
