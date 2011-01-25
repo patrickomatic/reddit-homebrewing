@@ -55,6 +55,7 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
 	beer_name = models.CharField(max_length=255, null=True, blank=True)
+	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 	style = models.ForeignKey('BeerStyle', db_index=True)
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
@@ -83,8 +84,6 @@ class JudgingResult(models.Model):
 	judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
 
 	entry = models.ForeignKey(Entry)
-
-	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 
 	aroma_description = models.CharField(max_length=5000)
 	aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
