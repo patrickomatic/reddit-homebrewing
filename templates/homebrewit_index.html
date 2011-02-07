@@ -18,22 +18,22 @@
 				</a>
 			</div>
 
-			<table class="category-table generic-border">
-				<tr>
-					<th class="generic-text generic-link">Style</th>
-					<th class="generic-text generic-link">Entries</th>
-					<th class="generic-text generic-link">Winner</th>
+			<table>
+				<tr class="generic-tr">
+					<th class="generic-text generic-link generic-th">Style</th>
+					<th class="generic-text generic-link generic-th">Entries</th>
+					<th class="generic-text generic-link generic-th">Winner</th>
 				</tr>
 
 				{% for style in style_data %}
-					<tr>
-						<td>
+					<tr class="generic-tr">
+						<td class="generic-td">
 							<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}" class="generic-link generic-text">
 								{{style.style.name}}
 							</a>
 						</td>
-						<td class="generic-text centered">{{style.n_entries}}</td>
-						<td align="center">
+						<td class="generic-text generic-link centered generic-td">{{style.n_entries}}</td>
+						<td class="centered generic-td">
 							{% if style.winner %}
 								<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}" class="generic-text generic-link">
 									{{style.winner.winner}}

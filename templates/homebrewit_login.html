@@ -6,7 +6,9 @@
 
 
 {% block content %}
-	<div class="large-title">Login</div>
+        <hr class="generic-header">
+        <br />
+	<div class="large-title generic-text">Login</div>
 
 	<form class="login-form" method="POST" action="{% url homebrewit.signup.views.login %}">
 		{% csrf_token %}
@@ -14,5 +16,5 @@
 		<input type="submit" value="Login" />
 	</form>
 
-	<p>Don't have a username? <a title="Signup" href="{% url homebrewit.signup.views.signup %}">Sign up now</a>
+	<p class="generic-text">Don't have a username? <a title="Signup" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Sign up now!</a>
 {% endblock %}

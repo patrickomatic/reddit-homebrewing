@@ -39,7 +39,15 @@
 }
 
 .generic-tr:nth-child(odd) {
-    background-color: #E2D4A8;
+    background-color: #EEDDA4;
+}
+
+.generic-tr:nth-child(even) {
+    background-color: #DDB686;
+}
+
+.generic-underline {
+    text-decoration: underline;
 }
 
 div { 
@@ -56,6 +64,17 @@ body {
 table {
 	width: 70%;
 }
+
+label {
+    font-family: Helvetica, Arial;
+    font-weight: bold;
+    color: #422E13;
+}
+
+ul li {
+    color: #422E13;
+}
+    
 
 #header {
 	text-align: right;
@@ -74,12 +93,27 @@ table {
 
 input[type="text"] {
 	width: 300px;
-	border: 1px solid #7A7A7A;
+        background-color: #EEDDA4;
+	border: 1px solid #422E13;
 }
 
 input[type="password"] {
 	width: 300px;
-	border: 1px solid #7A7A7A;
+        background-color: #EEDDA4;
+	border: 1px solid #422E13;
+}
+
+input[type="submit"] {
+    background-color: #EEDDA4;
+    color: #422E13;
+    border: 1px solid #422E13;
+    padding: 3px;
+}
+
+input[type="submit"]:hover {
+    background-color: #8E6B3E;
+    color: #EEE4C5;
+    cursor: pointer;
 }
 
 .signup-form label {
@@ -97,7 +131,8 @@ input[type="password"] {
 }
 
 .messages {
-	background-color: yellow;
+    color: #991916 !important;
+    font-weight: bold;	
 }
 
 .small-title {
@@ -120,10 +155,6 @@ input[type="password"] {
 
 .judging-category {
 	font-weight: bold;
-}
-
-.category-table {
-    background-color: #EEDDA4;
 }
 
 .centered {

@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-	<h1>Signup Below</h1>
+    <hr class="generic-header">
+	<h1 class="large-title generic-text">Signup Below</h1>
 
 	<form class="signup-form" method="POST" action="{% url homebrewit.signup.views.signup %}">
 		{% csrf_token %}

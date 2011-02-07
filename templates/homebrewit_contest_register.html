@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block content %}
-	<h1>Want to enter in the competition?</h1>
+    <hr class="generic-header">
+	<h1 class="generic-text">Want to enter in the competition?</h1>
 
-	<p>Just pick which style you'll be brewing:</p>
+	<p class="generic-text">Just pick which style you'll be brewing:</p>
 
 	<form class="contest-entry-form" method="POST" action="{% url homebrewit.contest.views.register %}">
 		{% csrf_token %}

@@ -22,10 +22,10 @@
 		</div>
 
 		{% if messages %}
-			<div class="message">
+			<div class="generic-text">
 				{% for message in messages %}
 					<ul>
-						<li>{{message}}</li>
+						<li class="messages">{{message}}</li>
 					</ul>
 				{% endfor %}
 			</div>

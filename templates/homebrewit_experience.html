@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-	<div class="large-title">Set your homebrewing experience level</div>
+<hr class="generic-header">
+	<div class="large-title generic-text">Set your homebrewing experience level</div>
 	<form action="{% url homebrewit.experiencelevel.views.change_level %}" method="POST">
 		{% csrf_token %}
 		{{form.as_p}}

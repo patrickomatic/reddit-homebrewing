@@ -5,21 +5,22 @@
 {% endblock %}
 
 {% block content %}
-	<div class="large-title">{{style.contest_year}} - {{style.name}}</div>
+    <hr class="generic-header">
+	<div class="large-title generic-text">{{style.contest_year}} - {{style.name}}</div>
 	<table>
-		<tr>
-			<th>Beer</th>
-			<th>Score</th>
+		<tr class="generic-tr">
+			<th class="generic-th generic-text">Beer</th>
+			<th class="generic-th generic-text">Score</th>
 		</tr>
 		{% for entry in entries %}
-			<tr>
-				<td>
-					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}">
+			<tr class="generic-tr">
+				<td class="generic-td generic-text">
+					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}" class="generic-link generic-text">
 						{{entry.user}} 
 						{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
 					</a>
 				</td>
-				<td>
+				<td class="generic-td">
 					{{entry.get_rating_description}}
 				</td>
 			</tr>
