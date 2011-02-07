@@ -5,34 +5,38 @@
 {% endblock %}
 
 {% block content %}
-	<div class="large-title">{{year}}'s Contest Styles</div>
+	<div class="large-title generic-text">{{year}}'s Contest Styles</div>
+        <br />
+        <hr class="generic-header">
+        <br /><br />
 
 	{% for style, data in styles.iteritems %}
 		<div class="medium-title">
-			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}">
+			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}" class="generic-link generic-text">
 				{{style.name}}
 			</a>
 		</div>
 
 		<table>
-			<tr>
-				<th>Beer</th>
-				<th>Score</th>
+			<tr class="generic-tr">
+				<th class="generic-link generic-text generic-th">Beer</th>
+				<th class="generic-link generic-text generic-th">Score</th>
 			</tr>
 			{% for entry in data.entries %}
-				<tr>
-					<td>
-						<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}">
+				<tr class="generic-tr">
+					<td class="generic-td">
+						<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}" class="generic-link generic-text">
 							{{entry.user}} 
 							{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
 						</a>
 					</td>
-					<td>
+					<td class="generic-td generic-link generic-text">
 						{{entry.get_rating_description}}
 					</td>
 				</tr>
 			{% endfor %}
 		</table>
+                <br />
 		{% if data.has_more %}
 			<a title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
 				More entries...

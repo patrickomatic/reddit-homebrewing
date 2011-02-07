@@ -4,7 +4,7 @@
 
 .generic-text {
     font-family: Helvetica, Arial;
-    color: #583E1D;
+    color: #422E13;
 }
 
 .generic-link {
@@ -16,7 +16,31 @@
     color: #8E6B3E;
 }
 
+.generic-header { 
+    width: 100%;
+    border: 1px solid #422E13; /* Chrome doesn't like horizontal rules < 3px in height */
+    color: #422E13; /* IE is redarded */
+    background-color: #422E13; /* Mozilla and Opera are retarded also */
+}   
 
+.generic-table {
+    border: 1px solid #422E13;
+}
+
+.generic-th {
+    border: 1px solid #422E13;
+}
+
+.generic-td {
+    border-bottom: 1px solid #422E13;
+    border-right: 1px solid #422E13;
+    border-left: 1px solid #422E13;
+    padding: 2px;
+}
+
+.generic-tr:nth-child(odd) {
+    background-color: #E2D4A8;
+}
 
 div { 
 	margin: 0px;
