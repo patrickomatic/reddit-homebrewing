@@ -4,7 +4,7 @@
 	<div class="large-title generic-text">Welcome to the reddit.com/r/Homebrewing app!</div>
 
 	{% if user.is_authenticated %}
-		<p>Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}">registered</a> for the annual homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level</a>?</p>
+		<p class="generic-text">Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}" class="generic-text generic-link">registered</a> for the annual homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}" class="generic-text generic-link">set your experience level</a>?</p>
 	{% else %}
 		<p class="generic-text">Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the annual homebrewing competition.</p>
 	{% endif %}
