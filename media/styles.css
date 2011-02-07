@@ -1,3 +1,23 @@
+.generic-border {
+    border: 1px solid #422E13;
+}
+
+.generic-text {
+    font-family: Helvetica, Arial;
+    color: #583E1D;
+}
+
+.generic-link {
+    text-decoration: none;
+}
+
+.generic-link:hover {
+    text-decoration: underline;
+    color: #8E6B3E;
+}
+
+
+
 div { 
 	margin: 0px;
 	padding: 0px;
@@ -6,19 +26,22 @@ div {
 body {
 	margin: 10px;
 	padding: 10px;
+        background-color: #EEE4C5;
 }
 
 table {
 	width: 70%;
-	border: 1px solid #000000;
 }
 
 #header {
 	text-align: right;
 	font-size: 0.8em;
 	font-weight: bold;
-	padding: 20px;
-	margin: 20px;
+        padding-right: 100px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        background-color: #EEDDA4;
+        margin: 0px;
 }
 
 input[type="text"] {
@@ -69,4 +92,12 @@ input[type="password"] {
 
 .judging-category {
 	font-weight: bold;
+}
+
+.category-table {
+    background-color: #EEDDA4;
+}
+
+.centered {
+    text-align: center;
 }

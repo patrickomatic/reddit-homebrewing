@@ -16,3 +16,6 @@ class UserProfile(models.Model):
 			return self.get_profile()
 		except UserProfile.DoesNotExist:
 			return None
+
+        def __unicode__(self):
+            return self.user.username

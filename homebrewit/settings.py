@@ -83,7 +83,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-	'debug_toolbar.middleware.DebugToolbarMiddleware',
+#	'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'homebrewit.urls'
@@ -106,7 +106,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-	'debug_toolbar',
+#	'debug_toolbar',
 ) + OUR_APPS
 
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
