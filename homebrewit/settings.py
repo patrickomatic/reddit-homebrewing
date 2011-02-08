@@ -93,10 +93,10 @@ TEMPLATE_DIRS = (
 )
 
 OUR_APPS = (
-    'contest',
-    'experiencelevel',
-    'signup',
-    'profile',
+    'homebrewit.contest',
+    'homebrewit.experiencelevel',
+    'homebrewit.signup',
+    'homebrewit.profile',
 )
 
 INSTALLED_APPS = (
