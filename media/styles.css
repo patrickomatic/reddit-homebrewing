@@ -79,6 +79,10 @@ ul li {
     height: 90px;
 }
 
+#experience_legend {
+    height: 150px;
+}
+
 #header {
 	text-align: right;
 	font-size: 0.8em;
