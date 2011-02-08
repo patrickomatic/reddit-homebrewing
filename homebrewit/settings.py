@@ -124,3 +124,5 @@ INTERNAL_IPS = ('127.0.0.1',)
 AUTH_PROFILE_MODULE = 'signup.UserProfile'
 
 WINNER_ICON = '/media/winner.png'
+
+DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
