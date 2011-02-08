@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     (r'^experience/', include('homebrewit.experiencelevel.urls')),
     (r'^admin/', include(admin.site.urls)),
 
-    (r'', include('homebrewit.signup.urls')),
+    ('', include('homebrewit.signup.urls')),
 )
 
 if settings.DEBUG:
