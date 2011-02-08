@@ -4,7 +4,7 @@ PROJECT_PATH = os.path.abspath(os.path.join(os.path.split(__file__)[0], '..'))
 
 # Django settings for homebrewit project.
 
-DEBUG = True
+DEBUG = not 'HOMEBREWIT_DB_PASS' in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -16,23 +16,23 @@ MANAGERS = ADMINS
 if DEBUG:
 	DATABASES = {
 		'default': {
-			'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-			'NAME': '/tmp/homebrewit',                      # Or path to database file if using sqlite3.
-			'USER': '',                      # Not used with sqlite3.
-			'PASSWORD': '',                  # Not used with sqlite3.
-			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+			'ENGINE': 'django.db.backends.sqlite3', 
+			'NAME': '/tmp/homebrewit',             
+			'USER': '',                     
+			'PASSWORD': '',                
+			'HOST': '',                   
+			'PORT': '',                  
 		}
 	}
 else:
 	DATABASES = {
 		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-			'NAME': 'homebrewit',                      # Or path to database file if using sqlite3.
-			'USER': 'homebrewit',                      # Not used with sqlite3.
-			'PASSWORD': '',                  # Not used with sqlite3.
-			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+			'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+			'NAME': 'homebrewit',                      
+			'USER': 'homebrewit',                     
+			'PASSWORD': os.environ['HOMEBREWIT_DB_PASS'],
+			'HOST': '',
+			'PORT': '', 
 		}
 	}
 
