@@ -8,7 +8,8 @@ DEBUG = not 'HOMEBREWIT_DB_PASS' in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('Patrick', 'patrick@patrickomatic.com'),
+     ('Patrick Carroll', 'patrick@patrickomatic.com'),
+     ('Charles Hamilton', 'musashi@nefaria.com'),
 )
 
 MANAGERS = ADMINS
