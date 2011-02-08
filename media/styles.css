@@ -75,6 +75,9 @@ ul li {
     color: #422E13;
 }
     
+.experience_level_image {
+    height: 90px;
+}
 
 #header {
 	text-align: right;
