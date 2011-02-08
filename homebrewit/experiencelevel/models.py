@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.db import models
+from os.path import join
 from django.contrib.auth.models import User
 
 
 class ExperienceLevel(models.Model):
 	name = models.CharField(max_length=255)
-	img_url = models.FilePathField(path=settings.MEDIA_ROOT)
+	img_url = models.FilePathField(path=join(settings.MEDIA_ROOT, 'images/icons/experience_levels'))
 
 	def get_absolute_url(self):
 		return self.img_url.replace(settings.MEDIA_ROOT, '/media')

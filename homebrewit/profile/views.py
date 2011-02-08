@@ -11,6 +11,7 @@ from homebrewit.experiencelevel.models import *
 def profile(request, user):
 	try:
 		level = UserExperienceLevel.objects.get(user__id=request.user.id)
+                level_image = ExperienceLevel.objects.get(userexperiencelevel = level).get_absolute_url()
 	except UserExperienceLevel.DoesNotExist:
 		level = None
 
@@ -19,8 +20,8 @@ def profile(request, user):
 	is_profile_owner = request.user.is_authenticated() and user.username == request.user.username
 
 	return render_to_response('homebrewit_profile.html', {'user': user,
-		'level': level, 'contest_entries': contest_entries, 
-		'is_profile_owner': is_profile_owner},
+                'level': level, 'contest_entries': contest_entries, 
+                'is_profile_owner': is_profile_owner, 'level_image': level_image},
 		context_instance=RequestContext(request))
 
 
