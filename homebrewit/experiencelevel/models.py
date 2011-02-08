@@ -19,6 +19,5 @@ class UserExperienceLevel(models.Model):
 	user = models.ForeignKey(User, unique=True)
 	experience_level = models.ForeignKey(ExperienceLevel)
 
-
 	def __unicode__(self):
 		return "%s: %s" % (self.user, self.experience_level)
