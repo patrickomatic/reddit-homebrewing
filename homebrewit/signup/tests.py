@@ -59,5 +59,10 @@ class SignupViewsTest(TestCase):
 
 	def test_logout(self):
 		response = self.client.get('/logout')
-#		self.assert_(not user.is_authenticated())  # XXX why not?
 		self.assertRedirects(response, '/')
+
+		# for some reason I can't test directly if the user is logged out.
+		# instead hit the logout url and it should redirect to login
+		response = self.client.get('/logout')
+		self.assert_(response.status_code == 302)
+		self.assert_(response['Location'].endswith('/login?next=/logout'))
