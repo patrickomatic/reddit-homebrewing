@@ -96,6 +96,7 @@ ul li {
 .header-logo {
     float: left;
     height: 100px;
+    border: 0px;
 }
 
 input[type="text"] {
