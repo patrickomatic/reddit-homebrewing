@@ -16,7 +16,7 @@ class ExperienceForm(forms.Form):
 def change_level(request):
 	try:
 		level = UserExperienceLevel.objects.get(user__id=request.user.id)
-		initial = {'experience_level': level}
+		initial = {'experience_level': level.experience_level}
 	except UserExperienceLevel.DoesNotExist:
 		level = None
 		initial = {}
