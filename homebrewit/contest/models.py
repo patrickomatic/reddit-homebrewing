@@ -34,7 +34,7 @@ class BeerStyle(models.Model):
 	contest_year = models.ForeignKey('ContestYear')
 
 	def __unicode__(self):
-		return "%s (contest year: %s)" % (self.name, self.contest_year)
+		return "%s (%s)" % (self.name, self.contest_year)
 
 
 class EntryManager(models.Manager):

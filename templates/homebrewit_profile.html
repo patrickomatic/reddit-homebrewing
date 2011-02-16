@@ -31,7 +31,14 @@
 		{% if contest_entries %}
 			<ul>
 				{% for entry in contest_entries %}
-					<li><a href="{% url homebrewit.contest.views.entry entry.style.contest_year.contest_year entry.style.id entry.id %}" class="generic-link generic-text">{{contest_entry}}</a></li>
+					<li>
+						<a href="{% url homebrewit.contest.views.entry entry.style.contest_year.contest_year entry.style.id entry.id %}" class="generic-link generic-text">
+							{% if entry.beer_name %}
+								{{entry.beer_name}}:
+							{% endif %}
+							{{entry.style}}
+						</a>
+					</li>
 				{% endfor %}
 			</ul>
 		{% else %}

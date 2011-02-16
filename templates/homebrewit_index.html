@@ -10,11 +10,13 @@
 		From here you can <a class="generic-text generic-link" title="Login with your reddit.com credentials" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level icon</a> as well as <a class="generic-text generic-link" title="Enter the {{current_year}} homebrew contest" href="{% url homebrewit.contest.views.register %}">entering for the {{current_year}} homebrew contest</a>.  Just login below with the same credentials you use for reddit:
 	</p>
 
-	<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
-		{% csrf_token %} 
-		{{login_form.as_p}}
-		<input type="submit" value="Login" />
-	</form>
+	{% if not user.is_authenticated %}
+		<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
+			{% csrf_token %} 
+			{{login_form.as_p}}
+			<input type="submit" value="Login" />
+		</form>
+	{% endif %}
 
 	{% if contest_data %}
 		<div class="large-title generic-text">/r/homebrewing Competition</div>
