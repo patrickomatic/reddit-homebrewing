@@ -93,19 +93,8 @@ class AddressForm(forms.ModelForm):
 		model = UserProfile
 		exclude = ('user',)
 
-
-def create_user(email, username, password, profile=None):
-	user = User.objects.create_user(username, email, password)
-	user.save()
-
-	if profile:
-		profile.user = user
-		profile.save()
-
-	return authenticate(username=username, password=password)
-
-
-@login_required
 def logout(request):
-	auth_logout(request)
+	if request.user.is_authenticated():
+		auth_logout(request)
+
 	return HttpResponseRedirect("/")
