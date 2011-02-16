@@ -3,11 +3,18 @@
 {% block content %}
 	<div class="large-title generic-text">Welcome to the reddit.com/r/Homebrewing app!</div>
 
-	{% if user.is_authenticated %}
-		<p class="generic-text">Have you <a title="Register For The {{current_year}} Competition" href="{% url homebrewit.contest.views.register %}" class="generic-text generic-link">registered</a> for the annual homebrewing contest and <a title="Set Experience Level" href="{% url homebrewit.experiencelevel.views.change_level %}" class="generic-text generic-link">set your experience level</a>?</p>
-	{% else %}
-		<p class="generic-text">Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the annual homebrewing competition.</p>
-	{% endif %}
+	{% comment %}
+		XXX we don't always want to show the {{current_year}} contest sign up link.  It may be at a time after the contest has been judged
+	{%  endcomment %}
+	<p class="generic-text">
+		From here you can <a class="generic-text generic-link" title="Login with your reddit.com credentials" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level icon</a> as well as <a class="generic-text generic-link" title="Enter the {{current_year}} homebrew contest" href="{% url homebrewit.contest.views.register %}">entering for the {{current_year}} homebrew contest</a>.  Just login below with the same credentials you use for reddit:
+	</p>
+
+	<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
+		{% csrf_token %} 
+		{{login_form.as_p}}
+		<input type="submit" value="Login" />
+	</form>
 
 	{% if contest_data %}
 		<div class="large-title generic-text">/r/homebrewing Competition</div>

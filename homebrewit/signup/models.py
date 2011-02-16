@@ -4,6 +4,7 @@ from django.db import models
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
+	email = models.EmailField()
 	address_1 = models.CharField(max_length=255)
 	address_2 = models.CharField(max_length=255, null=True, blank=True)
 	city = models.CharField(max_length=255)

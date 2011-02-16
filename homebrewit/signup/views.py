@@ -15,8 +15,47 @@ from homebrewit.signup.reddit import reddit_login
 from homebrewit.signup.models import UserProfile
 
 
+class LoginForm(forms.Form):
+	reddit_username = forms.CharField(max_length=255)
+	password = forms.CharField(widget=forms.PasswordInput())
+
+
+	def __init__(self, *args, **kwargs):
+		self.request = kwargs.pop('request', None)
+		super(LoginForm, self).__init__(*args, **kwargs)
+
+
+	def clean(self):
+		if not reddit_login(self.cleaned_data['reddit_username'], self.cleaned_data['password']):
+			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
+
+		try:
+			user = User.objects.get(username=self.cleaned_data['reddit_username'])
+		except User.DoesNotExist:
+			user = User.objects.create_user(self.cleaned_data['reddit_username'], '', self.cleaned_data['password'])
+			
+		user = authenticate(username=user.username, 
+					password=self.cleaned_data['password'])
+
+		if not user.is_authenticated():
+			# wtf... the only way they could be not be authenticated here
+			# is if they changed their password on reddit. i think...
+			user.password = self.cleaned_data['password']
+			user.save()
+			user = authenticate(username=user.username, password=user.password)
+
+		auth_login(self.request, user)
+
+		return self.cleaned_data
+	
 def index(request):
-	contest_data = {}
+	contest_data, login_form = {}, LoginForm(request=request)
+
+	# if it's a login...
+	if request.method == 'POST':
+		login_form = LoginForm(request.POST, request=request)
+		if login_form.is_valid():
+			return HttpResponseRedirect('/profile')
 
 	for style in BeerStyle.objects.all():
 		year = style.contest_year.contest_year
@@ -42,28 +81,12 @@ def index(request):
 			contest_data[year] = [data]
 
 	return render_to_response('homebrewit_index.html', 
-			{'contest_data': contest_data, 
-				'current_year': datetime.datetime.now().year}, 
-			context_instance=RequestContext(request))
+			{
+				'contest_data': contest_data, 
+				'current_year': datetime.datetime.now().year,
+				'login_form': login_form,
+			}, context_instance=RequestContext(request))
 
-
-class SignupForm(forms.Form):
-	reddit_username = forms.CharField(max_length=255)
-	password = forms.CharField(widget=forms.PasswordInput())
-	email = forms.EmailField()
-
-	def clean(self):
-		try:
-			User.objects.get(username=self.cleaned_data['reddit_username'])
-			raise forms.ValidationError('The given username already exists')
-		except User.DoesNotExist:
-			pass
-
-		if not reddit_login(self.cleaned_data['reddit_username'], self.cleaned_data['password']):
-			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
-
-		return self.cleaned_data
-	
 
 class AddressForm(forms.ModelForm):
 	class Meta:
@@ -80,61 +103,6 @@ def create_user(email, username, password, profile=None):
 		profile.save()
 
 	return authenticate(username=username, password=password)
-
-
-def signup(request):
-	if request.method == 'POST':
-		signup_form, address_form = SignupForm(request.POST), AddressForm(request.POST)
-
-		if signup_form.is_valid():
-			submitted_address_form = False
-			for label in address_form:
-				if label.html_name in request.POST:
-					submitted_address_form = True
-					break
-				
-			user = None
-			if submitted_address_form and address_form.is_valid():
-				user = create_user(signup_form.cleaned_data['email'],
-						signup_form.cleaned_data['reddit_username'],
-						signup_form.cleaned_data['password'],
-						address_form.save(commit=False))
-			elif not submitted_address_form:
-				user = create_user(signup_form.cleaned_data['email'],
-						signup_form.cleaned_data['reddit_username'], 
-						signup_form.cleaned_data['password']) 
-
-			if user:
-				auth_login(request, user)
-
-				request.user.message_set.create(message='You have successfully signed up')
-				return HttpResponseRedirect('/profile')
-	else:
-		signup_form, address_form = SignupForm(), AddressForm()
-
-
-	return render_to_response('homebrewit_signup.html', 
-			{'signup_form': signup_form, 'address_form': address_form},
-			context_instance=RequestContext(request))
-
-
-class LoginForm(forms.Form):
-	reddit_username = forms.CharField(max_length=255)
-	password = forms.CharField(widget=forms.PasswordInput())
-
-def login(request):
-	if request.method == 'POST':
-		form = LoginForm(request.POST)
-		
-		if form.is_valid():
-			user = authenticate(username=form.cleaned_data['reddit_username'], password=form.cleaned_data['password'])
-			auth_login(request, user)
-			return HttpResponseRedirect('/profile')
-	else:
-		form = LoginForm()
-
-	return render_to_response('homebrewit_login.html', {'form': form},
-			context_instance=RequestContext(request))
 
 
 @login_required
