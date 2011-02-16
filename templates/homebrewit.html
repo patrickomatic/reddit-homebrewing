@@ -6,6 +6,7 @@
 		<title>reddit.com/r/Homebrewing App - {% block title %}{% endblock %}</title>
 		<link rel="stylesheet" href="/media/reset-styles.css" type="text/css" />
 		<link rel="stylesheet" href="/media/styles.css" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapi.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	</head>
 	<body>
 		<div id="header">
@@ -13,10 +14,6 @@
 				<a title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
 				|
 				<a title="Logout" href="{% url homebrewit.signup.views.logout %}" class="generic-text generic-link">Logout</a>
-			{% else %}
-				<a title="Login" href="{% url homebrewit.signup.views.login %}" class="generic-text generic-link">Login</a>
-				|
-				<a title="Sign Up" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Sign Up</a>
 			{% endif %}
 
 			<a title="reddithomebrewing.com" href="/">
