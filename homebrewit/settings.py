@@ -18,7 +18,7 @@ if DEBUG:
 	DATABASES = {
 		'default': {
 			'ENGINE': 'django.db.backends.sqlite3', 
-			'NAME': '/tmp/homebrewit',             
+			'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),             
 			'USER': '',                     
 			'PASSWORD': '',                
 			'HOST': '',                   
