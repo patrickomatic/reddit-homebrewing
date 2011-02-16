@@ -39,7 +39,11 @@
 			</ul>
 		{% else %}
 			{% if is_profile_owner %}
-			{{user.username}} hasn't participated in any contests.
+				You haven't
+			{% else %}
+				{{user.username}} hasn't 
+			{% endif %}
+			participated in any contests.
 		{% endif %}
 	</p>
 {% endblock %}
