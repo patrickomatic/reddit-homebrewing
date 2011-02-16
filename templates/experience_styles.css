@@ -1,5 +1,5 @@
 {% for experience_level in experience_levels %}
 	a[href*="user/{{experience_level.user.username}}"]:after {
-		content: url({{experience_level.experience_level.img_url}});
+		content: url({{experience_level.experience_level.get_absolute_url}});
 	}
 {% endfor %}

@@ -9,7 +9,7 @@ class ExperienceLevel(models.Model):
 	img_url = models.FilePathField(path=join(settings.MEDIA_ROOT, 'images/icons/experience_levels'))
 
 	def get_absolute_url(self):
-		return self.img_url.replace(settings.MEDIA_ROOT, '/media')
+		return 'http://reddithomebrewing.com' + self.img_url.replace(settings.MEDIA_ROOT, '/media')
 
 	def __unicode__(self):
 		return self.name
@@ -20,4 +20,4 @@ class UserExperienceLevel(models.Model):
 	experience_level = models.ForeignKey(ExperienceLevel)
 
 	def __unicode__(self):
-		return "%s: %s" % (self.user, self.experience_level)
+		return self.experience_level.name
