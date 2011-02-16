@@ -17,8 +17,8 @@
 	{% endif %}
 
 
-	<div class="medium-title generic-text">Experience Level</div>
 	{% if level %}
+		<div class="medium-title generic-text">Experience Level</div>
 		<img src="{{level_image}}" class="experience_level_image" /> <span class="generic-text">{{level.experience_level}}</span>
 	{% else %}
 		{% if user.is_authenticated and is_profile_owner %}
