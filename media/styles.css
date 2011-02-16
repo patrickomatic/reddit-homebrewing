@@ -101,21 +101,21 @@ ul li {
 
 input[type="text"] {
 	width: 300px;
-        background-color: #EEDDA4;
+	background-color: #EEDDA4;
 	border: 1px solid #422E13;
 }
 
 input[type="password"] {
 	width: 300px;
-        background-color: #EEDDA4;
+	background-color: #EEDDA4;
 	border: 1px solid #422E13;
 }
 
 input[type="submit"] {
-    background-color: #EEDDA4;
-    color: #422E13;
-    border: 1px solid #422E13;
-    padding: 3px;
+	background-color: #EEDDA4;
+	color: #422E13;
+	border: 1px solid #422E13;
+	padding: 3px;
 }
 
 input[type="submit"]:hover {
@@ -128,6 +128,13 @@ input[type="submit"]:hover {
 	display: block;
 	float: left;
 	width: 150px;
+	line-height: 1.5em;
+}
+
+.contest-entry-form label {
+	display: block;
+	float: left;
+	width: 180px;
 	line-height: 1.5em;
 }
 
