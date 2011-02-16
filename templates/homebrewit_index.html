@@ -9,40 +9,42 @@
 		<p class="generic-text">Have you <a title="Sign Up" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">signed up</a> yet?  By signing up, you'll be able to set your experience level as well as sign up for the annual homebrewing competition.</p>
 	{% endif %}
 
-	<div class="large-title generic-text">/r/homebrewing Competition</div>
-	<ul>
-		{% for year, style_data in contest_data.iteritems %}
-			<div>
-				<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="generic-link large-title generic-text">
-					{{year}}'s Competition
-				</a>
-			</div>
+	{% if contest_data %}
+		<div class="large-title generic-text">/r/homebrewing Competition</div>
+		<ul>
+			{% for year, style_data in contest_data.iteritems %}
+				<div>
+					<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="generic-link large-title generic-text">
+						{{year}}'s Competition
+					</a>
+				</div>
 
-			<table>
-				<tr class="generic-tr">
-					<th class="generic-text generic-link generic-th">Style</th>
-					<th class="generic-text generic-link generic-th">Entries</th>
-					<th class="generic-text generic-link generic-th">Winner</th>
-				</tr>
-
-				{% for style in style_data %}
+				<table>
 					<tr class="generic-tr">
-						<td class="generic-td">
-							<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}" class="generic-link generic-text">
-								{{style.style.name}}
-							</a>
-						</td>
-						<td class="generic-text generic-link centered generic-td">{{style.n_entries}}</td>
-						<td class="centered generic-td">
-							{% if style.winner %}
-								<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}" class="generic-text generic-link">
-									{{style.winner.winner}}
-								</a>
-							{% endif %}
-						</td>
+						<th class="generic-text generic-link generic-th">Style</th>
+						<th class="generic-text generic-link generic-th">Entries</th>
+						<th class="generic-text generic-link generic-th">Winner</th>
 					</tr>
-				{% endfor %}
-			</table>
-		{% endfor %}
-	</ul>
+
+					{% for style in style_data %}
+						<tr class="generic-tr">
+							<td class="generic-td">
+								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}" class="generic-link generic-text">
+									{{style.style.name}}
+								</a>
+							</td>
+							<td class="generic-text generic-link centered generic-td">{{style.n_entries}}</td>
+							<td class="centered generic-td">
+								{% if style.winner %}
+									<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}" class="generic-text generic-link">
+										{{style.winner.winner}}
+									</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% endfor %}
+		</ul>
+	{% endif %}
 {% endblock %}
