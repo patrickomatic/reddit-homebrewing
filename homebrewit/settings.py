@@ -116,7 +116,7 @@ CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 # fail with a NoReverseMatch exception
 TEST_RUNNER = 'local_tests.run_tests'
 
-LOGIN_URL = '/login'
+LOGIN_URL = '/'
 LOGOUT_URL = '/logout'
 
 INTERNAL_IPS = ('127.0.0.1',)
