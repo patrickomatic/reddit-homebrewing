@@ -20,10 +20,6 @@
 	{% if level %}
 		<div class="medium-title generic-text">Experience Level</div>
 		<img src="{{level_image}}" class="experience_level_image" /> <span class="generic-text">{{level.experience_level}}</span>
-	{% else %}
-		{% if user.is_authenticated and is_profile_owner %}
-
-		{% endif %}
 	{% endif %}
 
 	<div class="medium-title generic-text">Contest Entries</div>
@@ -42,6 +38,7 @@
 				{% endfor %}
 			</ul>
 		{% else %}
+			{% if is_profile_owner %}
 			{{user.username}} hasn't participated in any contests.
 		{% endif %}
 	</p>
