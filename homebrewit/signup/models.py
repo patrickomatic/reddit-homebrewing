@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 
 
 class UserProfile(models.Model):
@@ -12,6 +13,9 @@ class UserProfile(models.Model):
 	country = models.CharField(max_length=255)
 	zip_code = models.PositiveIntegerField()
 
+	def __unicode__(self):
+		return user.username
+
 	def get_profile(self):
 		try:
 			return self.get_profile()
@@ -20,3 +24,12 @@ class UserProfile(models.Model):
 
         def __unicode__(self):
             return self.user.username
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+	""" Signal handler which creates the profile if it doesn't exist. """
+	if created:
+		profile, created = UserProfile.objects.get_or_create(user=instance)
+
+# register the handler
+post_save.connect(create_user_profile, sender=User)
