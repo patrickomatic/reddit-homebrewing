@@ -1,0 +1,16 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+	{{request.user.username}}'s Address
+{% endblock %}
+
+{% block content %}
+	<div class="medium-title generic-text">Set Your Personal Information</div>
+	<form method="POST" action="{% url homebrewit.profile.views.edit_profile %}">
+		{% csrf_token %}
+
+		{{email_form.as_p}}
+		{{address_form.as_p}}
+		<input type="submit" value="Set Address" />
+	</form>
+{% endblock %}

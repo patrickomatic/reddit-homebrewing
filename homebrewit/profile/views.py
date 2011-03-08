@@ -10,12 +10,11 @@ from homebrewit.experiencelevel.models import *
 from homebrewit.signup.models import UserProfile
 
 
-# XXX allow for setting your address info
 def profile(request, user):
 	level_image = None
 
 	try:
-		level = UserExperienceLevel.objects.get(user=request.user)
+		level = UserExperienceLevel.objects.get(user__id=request.user.id)
 		level_image = level.experience_level.img_url
 	except UserExperienceLevel.DoesNotExist:
 		level = None

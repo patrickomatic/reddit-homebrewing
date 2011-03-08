@@ -7,15 +7,21 @@ from homebrewit.contest.views import *
 
 
 class ContestViewsTest(TestCase):
-	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
+	fixtures = ['beerstyles', 'entries', 'users', 'userprofiles', 'judgingresults']
 
 	def setUp(self):
 		self.client.login(username='patrick', password='password')
+		self.user = User.objects.get(username='patrick')
 
 
 	def test_register(self):
 		response = self.client.get('/contest/register')
 		self.assert_(response.context['form'])
+
+	def test_register__profile_not_set(self):
+		self.user.get_profile().delete()
+		response = self.client.get('/contest/register')
+		self.assertRedirects(response, '/profile/edit')
 
 	def test_register__post(self):
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
