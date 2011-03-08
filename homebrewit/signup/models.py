@@ -14,16 +14,8 @@ class UserProfile(models.Model):
 	zip_code = models.PositiveIntegerField()
 
 	def __unicode__(self):
-		return user.username
+		return self.user.username
 
-	def get_profile(self):
-		try:
-			return self.get_profile()
-		except UserProfile.DoesNotExist:
-			return None
-
-        def __unicode__(self):
-            return self.user.username
 
 
 def create_user_profile(sender, instance, created, **kwargs):
