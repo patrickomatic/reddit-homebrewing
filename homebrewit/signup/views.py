@@ -12,7 +12,6 @@ from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, Entry 
 from homebrewit.signup.reddit import reddit_login
-from homebrewit.signup.models import UserProfile
 
 
 class LoginForm(forms.Form):
@@ -87,11 +86,6 @@ def index(request):
 				'login_form': login_form,
 			}, context_instance=RequestContext(request))
 
-
-class AddressForm(forms.ModelForm):
-	class Meta:
-		model = UserProfile
-		exclude = ('user',)
 
 def logout(request):
 	if request.user.is_authenticated():
