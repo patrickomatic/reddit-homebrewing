@@ -75,12 +75,20 @@ TEMPLATE_DIRS = (
 	os.path.join(PROJECT_PATH, 'templates')
 )
 
-OUR_APPS = (
-    'homebrewit.contest',
-    'homebrewit.experiencelevel',
-    'homebrewit.signup',
-    'homebrewit.profile',
-)
+if DEBUG:
+	OUR_APPS = (
+	    'contest',
+	    'experiencelevel',
+	    'signup',
+	    'profile',
+	)
+else:
+	OUR_APPS = (
+	    'homebrewit.contest',
+	    'homebrewit.experiencelevel',
+	    'homebrewit.signup',
+	    'homebrewit.profile',
+	)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
