@@ -175,3 +175,8 @@ input[type="submit"]:hover {
 .centered {
     text-align: center;
 }
+
+.setaddress {
+    width: 500px;
+    text-align: right;
+}
