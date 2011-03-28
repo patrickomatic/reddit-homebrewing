@@ -1,4 +1,7 @@
+import datetime
+
 from django import forms
+from django.core.mail import mail_admins
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
@@ -6,6 +9,8 @@ from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
+
+LAST_ADMIN_EMAIL = None
 
 
 class ExperienceForm(forms.Form):
@@ -34,6 +39,12 @@ def change_level(request):
 
 			request.user.message_set.create(message='Successfully set experience level to %s.  It may take up to 24 hours for this change to appear on /r/homebrewing' % level.experience_level)
 
+			# make sure it doesn't email the admins any more than every 2 hours
+			now = datetime.datetime.now()
+			if LAST_ADMIN_EMAIL and LAST_ADMIN_EMAIL + datetime.timedelta(hours=2) < now:
+				mail_admins("An experience level has been set", "Somebody has set their experience level.  The CSS on /r/Homebrewing will now have to be updated.")
+				LAST_ADMIN_EMAIL = now
+
 			return HttpResponseRedirect('/profile/')
 	else:
 		form = ExperienceForm(initial=initial)
@@ -47,3 +58,4 @@ def experience_styles(request):
 	return render_to_response('experience_styles.css',
 			{'experience_levels': UserExperienceLevel.objects.all()},
 			mimetype='text/css')
+
