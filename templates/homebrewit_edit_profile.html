@@ -6,12 +6,16 @@
 
 {% block content %}
 	<div class="medium-title generic-text">Set Your Personal Information</div>
-	<form method="POST" action="{% url homebrewit.profile.views.edit_profile %}">
+	<p>
+		In order for us to send prizes to the winners, we're going to need
+		you to give us your address before entering the contest.
+	</p>
+
+	<form method="POST" action="{% url homebrewit.profile.views.edit_profile %}" class="setaddress">
 		{% csrf_token %}
-                <div class='setaddress'>
-        		{{email_form.as_p}}
-        		{{address_form.as_p}}
-        		<input type="submit" value="Set Address" />
-                </div>
+		{{email_form.as_p}}
+		{{address_form.as_p}}
+
+		<input type="submit" value="Set Address" />
 	</form>
 {% endblock %}
