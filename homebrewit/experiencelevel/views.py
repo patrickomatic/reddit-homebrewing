@@ -32,7 +32,7 @@ def change_level(request):
 
 			level.save()
 
-			request.user.message_set.create(message='Successfully set experience level to %s.  It may take up to 10 minutes for this change to appear on /r/homebrewing' % level.experience_level)
+			request.user.message_set.create(message='Successfully set experience level to %s.  It may take up to 24 hours for this change to appear on /r/homebrewing' % level.experience_level)
 
 			return HttpResponseRedirect('/profile/')
 	else:
