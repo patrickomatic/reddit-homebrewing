@@ -10,7 +10,6 @@ from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
 
-LAST_ADMIN_EMAIL = None
 
 
 class ExperienceForm(forms.Form):
@@ -41,9 +40,9 @@ def change_level(request):
 
 			# make sure it doesn't email the admins any more than every 2 hours
 			now = datetime.datetime.now()
-			if LAST_ADMIN_EMAIL and LAST_ADMIN_EMAIL + datetime.timedelta(hours=2) < now:
+			if change_level.last_admin_email and change_level.last_admin_email + datetime.timedelta(hours=2) < now:
 				mail_admins("An experience level has been set", "Somebody has set their experience level.  The CSS on /r/Homebrewing will now have to be updated.")
-				LAST_ADMIN_EMAIL = now
+				change_level.last_admin_email = now
 
 			return HttpResponseRedirect('/profile/')
 	else:
@@ -51,6 +50,9 @@ def change_level(request):
 		
 	return render_to_response('homebrewit_experience.html', {'form': form},
 			context_instance=RequestContext(request))
+
+# this basically emulates C's static function variables
+change_level.last_admin_email = None
 
 
 # XXX @cache_page(600)
