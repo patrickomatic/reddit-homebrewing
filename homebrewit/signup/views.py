@@ -25,9 +25,9 @@ class LoginForm(forms.Form):
 
 
 	def clean(self):
-		if not reddit_login(self.cleaned_data.get('reddit_username'), 
-				self.cleaned_data.get('password')):
-			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
+#		if not reddit_login(self.cleaned_data.get('reddit_username'), 
+#				self.cleaned_data.get('password')):
+#			raise forms.ValidationError('The supplied username and password don\'t work on reddit.com')
 
 		try:
 			user = User.objects.get(username=self.cleaned_data['reddit_username'])

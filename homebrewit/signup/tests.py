@@ -1,4 +1,4 @@
-import datetime
+import datetime, reddit
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -35,3 +35,14 @@ class SignupViewsTest(TestCase):
 	def test_logout(self):
 		response = self.client.get('/logout')
 		self.assertRedirects(response, '/')
+
+
+class RedditTest(TestCase):
+	def test_verify_token_in_thread(self):
+		self.assert_(reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "arcsine", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
+
+	def test_verify_token_in_thread__wrongToken(self):
+		self.assert_(not reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "802bikeguy_com", "wrongtoken"))
+
+	def test_verify_token_in_thread__otherUser(self):
+		self.assert_(not reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "802bikeguy_com", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
