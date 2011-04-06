@@ -19,6 +19,7 @@ def index(request):
 	if request.method == 'POST':
 		login_form = AuthenticationForm(data=request.POST)
 		if login_form.is_valid():
+			login(request, login_form.get_user())
 			return HttpResponseRedirect('/profile')
 	else:
 		login_form = AuthenticationForm()
