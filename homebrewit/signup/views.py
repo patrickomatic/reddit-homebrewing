@@ -64,9 +64,6 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
 		token = hashlib.sha256(str(random.random())).hexdigest()
 		self.initial = {'token': token, 'signature': self.__sign(token)}
 
-#		self.fields['token'].value = hashlib.sha256(str(random.random())).hexdigest()
-#		self.fields['signature'].value = self.__sign(self.token)
-
 	def clean(self):
 		# check that the token and signature still match (i.e. the token 
 		# hasn't been changed)

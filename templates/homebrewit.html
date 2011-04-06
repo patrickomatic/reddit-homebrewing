@@ -14,6 +14,8 @@
 				<a title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
 				|
 				<a title="Logout" href="{% url homebrewit.signup.views.logout %}" class="generic-text generic-link">Logout</a>
+			{% else %}
+				<a title="Register" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Register</a>
 			{% endif %}
 
 			<a title="reddithomebrewing.com" href="/">
