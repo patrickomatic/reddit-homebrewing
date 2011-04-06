@@ -15,15 +15,16 @@ from homebrewit.signup.reddit import verify_token_in_thread
 
 
 def index(request):
-	contest_data, login_form = {}, AuthenticationForm()
-
 	# if it's a login...
 	if request.method == 'POST':
-		login_form = AuthenticationForm(request.POST)
+		login_form = AuthenticationForm(data=request.POST)
 		if login_form.is_valid():
 			return HttpResponseRedirect('/profile')
+	else:
+		login_form = AuthenticationForm()
 
 	# get each years beer styles
+	contest_data = {} 
 	for style in BeerStyle.objects.all():
 		year = style.contest_year.contest_year
 
@@ -82,7 +83,6 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
 
 
 def signup(request):
-	signup_form = RedditCommentTokenUserCreationForm()
 
 	if request.method == 'POST':
 		signup_form = RedditCommentTokenUserCreationForm(request.POST)
@@ -94,6 +94,9 @@ def signup(request):
 			user.message_set.create(message='Successfully verified your reddit account.')
 				
 			return HttpResponseRedirect('/profile/%s' % user.username)
+	else:
+		signup_form = RedditCommentTokenUserCreationForm()
+
 	return render_to_response('homebrewit_signup.html', {
 				'signup_form': signup_form,
 				'registration_thread': settings.REDDIT_REGISTRATION_THREAD,

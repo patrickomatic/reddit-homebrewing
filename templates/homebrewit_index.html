@@ -13,14 +13,15 @@
 
 {% block content %}
 	<p class="generic-text">
-		From here you can <a class="generic-text generic-link" title="Set your experience level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level icon</a> as well as <a class="generic-text generic-link" title="Enter the {{current_year}} homebrew contest" href="{% url homebrewit.contest.views.register %}">entering for the {{current_year}} homebrew contest</a>.  
+		From here you can set your experience level icon as well as entering 
+		for the {{current_year}} homebrew contest.  
 		{% if not user.is_authenticated %}
 			Just login below with the same credentials you use for reddit:
 		{% endif %}
 	</p>
 
 	{% if user.is_authenticated %}
-		<div class="large-title generic-text">
+		<div class="large-title generic-text generic-link">
 			<a href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
 				Edit your profile
 			</a>
@@ -28,7 +29,9 @@
 	{% else %}
 		<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
 			{% csrf_token %} 
+
 			{{login_form.as_p}}
+
 			<input type="submit" value="Login" /> 
 			| 
 			<a class="generic-text small-title" title="Register your reddit.com account" href="{% url homebrewit.signup.views.signup %}">
@@ -38,7 +41,7 @@
 	{% endif %}
 
 	{% if contest_data %}
-		<div class="large-title generic-text">/r/homebrewing Competition</div>
+		<div id="contest-title" class="large-title generic-text">/r/Homebrewing Competition</div>
 		<ul>
 			{% for year, style_data in contest_data.iteritems %}
 				<div>
