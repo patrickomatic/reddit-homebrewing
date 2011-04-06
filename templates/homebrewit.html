@@ -4,9 +4,9 @@
 		<meta name="description" content="Reddit /r/homebrewing app" />
 		<meta name="keywords" content="reddit.com, reddit, homebrewing, contest, experience, level" />
 		<title>reddit.com/r/Homebrewing App - {% block title %}{% endblock %}</title>
-		<link rel="stylesheet" href="/media/reset-styles.css" type="text/css" />
 		<link rel="stylesheet" href="/media/styles.css" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		{% block include %}{% endblock %}
 	</head>
 	<body>
 		<div id="header">
@@ -20,6 +20,13 @@
 				<img src="/media/images/header-logo.png" class="header-logo" />
 			</a>
 		</div>
+
+		<div class="large-title generic-text">
+			{% block contenttitle %}
+			{% endblock %}
+		</div>
+		<hr class="generic-header">
+		<div class="clear"></div>
 
 		{% if messages %}
 			<div class="generic-text">

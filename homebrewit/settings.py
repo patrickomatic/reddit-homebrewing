@@ -116,3 +116,5 @@ AUTH_PROFILE_MODULE = 'signup.UserProfile'
 WINNER_ICON = '/media/winner.png'
 
 DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
+
+REDDIT_REGISTRATION_THREAD = 'http://reddit.com/r/Homebrewing/XXX'

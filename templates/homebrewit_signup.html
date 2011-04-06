@@ -1,0 +1,47 @@
+{% extends "homebrewit.html" %}
+
+
+{% block include %}
+	<script type="text/javascript">
+$(document).ready(function() {
+	$("#id_token").attr("disabled", true);
+	$("#id_token").select();
+});
+	</script>
+{% endblock %}
+
+
+{% block title %}
+	Register your reddit.com username
+{% endblock %}
+
+
+{% block contenttitle %}
+	Register Your reddit.com Account
+{% endblock %}
+
+
+{% block content %}
+	<p class="generic-text">
+		In order to verify your username on reddit, we need you to complete
+		the form below.  Before submitting the form, be sure to go to the
+		linked thread and post the given token using your reddit username.
+	</p>
+
+	<form class="signup-form generic-text" method="POST" action="{% url homebrewit.signup.views.signup %}">
+		{% csrf_token %}
+
+		{{signup_form.as_p}}
+
+		<p>
+			<label>First, post the token to:</label>
+			<tt class="small-title">
+				<a title="Post your token here" target="_new" href="{{registration_thread}}">{{registration_thread}}</a>
+			</tt>
+
+			Post the above token to this thread before submitting the form.
+		</p>
+
+		<input type="submit" value="Register" />
+	</form>
+{% endblock %}
