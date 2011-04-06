@@ -5,16 +5,18 @@
 {% endblock %}
 
 
-{% block content %}
-        <hr class="generic-header">
-        <br />
-	<div class="large-title generic-text">Login</div>
+{% block contenttitle %}
+	Login
+{% endblock %}
 
+
+{% block content %}
 	<form class="login-form" method="POST" action="{% url homebrewit.signup.views.login %}">
 		{% csrf_token %}
+
 		{{form.as_p}}
 		<input type="submit" value="Login" />
 	</form>
 
-	<p class="generic-text">Don't have a username? <a title="Signup" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Sign up now!</a>
+	<p class="generic-text">Haven't registered? <a title="Signup" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Sign up now!</a>
 {% endblock %}

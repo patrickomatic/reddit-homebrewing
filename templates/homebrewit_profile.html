@@ -4,16 +4,18 @@
 	{{user.username}}
 {% endblock %}
 
+
+{% block contenttitle %}
+	{{user.username}}'s /r/Homebrewing Profile
+{% endblock %}
+
+
 {% block content %}
-    <hr class="generic-header">
-
-	<div class="large-title generic-text">{{user.username}}'s /r/homebrewing Profile</div>
-
 	{% if is_profile_owner %}
-		<ul>
-			<li><a href="{% url homebrewit.contest.views.register %}" class="generic-text generic-link">Sign up for the /r/homebrewing contest</a></li>
-			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}" class="generic-text generic-link">Set your experience level</a></li>
-			<li><a href="{% url homebrewit.profile.views.edit_profile %}" class="generic-text generic-link">Edit your profile and address</a></li>
+		<ul class="generic-text">
+			<li><a href="{% url homebrewit.contest.views.register %}" class="generic-link">Sign up for the /r/homebrewing contest</a></li>
+			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}" class="generic-link">Set your experience level</a></li>
+			<li><a href="{% url homebrewit.profile.views.edit_profile %}" class="generic-link">Edit your profile and address</a></li>
 		</ul>
 	{% endif %}
 

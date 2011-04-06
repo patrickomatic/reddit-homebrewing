@@ -1,16 +1,18 @@
 {% extends "homebrewit.html" %}
 
+
 {% block title %}
 	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
 {% endblock %}
 
-{% block content %}
-        <hr class="generic-header">
-	<div class="large-title generic-text">
-		<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}" class="generic-text generic-link">{{entry.user}}</a>: 
-		{% if entry.beer_name %}{{entry.beer_name}} ({% endif %}{{entry.style.name}}{% if entry.beer_name %}){% endif %}
-	</div>	
 
+{% block contenttitle %}
+	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}" class="generic-text generic-link">{{entry.user}}</a>: 
+	{% if entry.beer_name %}{{entry.beer_name}} ({% endif %}{{entry.style.name}}{% if entry.beer_name %}){% endif %}
+{% endblock %}
+
+
+{% block content %}
 	<div class="small-title generic-text">Score: 
 		{% if entry.score %}
 			{{entry.score_description}} ({{entry.score}})

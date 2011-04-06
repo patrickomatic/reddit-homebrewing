@@ -4,10 +4,13 @@
 	{{form.style}}
 {% endblock %}
 
-{% block content %}
-    <hr class="generic-header">
-	<h1 class="generic-text">Want to enter in the competition?</h1>
 
+{% block contenttitle %}
+	Want to enter in the competition?
+{% endblock %}
+
+
+{% block content %}
 	<p class="generic-text">Just pick which style you'll be brewing:</p>
 
 	<form class="contest-entry-form" method="POST" action="{% url homebrewit.contest.views.register %}">

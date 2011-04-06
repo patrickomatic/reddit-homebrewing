@@ -4,15 +4,20 @@
 	{{request.user.username}}'s Address
 {% endblock %}
 
+
+{% block contenttitle %}
+	Set Your Personal Information
+{% endblock %}
+
 {% block content %}
-	<div class="medium-title generic-text">Set Your Personal Information</div>
-	<p>
+	<p class="generic-text">
 		In order for us to send prizes to the winners, we're going to need
 		you to give us your address before entering the contest.
 	</p>
 
 	<form method="POST" action="{% url homebrewit.profile.views.edit_profile %}" class="setaddress">
 		{% csrf_token %}
+
 		{{email_form.as_p}}
 		{{address_form.as_p}}
 

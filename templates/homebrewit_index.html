@@ -1,11 +1,17 @@
 {% extends "homebrewit.html" %}
 
-{% block content %}
-	<div class="large-title generic-text">Welcome to the reddit.com/r/Homebrewing app!</div>
 
-	{% comment %}
-		XXX we don't always want to show the {{current_year}} contest sign up link.  It may be at a time after the contest has been judged
-	{%  endcomment %}
+{% block title %}
+	Home
+{% endblock %}
+
+
+{% block contenttitle %}
+	Welcome to the reddit.com/r/Homebrewing app!
+{% endblock %}
+
+
+{% block content %}
 	<p class="generic-text">
 		From here you can <a class="generic-text generic-link" title="Set your experience level" href="{% url homebrewit.experiencelevel.views.change_level %}">set your experience level icon</a> as well as <a class="generic-text generic-link" title="Enter the {{current_year}} homebrew contest" href="{% url homebrewit.contest.views.register %}">entering for the {{current_year}} homebrew contest</a>.  
 		{% if not user.is_authenticated %}
@@ -23,7 +29,11 @@
 		<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
 			{% csrf_token %} 
 			{{login_form.as_p}}
-			<input type="submit" value="Login" />
+			<input type="submit" value="Login" /> 
+			| 
+			<a class="generic-text small-title" title="Register your reddit.com account" href="{% url homebrewit.signup.views.signup %}">
+				Haven't Registered?
+			</a>
 		</form>
 	{% endif %}
 

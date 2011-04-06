@@ -1,12 +1,17 @@
 {% extends "homebrewit.html" %}
 
+
 {% block title %}
 	Contest Winners from {{year}}
 {% endblock %}
 
 
+{% block contenttitle %}
+	{{year}} /r/homebrewing Competition Winners
+{% endblock %}
+
+
 {% block content %}
-	<div class="large-title">{{year}} /r/homebrewing Competition Winners</div>
 	{% for entry in entries %}
 		{{entry}}
 	{% endfor %}

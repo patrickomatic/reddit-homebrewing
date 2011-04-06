@@ -127,8 +127,12 @@ input[type="submit"]:hover {
 .signup-form label {
 	display: block;
 	float: left;
-	width: 150px;
+	width: 200px;
 	line-height: 1.5em;
+}
+
+#id_token {
+	width: 450px;
 }
 
 .contest-entry-form label {
@@ -152,7 +156,7 @@ input[type="submit"]:hover {
 
 .small-title {
 	padding-top: 10px;
-	font-size: 1.1em;
+	font-size: 1.0em;
 	font-weight: bold;
 }
 
@@ -179,4 +183,8 @@ input[type="submit"]:hover {
 .setaddress {
     width: 500px;
     text-align: right;
+}
+
+.clear {
+	clear: both;
 }

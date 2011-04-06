@@ -4,12 +4,13 @@
 	{{year}} /r/homebrewing Contest 
 {% endblock %}
 
-{% block content %}
-	<div class="large-title generic-text">{{year}}'s Contest Styles</div>
-        <br />
-        <hr class="generic-header">
-        <br /><br />
 
+{% block contentitle %}
+	{{year}}'s Contest Styles
+{% endblock %}
+
+
+{% block content %}
 	{% for style, data in styles.iteritems %}
 		<div class="medium-title">
 			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}" class="generic-link generic-text">
