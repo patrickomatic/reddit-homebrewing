@@ -151,6 +151,11 @@ input[type="submit"]:hover {
 }
 
 .messages {
+    color: #33CC33 !important;
+    font-weight: bold;	
+}
+
+.errorlist {
     color: #991916 !important;
     font-weight: bold;	
 }
@@ -195,7 +200,3 @@ input[type="submit"]:hover {
 	text-align: center;
 }
 
-.errorlist {
-	font-weight: bold;
-    color: #991916 !important;
-}

@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
      ('Patrick Carroll', 'patrick@patrickomatic.com'),
-     ('Charles Hamilton', 'musashi@nefaria.com'),
+#     ('Charles Hamilton', 'musashi@nefaria.com'),
 )
 
 MANAGERS = ADMINS

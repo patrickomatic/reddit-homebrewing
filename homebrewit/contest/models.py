@@ -81,9 +81,9 @@ class EntryManager(models.Manager):
 
 
 class Entry(models.Model):
+	style = models.ForeignKey('BeerStyle', db_index=True)
 	beer_name = models.CharField(max_length=255, null=True, blank=True)
 	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
-	style = models.ForeignKey('BeerStyle', db_index=True)
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
