@@ -37,7 +37,7 @@ def register(request):
 		request.user.get_profile()
 	except UserProfile.DoesNotExist:
 		request.user.message_set.create(message='You must set your address before you can enter the homebrew contest.')
-		return HttpResponseRedirect('/profile/edit')
+		return HttpResponseRedirect('/profile/edit?next=/contest/register')
 
 	if request.method == 'POST':
 		form = EntryForm(request.POST, request=request)

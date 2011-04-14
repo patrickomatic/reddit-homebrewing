@@ -21,7 +21,10 @@
 
 
 	{% if level %}
-		<div class="medium-title generic-text">Experience Level</div>
+		<div class="medium-title generic-text">
+			<a href="{% url homebrewit.experiencelevel.views.change_level %}">Experience Level
+			</a>
+		</div>
 		<img src="{{level.experience_level.get_absolute_url}}" class="experience_level_image" />
 		<span class="generic-text">{{level.experience_level}}</span>
 	{% endif %}

@@ -43,6 +43,8 @@ def logged_in_profile(request):
 
 
 class AddressForm(forms.ModelForm):
+	next = forms.CharField(max_length=1025, widget=forms.HiddenInput(), required=False)
+
 	class Meta:
 		model = UserProfile
 		exclude = ('user',)
@@ -52,6 +54,7 @@ class EmailForm(forms.Form):
 
 @login_required
 def edit_profile(request):
+	# XXX get next passing through
 	try:
 		profile = request.user.get_profile()
 	except UserProfile.DoesNotExist:
@@ -74,7 +77,8 @@ def edit_profile(request):
 
 			request.user.message_set.create(message='Successfully set address info.')
 	else:
-		address_form = AddressForm(instance=profile)
+		# pass GET because it might have a next
+		address_form = AddressForm(request.GET, instance=profile)
 		email_form = EmailForm(initial={'email': request.user.email})
 
 
