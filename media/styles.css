@@ -186,9 +186,11 @@ input[type="submit"]:hover {
     text-align: center;
 }
 
-.setaddress {
-    width: 500px;
-    text-align: right;
+.setaddress label {
+	display: block;
+	float: left;
+	width: 110px;
+	line-height: 1.5em;
 }
 
 .clear {

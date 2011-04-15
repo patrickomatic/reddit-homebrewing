@@ -8,8 +8,8 @@ class UserProfile(models.Model):
 	address_2 = models.CharField(max_length=255, null=True, blank=True)
 	city = models.CharField(max_length=255)
 	state = models.CharField(max_length=255)
-	country = models.CharField(max_length=255)
 	zip_code = models.CharField(max_length=255)
+	country = models.CharField(max_length=255)
 
 	def __unicode__(self):
 		return self.user.username

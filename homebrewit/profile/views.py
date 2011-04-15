@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -78,7 +78,8 @@ def edit_profile(request):
 			return HttpResponseRedirect(address_form.cleaned_data.get('next', '/'))
 	else:
 		# pass GET because it might have a next
-		address_form = AddressForm(request.GET, instance=profile)
+		address_form = AddressForm(initial={'next': request.GET.get('next')},
+				instance=profile)
 		email_form = EmailForm(initial={'email': request.user.email})
 
 
