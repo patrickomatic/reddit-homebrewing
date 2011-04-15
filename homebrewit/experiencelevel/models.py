@@ -20,6 +20,9 @@ class ExperienceLevel(models.Model):
 	def get_absolute_css_url(self):
 		return 'http://reddithomebrewing.com' + self.css_img_url.replace(settings.MEDIA_ROOT, '/media')
 
+	def get_reddit_css_icon(self):
+		return self.name.lower()
+
 	def __unicode__(self):
 		return self.name
 
