@@ -3,16 +3,12 @@
 
 {% block include %}
 	<script type="text/javascript">
-		
 $(document).ready(function() {
-	$("#id_token").attr("disabled", true);
-	$("#id_token").select();
-
-	$("#signup-form").submit(function() {
-		$("#id_token").attr("disabled", false);
+	$("#id_token").keypress(function() {
+		return false;
 	});
+	$("#id_token").select();
 });
-
 	</script>
 {% endblock %}
 
