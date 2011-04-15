@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
      ('Patrick Carroll', 'patrick@patrickomatic.com'),
-#     ('Charles Hamilton', 'musashi@nefaria.com'),
+     ('Charles Hamilton', 'musashi@nefaria.com'),
 )
 
 MANAGERS = ADMINS
@@ -117,4 +117,4 @@ WINNER_ICON = '/media/winner.png'
 
 DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
 
-REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/r/Homebrewing/comments/gis3i/drinks_by_the_dram_affordable_sample_of_highend/'
+REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/r/Homebrewing/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/'
