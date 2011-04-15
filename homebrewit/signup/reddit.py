@@ -10,33 +10,33 @@ def reddit_login(username, password):
 
 def verify_token_in_thread(thread_url, reddit_username, token):
 	f = urllib.urlopen(thread_url)
-	html = BeautifulSoup(f.read())
+	soup = BeautifulSoup(f.read())
 	f.close()
 
-	divz = []
-	for i in html.body.findAll(attrs = {'class': 'commentarea'}):
+	html = []
+	for i in soup.body.findAll(attrs = {'class': 'commentarea'}):
 		for j in i.findAll(attrs = {'class': re.compile('author\s+gray|usertext-body')}, recursive = True):
-			divz.append(j)
+			html.append(str(j).strip())
 
 	# assemble a map containing all comments per user
-	comments, strip, count = {}, re.compile('<.*?>|\n'), 1
-	for k in divz[::2]:
-		user = re.sub(strip, '', str(k)).strip()
-		text = re.sub(strip, '', str(divz[count])).strip()
+	strip = re.compile('<.*?>|\n')
+	user = None
+	for chunk in html:
+		if '<p>[deleted]</p>' in chunk: continue
 
-		if not user in comments:
-			comments[user] = [text]
-		else:
-			comments[user].append(text)
-
-		count += 2
-
-	# now see if any comments from that user match it
-	if reddit_username in comments:
-		for comment in comments[reddit_username]:
-			if comment == token:
+		# look for a link, then the next one will be the content
+		if chunk.startswith('<a href'):
+			text = re.sub(strip, '', chunk)
+			if text == reddit_username:
+				user = text
+		elif user and chunk.startswith('<div class="usertext-body">'):
+			# it's our user - see if the token matches
+			if re.sub(strip, '', chunk) == token:
 				return True
-			
+			else:
+				# didn't match, reset conditions
+				user = None
+
 	return False
 
 

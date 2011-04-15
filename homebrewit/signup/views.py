@@ -3,7 +3,7 @@ import datetime, hashlib, random
 from django import forms
 from django.conf import settings
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import login 
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -69,28 +69,30 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
 	def clean(self):
 		# check that the token and signature still match (i.e. the token 
 		# hasn't been changed)
-		if self.signature != self.__sign(self.cleaned_data['token']):
+		data = self.cleaned_data
+		if data['signature'] != self.__sign(data['token']):
 			raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
 
 		# now verify they posted the given token as the correct user
 		if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD,
-				self.cleaned_data['username'], self.cleaned_data['token']):
-			raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
+				data['username'], data['token']):
+			raise forms.ValidationError('Unable to verify that you posted the token.  Please go to the included link and post the given token before submitting this form.')
 
-		return self.cleaned_data
+		return data
 
 	def __sign(self, token):
 		return hashlib.sha256(token + secret_key).hexdigest()
 
 
 def signup(request):
-
 	if request.method == 'POST':
 		signup_form = RedditCommentTokenUserCreationForm(request.POST)
 
 		if signup_form.is_valid():
 			user = signup_form.save()
 
+			user = authenticate(username=signup_form.cleaned_data['username'],
+					password=signup_form.cleaned_data['password1'])
 			login(request, user)
 			user.message_set.create(message='Successfully verified your reddit account.')
 				

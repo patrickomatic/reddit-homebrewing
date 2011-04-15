@@ -54,7 +54,6 @@ class EmailForm(forms.Form):
 
 @login_required
 def edit_profile(request):
-	# XXX get next passing through
 	try:
 		profile = request.user.get_profile()
 	except UserProfile.DoesNotExist:
@@ -76,6 +75,7 @@ def edit_profile(request):
 			request.user.save()
 
 			request.user.message_set.create(message='Successfully set address info.')
+			return HttpResponseRedirect(address_form.cleaned_data.get('next', '/'))
 	else:
 		# pass GET because it might have a next
 		address_form = AddressForm(request.GET, instance=profile)

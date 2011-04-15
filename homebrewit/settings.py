@@ -117,4 +117,4 @@ WINNER_ICON = '/media/winner.png'
 
 DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
 
-REDDIT_REGISTRATION_THREAD = 'http://reddit.com/r/Homebrewing/XXX'
+REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/r/Homebrewing/comments/gis3i/drinks_by_the_dram_affordable_sample_of_highend/'

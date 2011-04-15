@@ -3,10 +3,16 @@
 
 {% block include %}
 	<script type="text/javascript">
+		
 $(document).ready(function() {
 	$("#id_token").attr("disabled", true);
 	$("#id_token").select();
+
+	$("#signup-form").submit(function() {
+		$("#id_token").attr("disabled", false);
+	});
 });
+
 	</script>
 {% endblock %}
 
@@ -28,7 +34,7 @@ $(document).ready(function() {
 		linked thread and post the given token using your reddit username.
 	</p>
 
-	<form class="signup-form generic-text" method="POST" action="{% url homebrewit.signup.views.signup %}">
+	<form id="signup-form" class="signup-form generic-text" method="POST" action="{% url homebrewit.signup.views.signup %}">
 		{% csrf_token %}
 
 		{{signup_form.as_p}}
