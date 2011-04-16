@@ -100,7 +100,12 @@ INSTALLED_APPS = (
 #	'debug_toolbar',
 ) + OUR_APPS
 
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+# If someone wants to work on this locally, they shouldn't have
+# to deal with stupid memcached issues...
+if DEBUG:
+	CACHE_BACKEND = 'dummy:///'
+else:
+	CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 # for some reason, when allowing django to run all tests, some of them
 # fail with a NoReverseMatch exception
