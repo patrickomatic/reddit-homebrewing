@@ -9,6 +9,8 @@ def reddit_login(username, password):
 
 
 def verify_token_in_thread(thread_url, reddit_username, token):
+	reddit_username = reddit_username.lower()
+
 	f = urllib.urlopen(thread_url)
 	soup = BeautifulSoup(f.read())
 	f.close()
@@ -27,7 +29,7 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 		# look for a link, then the next one will be the content
 		if chunk.startswith('<a href'):
 			text = re.sub(strip, '', chunk)
-			if text == reddit_username:
+			if text.lower() == reddit_username:
 				user = text
 		elif user and chunk.startswith('<div class="usertext-body">'):
 			# it's our user - see if the token matches
@@ -38,5 +40,3 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 				user = None
 
 	return False
-
-
