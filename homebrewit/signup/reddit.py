@@ -1,5 +1,5 @@
-import re, urllib
-from BeautifulSoup import BeautifulSoup
+import urllib, json
+
 
 def reddit_login(username, password):
 	""" This API seems to be unreliable.  Can't be relied on. """
@@ -9,34 +9,15 @@ def reddit_login(username, password):
 
 
 def verify_token_in_thread(thread_url, reddit_username, token):
-	reddit_username = reddit_username.lower()
+	reddit_username = unicode(reddit_username.lower())
 
 	f = urllib.urlopen(thread_url)
-	soup = BeautifulSoup(f.read())
+	thread = json.loads(f.read())
 	f.close()
 
-	html = []
-	for i in soup.body.findAll(attrs = {'class': 'commentarea'}):
-		for j in i.findAll(attrs = {'class': re.compile('author\s+gray|usertext-body')}, recursive = True):
-			html.append(str(j).strip())
-
-	# assemble a map containing all comments per user
-	strip = re.compile('<.*?>|\n')
-	user = None
-	for chunk in html:
-		if '<p>[deleted]</p>' in chunk: continue
-
-		# look for a link, then the next one will be the content
-		if chunk.startswith('<a href'):
-			text = re.sub(strip, '', chunk)
-			if text.lower() == reddit_username:
-				user = text
-		elif user and chunk.startswith('<div class="usertext-body">'):
-			# it's our user - see if the token matches
-			if re.sub(strip, '', chunk) == token:
+	for comment in thread[1]['data']['children']:
+		if comment['data']['author'].lower() == reddit_username:
+			if unicode(token) == comment['data']['body'].strip():
 				return True
-			else:
-				# didn't match, reset conditions
-				user = None
 
 	return False
