@@ -74,6 +74,12 @@ label {
 ul li {
     color: #422E13;
 }
+
+footer {
+	width: 100%;
+	text-align: center;
+	font-size: 0.7em;
+}
     
 .experience_level_image {
     height: 90px;
