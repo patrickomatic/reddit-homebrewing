@@ -3,7 +3,7 @@
 LAUNCH_DIR=`dirname $0`
 INSTANCES_FILE=$LAUNCH_DIR/INSTANCES
 DEPLOY_DIR=/srv/homebrewit
-ADMIN_PATH=/usr/lib/python2.5/site-packages/django/contrib/admin/media/
+ADMIN_PATH=/usr/local/lib/python2.6/dist-packages/django/contrib/admin/media/
 
 
 usage() {
