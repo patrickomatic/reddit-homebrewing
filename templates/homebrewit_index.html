@@ -33,10 +33,12 @@
 			{{login_form.as_p}}
 
 			<input type="submit" value="Login" /> 
+			{% comment %}
 			| 
 			<a class="generic-text small-title" title="Register your reddit.com account" href="{% url homebrewit.signup.views.signup %}">
 				Haven't Registered?
 			</a>
+			{% endcomment %}
 		</form>
 	{% endif %}
 

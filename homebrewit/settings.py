@@ -124,3 +124,5 @@ DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
 
 REDDIT_REGISTRATION_THREAD_JSON = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/.json?limit=100000'
 REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/'
+
+AUTHENTICATION_USER_AGENT = 'www.reddit.com/r/Homebrewing App (reddithomebrewing.com)'

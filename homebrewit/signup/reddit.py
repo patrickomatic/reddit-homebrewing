@@ -1,11 +1,16 @@
-import urllib, json
+from django.conf import settings
+import urllib, urllib2, json
 
 
 def reddit_login(username, password):
-	""" This API seems to be unreliable.  Can't be relied on. """
-	f = urllib.urlopen("http://www.reddit.com/api/login", 
-			urllib.urlencode({'user': username, 'passwd': password}))
-	return 'reddit_session=' in f.info().get('Set-Cookie', '')
+	if not username or not password: return False
+
+	req = urllib2.Request("http://www.reddit.com/api/login", 
+			urllib.urlencode({'user': username, 'passwd': password}),
+			{'User-Agent': settings.AUTHENTICATION_USER_AGENT})
+	resp = urllib2.urlopen(req)
+
+	return 'reddit_session=' in resp.info().get('Set-Cookie', '')
 
 
 def verify_token_in_thread(thread_url, reddit_username, token):
