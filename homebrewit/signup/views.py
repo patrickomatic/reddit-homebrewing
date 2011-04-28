@@ -74,7 +74,7 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
 			raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
 
 		# now verify they posted the given token as the correct user
-		if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD,
+		if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD_JSON,
 				data['username'], data['token']):
 			raise forms.ValidationError('Unable to verify that you posted the token.  Please go to the included link and post the given token before submitting this form.')
 

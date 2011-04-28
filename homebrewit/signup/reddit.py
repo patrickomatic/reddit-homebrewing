@@ -16,7 +16,7 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 	f.close()
 
 	for comment in thread[1]['data']['children']:
-		if comment['data']['author'].lower() == reddit_username:
+		if 'author' in comment['data'] and comment['data']['author'].lower() == reddit_username:
 			if unicode(token) == comment['data']['body'].strip():
 				return True
 
