@@ -1,6 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html id="home" lang="en">
 	<head>
+		<meta charset="utf-8" />
 		<meta name="description" content="Reddit /r/homebrewing app" />
 		<meta name="keywords" content="reddit.com, reddit, homebrewing, contest, experience, level" />
 		<title>reddit.com/r/Homebrewing App - {% block title %}{% endblock %}</title>
@@ -9,7 +10,7 @@
 		{% block include %}{% endblock %}
 	</head>
 	<body>
-		<div id="header">
+		<header>
 			{% if user.is_authenticated %}
 				<a title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
 				|
@@ -21,7 +22,7 @@
 			<a title="reddithomebrewing.com" href="/">
 				<img src="/media/images/header-logo.png" class="header-logo" />
 			</a>
-		</div>
+		</header>
 
 		<div class="large-title generic-text">
 			{% block contenttitle %}
@@ -44,6 +45,16 @@
 			</div>
 		{% endif %}
 
-		{% block content %}{% endblock %}
+		<article>
+			{% block content %}{% endblock %}
+		</article>
+
+		<footer>
+			<p>
+				<a title="Contact Moderators" href="http://www.reddit.com/message/compose?to=%23Homebrewing">Contact the Moderators</a>
+				{% block footer %}
+				{% endblock %}
+			</p>
+		</footer>
 	</body>
 </html>

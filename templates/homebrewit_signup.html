@@ -40,6 +40,12 @@ $(document).ready(function() {
 		linked thread and post the given token using your reddit username.
 	</p>
 
+	<p style="color: #FF0000;">
+		We've recently been experiencing a lot of problems with verifying reddit
+		accounts.  If signing up does not work for you, please be patient - we
+		are aware of the problem and working on a fix.
+	</p>
+
 	<form id="signup-form" class="signup-form generic-text" method="POST" action="{% url homebrewit.signup.views.signup %}">
 		{% csrf_token %}
 
