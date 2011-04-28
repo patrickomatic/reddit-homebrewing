@@ -83,7 +83,7 @@ ul li {
     height: 150px;
 }
 
-header {
+#header {
 	text-align: right;
 	font-size: 0.8em;
 	font-weight: bold;

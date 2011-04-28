@@ -10,13 +10,15 @@
 		{% block include %}{% endblock %}
 	</head>
 	<body>
-		<header>
+		<header id="header">
 			{% if user.is_authenticated %}
 				<a title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
 				|
 				<a title="Logout" href="{% url homebrewit.signup.views.logout %}" class="generic-text generic-link">Logout</a>
 			{% else %}
+				{% comment %}
 				<a title="Register" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Register</a>
+				{% endcomment %}
 			{% endif %}
 
 			<a title="reddithomebrewing.com" href="/">
