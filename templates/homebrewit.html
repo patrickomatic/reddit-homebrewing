@@ -12,9 +12,9 @@
 	<body>
 		<header id="header">
 			{% if user.is_authenticated %}
-				<a title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
+				<a class="generic-link" title="{{user.username}}'s Profile" href="{% url homebrewit.profile.views.logged_in_profile %}" class="generic-text generic-link">{{user.username}}</a> 
 				|
-				<a title="Logout" href="{% url homebrewit.signup.views.logout %}" class="generic-text generic-link">Logout</a>
+				<a class="generic-link" title="Logout" href="{% url homebrewit.signup.views.logout %}" class="generic-text generic-link">Logout</a>
 			{% else %}
 				{% comment %}
 				<a title="Register" href="{% url homebrewit.signup.views.signup %}" class="generic-text generic-link">Register</a>
@@ -53,13 +53,13 @@
 
 		<footer>
 			<p class="generic-text">
-				<a title="Contact Moderators" href="http://www.reddit.com/message/compose?to=%23Homebrewing">Contact the Moderators</a>
+				<a class="generic-link" title="Contact Moderators" href="http://www.reddit.com/message/compose?to=%23Homebrewing">Contact the Moderators</a>
 				-
-				<a title="2011 Homebrew Competition Rules" href="http://www.reddit.com/r/Homebrewing/comments/gqroz/announcing_the_2011_reddit_homebrew_contest/">2011 Homebrew Contest Info</a>
+				<a class="generic-link" title="2011 Homebrew Competition Rules" href="http://www.reddit.com/r/Homebrewing/comments/gqroz/announcing_the_2011_reddit_homebrew_contest/">2011 Homebrew Contest Info</a>
 				-
-				<a title="Donating will help pay for contest prizes" href="http://pledgie.com/campaigns/14583">Donate</a>
+				<a class="generic-link" title="Donating will help pay for contest prizes" href="http://pledgie.com/campaigns/14583">Donate</a>
 				-
-				<a title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
+				<a class="generic-link" title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
 				{% block footer %}
 				{% endblock %}
 			</p>

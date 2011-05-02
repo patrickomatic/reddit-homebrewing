@@ -21,8 +21,8 @@
 	</p>
 
 	{% if user.is_authenticated %}
-		<div class="large-title generic-text generic-link">
-			<a href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
+		<div class="large-title generic-text">
+			<a class="generic-link" href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
 				Edit your profile
 			</a>
 		</div>
