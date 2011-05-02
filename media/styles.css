@@ -138,6 +138,13 @@ input[type="submit"]:hover {
 	line-height: 1.5em;
 }
 
+.change-password-form label {
+	display: block;
+	float: left;
+	width: 250px;
+	line-height: 1.5em;
+}
+
 #id_token {
 	width: 450px;
 }
