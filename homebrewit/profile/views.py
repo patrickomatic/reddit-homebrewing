@@ -99,7 +99,7 @@ def change_password(request):
 		if form.is_valid():
 			form.save()
 			request.user.message_set.create(message='Successfully set password')
-			return HttpResponseRedirect('/profile')
+			return HttpResponseRedirect('/profile/edit')
 	else:
 		form = PasswordChangeForm(request.user)
 
