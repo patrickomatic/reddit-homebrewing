@@ -8,7 +8,8 @@
 }
 
 .generic-link {
-    text-decoration: none;
+	font-weight: bold;
+    color: #422E13;
 }
 
 .generic-link:hover {
@@ -74,6 +75,12 @@ label {
 ul li {
     color: #422E13;
 }
+
+footer {
+	width: 100%;
+	text-align: center;
+	font-size: 0.7em;
+}
     
 .experience_level_image {
     height: 90px;
@@ -129,6 +136,13 @@ input[type="submit"]:hover {
 	display: block;
 	float: left;
 	width: 200px;
+	line-height: 1.5em;
+}
+
+.change-password-form label {
+	display: block;
+	float: left;
+	width: 250px;
 	line-height: 1.5em;
 }
 

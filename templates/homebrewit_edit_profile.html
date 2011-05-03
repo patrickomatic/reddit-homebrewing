@@ -1,7 +1,7 @@
 {% extends "homebrewit.html" %}
 
 {% block title %}
-	{{request.user.username}}'s Address
+	{{request.user.username}}'s Personal Information
 {% endblock %}
 
 
@@ -9,7 +9,15 @@
 	Set Your Personal Information
 {% endblock %}
 
+
 {% block content %}
+	<div class="generic-text medium-title">
+		<a class="generic-link" title="Change Password" href="{% url homebrewit.profile.views.change_password %}">Change Password</a>
+	</div>
+
+	<div class="generic-text medium-title">
+		Email and Postal Address
+	</div>
 	<p class="generic-text">
 		In order for us to send prizes to the winners, we're going to need
 		you to give us your address before entering the contest.

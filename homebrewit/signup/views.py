@@ -5,24 +5,46 @@ from django.conf import settings
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, Entry 
 from homebrewit.signup import secret_key
-from homebrewit.signup.reddit import verify_token_in_thread
+from homebrewit.signup.reddit import reddit_login, verify_token_in_thread
+
+
+class RedditAuthenticationForm(AuthenticationForm):
+	def clean(self):
+		username = self.cleaned_data.get('username')
+		password = self.cleaned_data.get('password')
+
+		# if the user already exists, just go straight through with login
+		if username and password:
+			try:
+				User.objects.get(username=username)
+			except User.DoesNotExist:
+				if not reddit_login(username, password):
+					raise forms.ValidationError("This username and password don't seem to work on reddit")
+
+				# ok they authenticate on reddit - create them
+				User.objects.create_user(username, '', password)
+
+		super(RedditAuthenticationForm, self).clean()
+
+		return self.cleaned_data
 
 
 def index(request):
 	# if it's a login...
 	if request.method == 'POST':
-		login_form = AuthenticationForm(data=request.POST)
+		login_form = RedditAuthenticationForm(data=request.POST)
 		if login_form.is_valid():
 			login(request, login_form.get_user())
 			return HttpResponseRedirect('/profile')
 	else:
-		login_form = AuthenticationForm()
+		login_form = RedditAuthenticationForm()
 
 	# get each years beer styles
 	contest_data = {} 
@@ -74,7 +96,7 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
 			raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
 
 		# now verify they posted the given token as the correct user
-		if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD,
+		if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD_JSON,
 				data['username'], data['token']):
 			raise forms.ValidationError('Unable to verify that you posted the token.  Please go to the included link and post the given token before submitting this form.')
 
