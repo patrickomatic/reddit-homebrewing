@@ -39,7 +39,7 @@
 		</table>
                 <br />
 		{% if data.has_more %}
-			<a title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
+			<a class="generic-text generic-link" title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
 				More entries...
 			</a>
 		{% endif %}
