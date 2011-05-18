@@ -14,14 +14,14 @@ def reddit_login(username, password):
 
 
 def verify_token_in_thread(thread_url, reddit_username, token):
-	reddit_username = unicode(reddit_username.lower())
+	reddit_username = unicode(reddit_username)
 
 	f = urllib.urlopen(thread_url)
 	thread = json.loads(f.read())
 	f.close()
 
 	for comment in thread[1]['data']['children']:
-		if 'author' in comment['data'] and comment['data']['author'].lower() == reddit_username:
+		if 'author' in comment['data'] and comment['data']['author'] == reddit_username:
 			if unicode(token) == comment['data']['body'].strip():
 				return True
 
