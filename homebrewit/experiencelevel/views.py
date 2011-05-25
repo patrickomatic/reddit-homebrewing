@@ -41,7 +41,8 @@ def change_level(request):
 			# make sure it doesn't email the admins any more than every 2 hours
 			now = datetime.datetime.now()
 			if not change_level.last_admin_email or change_level.last_admin_email + datetime.timedelta(hours=2) < now:
-				mail_admins("An experience level has been set", "Somebody has set their experience level.  The CSS on /r/Homebrewing will now have to be updated.")
+# XXX need to get mail set up
+#				mail_admins("An experience level has been set", "Somebody has set their experience level.  The CSS on /r/Homebrewing will now have to be updated.")
 				change_level.last_admin_email = now
 
 			return HttpResponseRedirect('/profile/')

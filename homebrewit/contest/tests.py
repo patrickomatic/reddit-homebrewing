@@ -21,12 +21,18 @@ class ContestViewsTest(TestCase):
 	def test_register__profile_not_set(self):
 		self.user.get_profile().delete()
 		response = self.client.get('/contest/register')
-		self.assertRedirects(response, '/profile/edit')
+		self.assertRedirects(response, '/profile/edit?next=/contest/register')
 
 	def test_register__post(self):
+		Entry.objects.filter(user=self.user).delete()
+
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
 		entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
 		self.assert_(entry.user.username == 'patrick')
+
+	def test_register__post_already_entered(self):
+		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+		self.assertRaises(Entry.DoesNotExist, Entry.objects.get, beer_name="Patrick's super skunky IPA")
 
 
 	def test_contest_year(self):

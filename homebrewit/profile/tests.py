@@ -58,3 +58,10 @@ class ProfileViewsTest(TestCase):
 		self.assert_(self.user.email == 'patrick@patrickomatic.com')
 		self.assert_(profile.address_1 == '128 Hilltop Rd')
 		self.assert_(profile.country == 'United States')
+
+
+	def test_change_password(self):
+		pass
+
+	def test_change_password__post(self):
+		pass

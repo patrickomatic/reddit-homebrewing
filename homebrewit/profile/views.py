@@ -78,7 +78,8 @@ def edit_profile(request):
 			request.user.save()
 
 			request.user.message_set.create(message='Successfully set address info.')
-			return HttpResponseRedirect(address_form.cleaned_data.get('next', '/'))
+			if address_form.cleaned_data.get('next'):
+				return HttpResponseRedirect(address_form.cleaned_data['next'])
 	else:
 		# pass GET because it might have a next
 		address_form = AddressForm(initial={'next': request.GET.get('next')},
