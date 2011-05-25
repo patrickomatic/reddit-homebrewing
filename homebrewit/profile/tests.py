@@ -61,7 +61,16 @@ class ProfileViewsTest(TestCase):
 
 
 	def test_change_password(self):
-		pass
+		self.client.login(username=self.user.username, password='password')
+		response = self.client.get('/profile/password')
+
+		self.assertTemplateUsed(response, 'homebrewit_change_password.html')
+		self.assert_(response.context['form'])
 
 	def test_change_password__post(self):
-		pass
+		self.client.login(username=self.user.username, password='password')
+		response = self.client.post('/profile/password', 
+				{'old_password': 'password', 'new_password1': 'foo',
+					'new_password2': 'foo'})
+		self.assertRedirects(response, '/profile/edit')
+		self.assert_(self.client.login(username=self.user.username, password='foo'))
