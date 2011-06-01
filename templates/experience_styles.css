@@ -1,5 +1,6 @@
 {% for experience_level in experience_levels %}
 	a[href*="user/{{experience_level.user.username}}"]:after {
 		content: url(%%{{experience_level.experience_level.get_reddit_css_icon}}%%);
+		padding-left: 5px;
 	}
 {% endfor %}
