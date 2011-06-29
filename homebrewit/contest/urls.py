@@ -9,4 +9,5 @@ urlpatterns = patterns('homebrewit.contest.views',
 		(r'^(?P<year>\d+)/styles/(?P<style_id>\d+)/entries/(?P<entry_id>\d+)$', 'entry'),
 		(r'^(?P<year>\d+)/styles/(?P<style_id>\d+)$', 'style'),
 		(r'^(?P<year>\d+)/$', 'contest_year'),
+                (r'^related_reddits/$', 'related_reddits'),
 )

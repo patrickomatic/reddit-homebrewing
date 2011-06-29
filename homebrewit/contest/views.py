@@ -103,3 +103,8 @@ def winner_styles(request):
 	return render_to_response('winner_styles.css', 
 			{'icon_url': settings.WINNER_ICON, 'winners': Entry.objects.get_all_winners()},
 			mimetype='text/css')
+
+
+def related_reddits(request):
+    return render_to_response('related_reddits.html')
+
