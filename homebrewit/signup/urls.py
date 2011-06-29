@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('homebrewit.signup.views',
     (r'^logout', 'logout'),
     (r'^signup', 'signup'),
+    (r'^related', 'related_reddits'),
     (r'^$', 'index'),
 )
 

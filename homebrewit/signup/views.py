@@ -133,3 +133,8 @@ def logout(request):
 		auth_logout(request)
 
 	return HttpResponseRedirect("/")
+
+
+def related_reddits(request):
+    return render_to_response('homebrewit_related_reddits.html', {}, 
+			context_instance=RequestContext(request))

@@ -37,6 +37,11 @@ class SignupViewsTest(TestCase):
 		self.assertRedirects(response, '/')
 
 
+	def test_related_reddits(self):
+		response = self.client.get('/related')
+		self.assertTemplateUsed(response, 'homebrewit_related_reddits.html')
+
+
 # XXX we're not using the verify_token_in_thread method for authentication
 # any more
 #class RedditTest(TestCase):
