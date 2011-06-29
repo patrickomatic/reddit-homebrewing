@@ -8,6 +8,20 @@
 		<link rel="stylesheet" href="/media/styles.css" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		{% block include %}{% endblock %}
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23829880-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 	</head>
 	<body>
 		<header class="generic-text" id="header">
@@ -60,6 +74,8 @@
 				<a class="generic-link" title="Donating will help pay for contest prizes" href="http://pledgie.com/campaigns/14583">Donate</a>
 				-
 				<a class="generic-link" title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
+				-
+				<a class="generic-link" title="Related Reddits" href="/related">Related Reddits</a>
 				{% block footer %}
 				{% endblock %}
 			</p>
