@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core import mail
 from django.test import TestCase
 
 from homebrewit.contest.management.commands.judgecontest import JudgeContestCommand
@@ -7,7 +8,7 @@ from homebrewit.contest.views import *
 
 
 class ContestViewsTest(TestCase):
-	fixtures = ['beerstyles', 'entries', 'users', 'userprofiles', 'judgingresults']
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'userprofiles', 'judgingresults']
 
 	def setUp(self):
 		self.client.login(username='patrick', password='password')
@@ -72,7 +73,7 @@ class ContestViewsTest(TestCase):
 
 
 class ContestModelsTest(TestCase):
-	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
 	def setUp(self):
 		self.ipa_style = BeerStyle.objects.get(name='IPA')
@@ -99,8 +100,22 @@ class ContestModelsTest(TestCase):
 		self.assert_(User.objects.get(username='musashiXXX') in winners)
 
 
+	def test_send_shipping_email(self):
+		entry = Entry.objects.get(pk=2)
+		entry.send_shipping_email()
+
+		entry = Entry.objects.get(pk=2)
+		self.assert_(entry.mailed_entry)
+
+		self.assert_(len(mail.outbox) == 1)
+		self.assert_('2011 Reddit Homebrew' in mail.outbox[0].subject)
+		message = str(mail.outbox[0].message()).replace("\n", " ")
+		self.assert_('128 Hilltop Rd' in message)
+		self.assert_(not 'None' in message)
+
+
 class JudgeContestCommandTest(TestCase):
-	fixtures = ['beerstyles', 'entries', 'users', 'judgingresults']
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults']
 
 	def setUp(self):
 		self.command = JudgeContestCommand()

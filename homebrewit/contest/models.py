@@ -1,7 +1,9 @@
-import datetime
+import datetime, smtplib
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.db import models
+from django.forms.models import model_to_dict
 
 
 def rating_description_str(rating):
@@ -32,6 +34,7 @@ class ContestYear(models.Model):
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
 	contest_year = models.ForeignKey('ContestYear')
+	judge = models.ForeignKey(User, null=True, blank=True)
 
 	def __unicode__(self):
 		return "%s (%s)" % (self.name, self.contest_year)
@@ -88,11 +91,56 @@ class Entry(models.Model):
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
 	score = models.PositiveIntegerField(null=True, blank=True)
+	mailed_entry = models.BooleanField(default=False)
 
 	objects = EntryManager()
 
 	class Meta:
 		ordering = ('style', '-score')
+
+
+	def send_shipping_email(self):
+		if not self.user.email:
+			# XXX logging.warn
+			print >>sys.stderr, "Email isn't set for ", self.user.username
+			return
+
+		try:
+			contest_year = self.style.contest_year.contest_year
+
+			email_vars = model_to_dict(self.user.get_profile())
+			email_vars.update({
+				'username': self.user.username,
+				'contest_year': contest_year,
+				'style': unicode(self.style.name),
+			})
+
+			# convert any Nones to ""
+			for k, v in email_vars.iteritems():
+				if v is None: email_vars[k] = ""
+
+			send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
+				""" 
+Hey %(username)s,
+
+Thanks for entering the %(contest_year)s %(style)s category.  When
+sending your samples, we request two 12oz bottles including your
+reddit username and the style of the samples.  You can send them to:
+
+%(name)s
+%(address_1)s
+%(address_2)s
+%(city)s, %(state)s %(zip_code)s
+
+For tips on how to package your shipment, check out <a href="http://www.reddit.com/r/beertrade/comments/atztu/trading_and_packaging_tips/" title="this /r/beertrade thread">this /r/beertrade thread</a>.  If you have any questions or problems, please <a href="http://www.reddit.com/message/compose?to=%%23Homebrewing" title="contact the moderators">contact the moderators</a>.
+				""" % email_vars, 'do.not.reply@reddithomebrewing.com', 
+					[self.user.email], fail_silently=False)
+
+			self.mailed_entry = True
+			self.save()
+		except smtplib.SMTPException as e:
+			# XXX use logger
+			print >>sys.stderr, "Error sending shipping email: ", e
 
 
 	def get_rating_description(self):

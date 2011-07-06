@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 class SignupViewsTest(TestCase):
-	fixtures = ['beerstyles', 'entries', 'judgingresults', 'users']
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'users']
 
 	def setUp(self):
 		self.user = User.objects.get(username='patrick')
