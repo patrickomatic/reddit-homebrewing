@@ -100,6 +100,9 @@ class Entry(models.Model):
 
 
 	def send_shipping_email(self):
+		if not self.style.judge:
+			return
+
 		if not self.user.email:
 			# XXX logging.warn
 			print >>sys.stderr, "Email isn't set for ", self.user.username

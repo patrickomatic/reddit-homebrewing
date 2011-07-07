@@ -48,6 +48,8 @@ def register(request):
 					user=request.user)
 			entry.save()
 
+			entry.send_shipping_email()
+
 			request.user.message_set.create(message='You are now entered in the %s category' % entry.style)
 	else:
 		form = EntryForm()

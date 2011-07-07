@@ -30,6 +30,8 @@ class ContestViewsTest(TestCase):
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
 		entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
 		self.assert_(entry.user.username == 'patrick')
+		# should send the registration email
+		self.assert_(len(mail.outbox) == 1)
 
 	def test_register__post_already_entered(self):
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
