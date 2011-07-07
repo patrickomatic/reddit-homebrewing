@@ -59,6 +59,7 @@ class ContestViewsTest(TestCase):
 		self.assertTemplateUsed(response, 'homebrewit_contest_style.html')
 		self.assert_(response.context['style'].name == 'IPA')
 		self.assert_(len(response.context['entries']) == 4)
+		self.assert_(response.context['address'])
 
 	
 	def test_winner_styles(self):

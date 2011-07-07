@@ -33,12 +33,6 @@
 			{{login_form.as_p}}
 
 			<input type="submit" value="Login" /> 
-			{% comment %}
-			| 
-			<a class="generic-text small-title" title="Register your reddit.com account" href="{% url homebrewit.signup.views.signup %}">
-				Haven't Registered?
-			</a>
-			{% endcomment %}
 		</form>
 	{% endif %}
 
@@ -64,6 +58,10 @@
 							<td class="generic-td">
 								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}" class="generic-link generic-text">
 									{{style.style.name}}
+
+									{% if style.judge %}
+										<img src="/media/icons/package_go.png" />
+									{% endif %}
 								</a>
 							</td>
 							<td class="generic-text generic-link centered generic-td">{{style.n_entries}}</td>

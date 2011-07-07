@@ -65,9 +65,15 @@ def style(request, year, style_id):
 
 	entries = Entry.objects.filter(style=style)
 
-	return render_to_response('homebrewit_contest_style.html',
-			{'style': style, 'entries': entries}, 
-			context_instance=RequestContext(request))
+	address = None
+	if style.judge:
+		address = style.judge.get_profile()
+
+	return render_to_response('homebrewit_contest_style.html', {
+			'style': style, 
+			'entries': entries,
+			'address': address,
+		}, context_instance=RequestContext(request))
 
 
 def contest_year(request, year):
