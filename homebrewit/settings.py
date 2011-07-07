@@ -118,9 +118,12 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 AUTH_PROFILE_MODULE = 'signup.UserProfile'
 
-WINNER_ICON = '/media/winner.png'
 
-DEFAULT_FROM_EMAIL = 'root@cmx.dyercpa.com'
+# mail config
+DEFAULT_FROM_EMAIL = 'do.not.reply@reddithomebrewing.com'
+EMAIL_HOST = 'cmx.dyercpa.com'
+
+WINNER_ICON = '/media/winner.png'
 
 REDDIT_REGISTRATION_THREAD_JSON = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/.json?limit=100000'
 REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/'
