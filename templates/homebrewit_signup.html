@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 
 {% block message %}
-	<p class="generic-text">
+	<p>
 		If you are having trouble signing up, please try again.  There is no 
 		limit to the number of times you can try to post the token.  Also be 
 		sure not to refresh the page in between the time you post the token 
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 
 {% block content %}
-	<p class="generic-text">
+	<p>
 		In order to verify your username on reddit, we need you to complete
 		the form below.  Before submitting the form, be sure to go to the
 		linked thread and post the given token using your reddit username.
@@ -46,7 +46,7 @@ $(document).ready(function() {
 		are aware of the problem and working on a fix.
 	</p>
 
-	<form id="signup-form" class="signup-form generic-text" method="POST" action="{% url homebrewit.signup.views.signup %}">
+	<form id="signup-form" class="signup-form" method="POST" action="{% url homebrewit.signup.views.signup %}">
 		{% csrf_token %}
 
 		{{signup_form.as_p}}

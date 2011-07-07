@@ -12,25 +12,31 @@
 
 {% block content %}
 	{% if address %}
-		<div class="large-title">Shipping Entries</div>
-		<p>If you are competing in this category, please ship your samples to</p>
-		{{address.name}}
-		{{address.address_1}}
-		{% if address.address_2 %}
-			{{address.address_2}}
-		{% endif %}
-		{{address.city}}, {{address.state}} {{address.zip_code}}
+		<div class="large-title">Shipping Info</div>
+		<p>If you are competing in this category, please ship your samples to:</p>
+		<p>
+			{% if address.name %}
+				{{address.name}}<br/>
+			{% endif %}
+			{{address.address_1}}<br/>
+			{% if address.address_2 %}
+				{{address.address_2}}<br/>
+			{% endif %}
+			{{address.city}}, {{address.state}} {{address.zip_code}}<br/>
+		</p>
+
+		<div class="large-title">Entries</div>
 	{% endif %}
 
 	<table>
 		<tr class="generic-tr">
-			<th class="generic-th generic-text">Beer</th>
-			<th class="generic-th generic-text">Score</th>
+			<th class="generic-th">Beer</th>
+			<th class="generic-th">Score</th>
 		</tr>
 		{% for entry in entries %}
 			<tr class="generic-tr">
-				<td class="generic-td generic-text">
-					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}" class="generic-link generic-text">
+				<td class="generic-td">
+					<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}">
 						{{entry.user}} 
 						{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
 					</a>

@@ -12,7 +12,7 @@
 
 
 {% block content %}
-	<p class="generic-text">
+	<p>
 		From here you can set your experience level icon as well as entering 
 		for the {{current_year}} homebrew contest.  
 		{% if not user.is_authenticated %}
@@ -21,8 +21,8 @@
 	</p>
 
 	{% if user.is_authenticated %}
-		<div class="large-title generic-text">
-			<a class="generic-link" href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
+		<div class="large-title">
+			<a href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
 				Edit your profile
 			</a>
 		</div>
@@ -37,37 +37,37 @@
 	{% endif %}
 
 	{% if contest_data %}
-		<div id="contest-title" class="large-title generic-text">/r/Homebrewing Competition</div>
+		<div id="contest-title" class="large-title">/r/Homebrewing Competition</div>
 		<ul>
 			{% for year, style_data in contest_data.iteritems %}
 				<div>
-					<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="generic-link large-title generic-text">
+					<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="large-title">
 						{{year}}'s Competition
 					</a>
 				</div>
 
 				<table>
 					<tr class="generic-tr">
-						<th class="generic-text generic-link generic-th">Style</th>
-						<th class="generic-text generic-link generic-th">Entries</th>
-						<th class="generic-text generic-link generic-th">Winner</th>
+						<th class="generic-th">Style</th>
+						<th class="generic-th">Entries</th>
+						<th class="generic-th">Winner</th>
 					</tr>
 
 					{% for style in style_data %}
 						<tr class="generic-tr">
 							<td class="generic-td">
-								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}" class="generic-link generic-text">
+								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}">
 									{{style.style.name}}
 
-									{% if style.judge %}
+									{% if style.style.judge %}
 										<img src="/media/icons/package_go.png" />
 									{% endif %}
 								</a>
 							</td>
-							<td class="generic-text generic-link centered generic-td">{{style.n_entries}}</td>
+							<td class="centered generic-td">{{style.n_entries}}</td>
 							<td class="centered generic-td">
 								{% if style.winner %}
-									<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}" class="generic-text generic-link">
+									<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}">
 										{{style.winner.winner}}
 									</a>
 								{% endif %}
@@ -76,11 +76,11 @@
 					{% endfor %}
 				</table>
 
-				<div class="large-title generic-text">
+				<div class="large-title">
 					Prizes
 				</div>
-				<p class="generic-text">
-					This year's prizes will be sponsored by the generous folks at <a class="generic-link" title="Midwest Supplies" href="http://midwestsupplies.com">Midwest Supplies</a>.  For each category, Midwest Supplies will be giving a &#36;50 gift certificate to the 1st place winner and a &#36;25 gift certificate to the second place winner.
+				<p>
+					This year's prizes will be sponsored by the generous folks at <a title="Midwest Supplies" href="http://midwestsupplies.com">Midwest Supplies</a>.  For each category, Midwest Supplies will be giving a &#36;50 gift certificate to the 1st place winner and a &#36;25 gift certificate to the second place winner.
 				</p>
 			{% endfor %}
 		</ul>

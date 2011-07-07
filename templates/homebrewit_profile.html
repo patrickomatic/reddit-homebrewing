@@ -12,30 +12,30 @@
 
 {% block content %}
 	{% if is_profile_owner %}
-		<ul class="generic-text">
-			<li><a href="{% url homebrewit.contest.views.register %}" class="generic-link">Sign up for the /r/homebrewing contest</a></li>
-			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}" class="generic-link">Set your experience level</a></li>
-			<li><a href="{% url homebrewit.profile.views.edit_profile %}" class="generic-link">Edit your profile and address</a></li>
+		<ul>
+			<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>
+			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}">Set your experience level</a></li>
+			<li><a href="{% url homebrewit.profile.views.edit_profile %}">Edit your profile and address</a></li>
 		</ul>
 	{% endif %}
 
 
 	{% if level %}
-		<div class="medium-title generic-text">
+		<div class="medium-title">
 			<a href="{% url homebrewit.experiencelevel.views.change_level %}">Experience Level
 			</a>
 		</div>
 		<img src="{{level.experience_level.get_absolute_url}}" class="experience_level_image" />
-		<span class="generic-text">{{level.experience_level}}</span>
+		<span>{{level.experience_level}}</span>
 	{% endif %}
 
-	<div class="medium-title generic-text">Contest Entries</div>
+	<div class="medium-title">Contest Entries</div>
 	<p>
 		{% if contest_entries %}
 			<ul>
 				{% for entry in contest_entries %}
 					<li>
-						<a href="{% url homebrewit.contest.views.entry entry.style.contest_year.contest_year entry.style.id entry.id %}" class="generic-link generic-text">
+						<a href="{% url homebrewit.contest.views.entry entry.style.contest_year.contest_year entry.style.id entry.id %}">
 							{% if entry.beer_name %}
 								{{entry.beer_name}}:
 							{% endif %}

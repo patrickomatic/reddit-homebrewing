@@ -7,29 +7,29 @@
 
 
 {% block contenttitle %}
-	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}" class="generic-text generic-link">{{entry.user}}</a>: 
+	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>: 
 	{% if entry.beer_name %}{{entry.beer_name}} ({% endif %}{{entry.style.name}}{% if entry.beer_name %}){% endif %}
 {% endblock %}
 
 
 {% block content %}
-	<div class="small-title generic-text">Score: 
+	<div class="small-title">Score: 
 		{% if entry.score %}
 			{{entry.score_description}} ({{entry.score}})
 		{% endif %}
 	</div>
 
 	{% if entry.special_ingredients %}
-		<div class="small-title generic-text">Special Ingredients: {{entry.special_ingredients}}</div><br />
+		<div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
 	{% endif %}
 
 	{% if judging_results %}
-		<div class="medium-title generic-text generic-underline">
+		<div class="medium-title generic-underline">
 			Judging Results:
 		</div>
 
 		{% for result in judging_results %}
-			<div class="small-title generic-text">
+			<div class="small-title">
 				Judge: {{result.judge.username}}
 
 				{% if results.bjcp_id %}
@@ -39,53 +39,53 @@
 
 			<table>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-th">Aroma</td>
-					<td class="generic-text generic-th">{{result.aroma_description}}</td>
-					<td width="10%" class="generic-text generic-th">{{result.aroma_score}} / 12</td>
+					<td width="15%" class="judging-category generic-th">Aroma</td>
+					<td class="generic-th">{{result.aroma_description}}</td>
+					<td width="10%" class="generic-th">{{result.aroma_score}} / 12</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Appearance</td>
-					<td class="generic-text generic-td">{{result.appearance_description}}</td>
-					<td class="generic-text generic-td" width="10%">{{result.appearance_score}} / 3</td>
+					<td width="15%" class="judging-category generic-td">Appearance</td>
+					<td class="generic-td">{{result.appearance_description}}</td>
+					<td class="generic-td" width="10%">{{result.appearance_score}} / 3</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Flavor</td>
-					<td class="generic-text generic-td">{{result.flavor_description}}</td>
-					<td class="generic-text generic-td" width="10%">{{result.flavor_score}} / 20</td>
+					<td width="15%" class="judging-category generic-td">Flavor</td>
+					<td class="generic-td">{{result.flavor_description}}</td>
+					<td class="generic-td" width="10%">{{result.flavor_score}} / 20</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Mouthfeel</td>
-					<td class="generic-text generic-td">{{result.mouthfeel_description}}</td>
-					<td class="generic-text generic-td" width="10%">{{result.mouthfeel_score}} / 5</td>
+					<td width="15%" class="judging-category generic-td">Mouthfeel</td>
+					<td class="generic-td">{{result.mouthfeel_description}}</td>
+					<td class="generic-td" width="10%">{{result.mouthfeel_score}} / 5</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Overall Impression</td>
-					<td class="generic-text generic-td">{{result.overall_impression_description}}</td>
-					<td class="generic-text generic-td" width="10%">{{result.overall_impression_score}} / 10</td>
+					<td width="15%" class="judging-category generic-td">Overall Impression</td>
+					<td class="generic-td">{{result.overall_impression_description}}</td>
+					<td class="generic-td" width="10%">{{result.overall_impression_score}} / 10</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Stylistic Accuracy</td>
-					<td class="generic-text generic-td"></td>
-					<td class="generic-text generic-td" width="10%">{{result.stylistic_accuracy}} / 5</td>
+					<td width="15%" class="judging-category generic-td">Stylistic Accuracy</td>
+					<td class="generic-td"></td>
+					<td class="generic-td" width="10%">{{result.stylistic_accuracy}} / 5</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Technical Merit</td>
-					<td class="generic-text generic-td"></td>
-					<td class="generic-text generic-td" width="10%">{{result.technical_merit}} / 5</td>
+					<td width="15%" class="judging-category generic-td">Technical Merit</td>
+					<td class="generic-td"></td>
+					<td class="generic-td" width="10%">{{result.technical_merit}} / 5</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Technical Merit</td>
-					<td class="generic-text generic-td"></td>
-					<td class="generic-text generic-td" width="10%">{{result.technical_merit}} / 5</td>
+					<td width="15%" class="judging-category generic-td">Technical Merit</td>
+					<td class="generic-td"></td>
+					<td class="generic-td" width="10%">{{result.technical_merit}} / 5</td>
 				</tr>
 				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-text generic-td">Intangibles</td>
-					<td class="generic-text generic-td"></td>
-					<td class="generic-text generic-td" width="10%">{{result.intangibles}} / 5</td>
+					<td width="15%" class="judging-category generic-td">Intangibles</td>
+					<td class="generic-td"></td>
+					<td class="generic-td" width="10%">{{result.intangibles}} / 5</td>
 				</tr>
 		</table>
 		{% endfor %}
 	{% else %}
-		<div class="small-title generic-text">Entry not yet judged</div>
+		<div class="small-title">Entry not yet judged</div>
 	{% endif %}
 {% endblock %}

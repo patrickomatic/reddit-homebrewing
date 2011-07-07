@@ -11,7 +11,7 @@
 
 
 {% block content %}
-	<p class="generic-text">Just pick which style you'll be brewing:</p>
+	<p>Just pick which style you'll be brewing:</p>
 
 	<form class="contest-entry-form" method="POST" action="{% url homebrewit.contest.views.register %}">
 		{% csrf_token %}
