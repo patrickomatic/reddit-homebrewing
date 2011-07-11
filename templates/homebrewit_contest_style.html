@@ -11,7 +11,7 @@
 
 
 {% block content %}
-	{% if address %}
+	{% if address and user.is_authenticated %}
 		<div class="large-title">Shipping Info</div>
 		<p>If you are competing in this category, please ship your samples to:</p>
 		<p>
