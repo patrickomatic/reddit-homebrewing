@@ -124,10 +124,6 @@ class Entry(models.Model):
 
 			send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
 				""" 
-**Note: if this is your second time receiving this email, please 
-disregard the original email.
-
-
 Hey %(username)s,
 
 Thanks for entering the %(contest_year)s %(style)s category.  When
