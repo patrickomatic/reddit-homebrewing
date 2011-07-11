@@ -111,7 +111,7 @@ class Entry(models.Model):
 		try:
 			contest_year = self.style.contest_year.contest_year
 
-			email_vars = model_to_dict(self.user.get_profile())
+			email_vars = model_to_dict(self.style.judge.get_profile())
 			email_vars.update({
 				'username': self.user.username,
 				'contest_year': contest_year,
@@ -124,6 +124,10 @@ class Entry(models.Model):
 
 			send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
 				""" 
+**Note: if this is your second time receiving this email, please 
+disregard the original email.
+
+
 Hey %(username)s,
 
 Thanks for entering the %(contest_year)s %(style)s category.  When
