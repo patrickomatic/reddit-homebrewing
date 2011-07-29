@@ -1,6 +1,8 @@
-import datetime, reddit
+import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
+
+from homebrewit import reddit
 
 
 class SignupViewsTest(TestCase):

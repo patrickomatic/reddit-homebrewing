@@ -12,7 +12,7 @@ from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, Entry 
 from homebrewit.signup import secret_key
-from homebrewit.signup.reddit import reddit_login, verify_token_in_thread
+from homebrewit.reddit import reddit_login, verify_token_in_thread
 
 
 class RedditAuthenticationForm(AuthenticationForm):
