@@ -12,7 +12,7 @@ from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, Entry 
 from homebrewit.signup import secret_key
-from homebrewit.reddit import reddit_login, verify_token_in_thread
+from homebrewit.reddit import can_reddit_login, verify_token_in_thread
 
 
 class RedditAuthenticationForm(AuthenticationForm):
@@ -25,7 +25,7 @@ class RedditAuthenticationForm(AuthenticationForm):
 			try:
 				User.objects.get(username=username)
 			except User.DoesNotExist:
-				if not reddit_login(username, password):
+				if not can_reddit_login(username, password):
 					raise forms.ValidationError("This username and password don't seem to work on reddit")
 
 				# ok they authenticate on reddit - create them

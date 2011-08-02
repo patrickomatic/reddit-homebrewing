@@ -9,11 +9,25 @@ from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
-
+from homebrewit.reddit import set_flair, reddit_login
 
 
 class ExperienceForm(forms.Form):
 	experience_level = forms.ModelChoiceField(queryset=ExperienceLevel.objects.all())
+	reddit_password = forms.CharField(widget=forms.PasswordInput, label="Reddit Password")
+
+	def __init__(self, *args, **kwargs):
+		self.request = kwargs.pop('request', None)
+		super(ExperienceForm, self).__init__(*args, **kwargs)
+
+	def clean(self):
+		data = self.cleaned_data.copy()
+
+		data['reddit_session'] = reddit_login(self.request.user.username, data['reddit_password'])
+		if not data['reddit_session']:
+			raise forms.ValidationError("The given password does not work on reddit.com")
+
+		return data
 
 
 @login_required
@@ -26,37 +40,28 @@ def change_level(request):
 		initial = {}
 
 	if request.method == 'POST':
-		form = ExperienceForm(request.POST, initial=initial)
+		form = ExperienceForm(request.POST, request=request, initial=initial)
 
 		if form.is_valid():
-			if level:
-				level.experience_level = form.cleaned_data['experience_level']
-			else:
-				level = UserExperienceLevel(experience_level=form.cleaned_data['experience_level'], user=request.user)
+			data = form.cleaned_data
 
+			if level:
+				level.experience_level = data['experience_level']
+			else:
+				level = UserExperienceLevel(experience_level=data['experience_level'], user=request.user)
 			level.save()
 
-			request.user.message_set.create(message='Successfully set experience level to %s.  It may take up to 24 hours for this change to appear on /r/homebrewing' % level.experience_level)
-
-			# make sure it doesn't email the admins any more than every 2 hours
-			now = datetime.datetime.now()
-			if not change_level.last_admin_email or change_level.last_admin_email + datetime.timedelta(hours=2) < now:
-# XXX need to get mail set up
-#				mail_admins("An experience level has been set", "Somebody has set their experience level.  The CSS on /r/Homebrewing will now have to be updated.")
-				change_level.last_admin_email = now
-
+			set_flair(request.user.username, level.experience_level.name.lower(), data['reddit_session'])
+					
+			request.user.message_set.create(message='Successfully set experience level to %s.' % level.experience_level)
 			return HttpResponseRedirect('/profile/')
 	else:
-		form = ExperienceForm(initial=initial)
+		form = ExperienceForm(initial=initial, request=request)
 		
 	return render_to_response('homebrewit_experience.html', {'form': form},
 			context_instance=RequestContext(request))
 
-# this basically emulates C's static function variables
-change_level.last_admin_email = None
 
-
-# XXX @cache_page(600)
 def experience_styles(request):
 	return render_to_response('experience_styles.css',
 			{'experience_levels': UserExperienceLevel.objects.all()},
