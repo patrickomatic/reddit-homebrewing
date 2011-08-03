@@ -77,6 +77,9 @@ class RedditTest(TestCase):
 	def setUp(self):
 		self.saved_urlopen = reddit.urllib2.urlopen
 
+	def tearDown(self):
+		reddit.urllib2.urlopen = self.saved_urlopen
+
 
 	def test_reddit_login(self):
 		def urlopen_mock(request):
@@ -112,6 +115,23 @@ class RedditTest(TestCase):
 
 		self.assert_(reddit.reddit_login('patrickomatic', 'password'))
 
+	def test_set_flair(self):
+		session = reddit.RedditSession(modhash='t0t0t0')
+
+		def urlopen_mock(request):
+			self.assert_(request.get_full_url() == 'http://www.reddit.com/api/flair')
+			data = request.get_data()
+			self.assert_('uh=t0t0t0' in data)
+			self.assert_('r=homebrewing' in data)
+			self.assert_('name=patrickomatic' in data)
+			self.assert_('css_class=advanced' in data)
+			self.assert_(request.has_header('User-agent'))
+
+			return MockResponse("")
+
+		reddit.urllib2.urlopen = urlopen_mock
+		reddit.set_flair('patrickomatic', 'advanced', session)
+
 #	def test_verify_token_in_thread(self):
 #		self.assert_(reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "arcsine", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
 #
@@ -122,5 +142,3 @@ class RedditTest(TestCase):
 #		self.assert_(not reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "802bikeguy_com", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
 
 
-	def tearDown(self):
-		reddit.urllib2.urlopen = self.saved_urlopen
