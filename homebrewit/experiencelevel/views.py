@@ -23,6 +23,9 @@ class ExperienceForm(forms.Form):
 	def clean(self):
 		data = self.cleaned_data.copy()
 
+		if not 'reddit_password' in data:
+			raise forms.ValidationError("You must supply your reddit password to be able to set your experience level.")
+
 		data['reddit_session'] = reddit_login(self.request.user.username, data['reddit_password'])
 		if not data['reddit_session']:
 			raise forms.ValidationError("The given password does not work on reddit.com")

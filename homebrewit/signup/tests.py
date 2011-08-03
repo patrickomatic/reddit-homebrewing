@@ -27,6 +27,10 @@ class SignupViewsTest(TestCase):
 	def setUp(self):
 		self.user = User.objects.get(username='patrick')
 		self.client.login(username=self.user.username, password='password')
+		self.saved_urlopen = reddit.urllib2.urlopen
+
+	def tearDown(self):
+		reddit.urllib2.urlopen = self.saved_urlopen
 
 
 	def test_index(self):
@@ -40,14 +44,18 @@ class SignupViewsTest(TestCase):
 		self.assert_(response.context['login_form'])
 
 	def test_index__post_first_time(self):
-# XXX have to mock out reddit to call this
-		self.client.logout()
-#		response = self.client.post('/', {'username': self.user.username, 'password': 'password'})
-#
-#		self.assertRedirects(response, '/profile')
-#		self.assert_(self.user.is_authenticated())
+		def urlopen_mock(request):
+			return MockResponse(json.dumps({"json": {"errors": [], "data": {"modhash": "t0t0t0", "cookie": "1234567,..."}}}))
+		reddit.urllib2.urlopen = urlopen_mock
 
-	def test_index__post_second_time(self):
+		self.client.logout()
+
+		response = self.client.post('/', {'username': self.user.username, 'password': 'password'})
+
+		self.assertRedirects(response, '/profile/')
+		self.assert_(self.user.is_authenticated())
+
+	def test_index__post_after_user_is_created(self):
 		self.client.logout()
 		response = self.client.post('/', {'username': self.user.username, 'password': 'password'})
 
