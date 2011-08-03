@@ -42,7 +42,7 @@ def index(request):
 		login_form = RedditAuthenticationForm(data=request.POST)
 		if login_form.is_valid():
 			login(request, login_form.get_user())
-			return HttpResponseRedirect('/profile')
+			return HttpResponseRedirect('/profile/')
 	else:
 		login_form = RedditAuthenticationForm()
 

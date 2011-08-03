@@ -11,7 +11,7 @@ class RedditSession:
 def reddit_api_url(url, data=None, session=None):
 	if not session:
 		session = RedditSession()
-	elif data and not 'uh' in data:
+	elif data and not 'uh' in data and session.modhash:
 		data['uh'] = session.modhash
 
 	if data: 
