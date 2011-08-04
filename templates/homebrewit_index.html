@@ -58,10 +58,6 @@
 							<td class="generic-td">
 								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}">
 									{{style.style.name}}
-
-									{% if style.style.judge %}
-										<img src="/media/icons/package_go.png" />
-									{% endif %}
 								</a>
 							</td>
 							<td class="centered generic-td">{{style.n_entries}}</td>
