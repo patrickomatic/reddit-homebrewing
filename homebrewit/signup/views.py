@@ -46,6 +46,7 @@ def index(request):
 	else:
 		login_form = RedditAuthenticationForm()
 
+	# XXX this is a lot of stuff to have in a controller
 	# get each years beer styles
 	contest_data = {} 
 	for style in BeerStyle.objects.all():
@@ -62,6 +63,8 @@ def index(request):
 
 		data = {
 				'n_entries': Entry.objects.filter(style=style).count(),
+				'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
+				'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
 				'winner': winner_data,
 				'style': style,
 		}

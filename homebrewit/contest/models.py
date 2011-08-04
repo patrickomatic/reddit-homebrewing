@@ -92,6 +92,7 @@ class Entry(models.Model):
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
 	score = models.PositiveIntegerField(null=True, blank=True)
 	mailed_entry = models.BooleanField(default=False)
+	received_entry = models.BooleanField(default=False)
 
 	objects = EntryManager()
 

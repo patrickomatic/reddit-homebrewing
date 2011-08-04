@@ -48,9 +48,11 @@
 
 				<table>
 					<tr class="generic-tr">
-						<th class="generic-th">Style</th>
+						<th class="generic-th" width="50%">Style</th>
+						<th class="generic-th" width="20%">Winner</th>
 						<th class="generic-th">Entries</th>
-						<th class="generic-th">Winner</th>
+						<th class="generic-th"># Received</th>
+						<th class="generic-th"># Judged</th>
 					</tr>
 
 					{% for style in style_data %}
@@ -60,13 +62,21 @@
 									{{style.style.name}}
 								</a>
 							</td>
-							<td class="centered generic-td">{{style.n_entries}}</td>
 							<td class="centered generic-td">
 								{% if style.winner %}
 									<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}">
 										{{style.winner.winner}}
 									</a>
 								{% endif %}
+							</td>
+							<td class="centered generic-td">
+								{{style.n_entries}}
+							</td>
+							<td class="centered generic-td">
+								{{style.n_received}}
+							</td>
+							<td class="centered generic-td">
+								{{style.n_judged}}
 							</td>
 						</tr>
 					{% endfor %}
