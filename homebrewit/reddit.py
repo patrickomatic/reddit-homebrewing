@@ -2,6 +2,27 @@ import urllib, urllib2, json, cookielib
 from django.conf import settings
 
 
+def retry(times, ex):
+	""" A decorator which can be called as:
+
+		@retry(5, Exception)
+		def fn():
+			raise Exception
+
+	    and will call fn and if it throws an exception, it will keep
+	    trying 5 times. """
+	def retry_wrap(fn):
+		def fn_wrap(*args, **kwargs):
+			for i in range(times-1):
+				try:
+					return fn(*args, **kwargs)
+				except ex:
+					pass
+			return fn(*args, **kwargs)
+		return fn_wrap
+	return retry_wrap
+
+
 class RedditSession:
 	def __init__(self, cookie_jar=None, modhash=None):
 		self.cookie_jar = cookie_jar
@@ -72,6 +93,7 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 	return False
 
 
+@retry(3, urllib2.HTTPError)
 def set_flair(reddit_username, flair_class, reddit_session):
 	reddit_api_url("/flair", {'r': 'homebrewing', 'name': reddit_username,
 			'css_class': flair_class, 'text': ''}, reddit_session)

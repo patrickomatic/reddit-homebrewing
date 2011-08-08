@@ -132,6 +132,33 @@ class RedditTest(TestCase):
 		reddit.urllib2.urlopen = urlopen_mock
 		reddit.set_flair('patrickomatic', 'advanced', session)
 
+
+	def test_retry(self):
+			times_called = [0]
+
+			@reddit.retry(5, ValueError)
+			def retry_tester():
+					times_called[0] += 1
+					raise ValueError("success")
+
+			self.assertRaises(ValueError, retry_tester)
+			self.assert_(times_called[0] == 5)
+
+	def test_retry__eventually_succeed(self):
+			times_called = [0]
+
+			@reddit.retry(5, Exception)
+			def retry_tester():
+					times_called[0] += 1
+					if times_called[0] < 3:
+							raise Exception
+
+					return "success"
+
+			self.assert_("success" == retry_tester())
+			self.assert_(times_called[0] == 3)
+
+
 #	def test_verify_token_in_thread(self):
 #		self.assert_(reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "arcsine", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
 #
