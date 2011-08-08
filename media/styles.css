@@ -1,48 +1,48 @@
 a {
 	font-weight: bold;
-    color: #422E13;
+	color: #422E13;
 }
 a:hover {
-    text-decoration: underline;
-    color: #8E6B3E;
+	text-decoration: underline;
+	color: #8E6B3E;
 }
 
 .generic-border {
-    border: 1px solid #422E13;
+	border: 1px solid #422E13;
 }
 
 .generic-header { 
-    width: 100%;
-    border: 1px solid #422E13; /* Chrome doesn't like horizontal rules < 3px in height */
-    color: #422E13; /* IE is redarded */
-    background-color: #422E13; /* Mozilla and Opera are retarded also */
+	width: 100%;
+	border: 1px solid #422E13; /* Chrome doesn't like horizontal rules < 3px in height */
+	color: #422E13; /* IE is redarded */
+	background-color: #422E13; /* Mozilla and Opera are retarded also */
 }   
 
 .generic-table {
-    border: 1px solid #422E13;
+	border: 1px solid #422E13;
 }
 
 .generic-th {
-    border: 1px solid #422E13;
+	border: 1px solid #422E13;
 }
 
 .generic-td {
-    border-bottom: 1px solid #422E13;
-    border-right: 1px solid #422E13;
-    border-left: 1px solid #422E13;
-    padding: 2px;
+	border-bottom: 1px solid #422E13;
+	border-right: 1px solid #422E13;
+	border-left: 1px solid #422E13;
+	padding: 2px;
 }
 
 .generic-tr:nth-child(odd) {
-    background-color: #EEDDA4;
+	background-color: #EEDDA4;
 }
 
 .generic-tr:nth-child(even) {
-    background-color: #DDB686;
+	background-color: #DDB686;
 }
 
 .generic-underline {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 div { 
@@ -63,13 +63,13 @@ table {
 }
 
 label {
-    font-family: Helvetica, Arial;
-    font-weight: bold;
-    color: #422E13;
+	font-family: Helvetica, Arial;
+	font-weight: bold;
+	color: #422E13;
 }
 
 ul li {
-    color: #422E13;
+	color: #422E13;
 }
 
 footer {
@@ -79,11 +79,11 @@ footer {
 }
     
 .experience_level_image {
-    height: 90px;
+	height: 90px;
 }
 
 #experience_legend {
-    height: 150px;
+	height: 150px;
 }
 
 #header {
@@ -97,9 +97,9 @@ footer {
 }
 
 .header-logo {
-    float: left;
-    height: 100px;
-    border: 0px;
+	float: left;
+	height: 100px;
+	border: 0px;
 	padding-right: 10px;
 }
 
@@ -123,9 +123,9 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #8E6B3E;
-    color: #EEE4C5;
-    cursor: pointer;
+	background-color: #8E6B3E;
+	color: #EEE4C5;
+	cursor: pointer;
 }
 
 .signup-form label {
@@ -161,13 +161,13 @@ input[type="submit"]:hover {
 }
 
 .messages {
-    color: #33CC33 !important;
-    font-weight: bold;	
+	color: #33CC33 !important;
+	font-weight: bold;	
 }
 
 .errorlist {
-    color: #991916 !important;
-    font-weight: bold;	
+	color: #991916 !important;
+	font-weight: bold;	
 }
 
 .small-title {
@@ -193,7 +193,7 @@ input[type="submit"]:hover {
 }
 
 .centered {
-    text-align: center;
+	text-align: center;
 }
 
 .setaddress label {
