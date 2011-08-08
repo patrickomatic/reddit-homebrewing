@@ -45,6 +45,10 @@ a:hover {
 	text-decoration: underline;
 }
 
+.contest-table {
+	width: 95%;
+}
+
 div { 
 	margin: 0px;
 	padding: 0px;
