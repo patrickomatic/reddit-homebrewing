@@ -98,6 +98,8 @@ class RedditTest(TestCase):
 		session = reddit.reddit_login('patrickomatic', 'password')
 		self.assert_(session)
 		self.assert_(session.modhash == 't0t0t0')
+		self.assert_(session.reddit_password == 'password')
+		self.assert_(not session.has_been_used)
 
 	def test_reddit_login__failure(self):
 		def urlopen_mock(request):
@@ -115,6 +117,7 @@ class RedditTest(TestCase):
 
 		self.assert_(reddit.reddit_login('patrickomatic', 'password'))
 
+
 	def test_set_flair(self):
 		session = reddit.RedditSession(modhash='t0t0t0')
 
@@ -131,6 +134,8 @@ class RedditTest(TestCase):
 
 		reddit.urllib2.urlopen = urlopen_mock
 		reddit.set_flair('patrickomatic', 'advanced', session)
+
+		self.assert_(session.has_been_used)
 
 
 	def test_retry(self):
@@ -167,5 +172,3 @@ class RedditTest(TestCase):
 #
 #	def test_verify_token_in_thread__otherUser(self):
 #		self.assert_(not reddit.verify_token_in_thread("http://www.reddit.com/r/Homebrewing/comments/ghqbs/how_do_different_yeast_strains_affect_brews/", "802bikeguy_com", "Woot! I just recovered some Gulden Draak yeast, good to know it wasn't already commercially available. Thanks!"))
-
-
