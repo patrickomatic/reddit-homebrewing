@@ -30,15 +30,10 @@ class ExperienceViewsTest(TestCase):
 			return MockResponse(json.dumps({"json": {"errors": [], "data": {"modhash": "t0t0t0", "cookie": "1234567,..."}}}))
 		reddit.urllib2.urlopen = urlopen_mock
 
-		response = self.client.post('/experience/level', {'experience_level': 4, 'reddit_password': 'password'})
+		response = self.client.post('/experience/level', {'experience_level': 4})
 
 		self.assertRedirects(response, '/profile/')
 		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
-
-	def test_change_level__post_no_password(self):
-		response = self.client.post('/experience/level', {'experience_level': 4})
-
-		self.assert_(response.context['form'].errors)
 
 
 	def test_experience_styles(self):

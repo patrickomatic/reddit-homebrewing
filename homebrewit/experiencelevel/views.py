@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.core.mail import mail_admins
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
@@ -14,24 +15,6 @@ from homebrewit.reddit import set_flair, reddit_login
 
 class ExperienceForm(forms.Form):
 	experience_level = forms.ModelChoiceField(queryset=ExperienceLevel.objects.all())
-	reddit_password = forms.CharField(widget=forms.PasswordInput, label="Reddit Password")
-
-	def __init__(self, *args, **kwargs):
-		self.request = kwargs.pop('request', None)
-		super(ExperienceForm, self).__init__(*args, **kwargs)
-
-	def clean(self):
-		data = self.cleaned_data.copy()
-
-		if not 'reddit_password' in data:
-			raise forms.ValidationError("You must supply your reddit password to be able to set your experience level.")
-
-		data['reddit_session'] = reddit_login(self.request.user.username, data['reddit_password'])
-		if not data['reddit_session']:
-			raise forms.ValidationError("The given password does not work on reddit.com")
-
-		return data
-
 
 @login_required
 def change_level(request):
@@ -43,7 +26,7 @@ def change_level(request):
 		initial = {}
 
 	if request.method == 'POST':
-		form = ExperienceForm(request.POST, request=request, initial=initial)
+		form = ExperienceForm(request.POST, initial=initial)
 
 		if form.is_valid():
 			data = form.cleaned_data
@@ -54,12 +37,12 @@ def change_level(request):
 				level = UserExperienceLevel(experience_level=data['experience_level'], user=request.user)
 			level.save()
 
-			set_flair(request.user.username, level.experience_level.name.lower(), data['reddit_session'])
+			set_flair(level)
 					
 			request.user.message_set.create(message='Successfully set experience level to %s.' % level.experience_level)
 			return HttpResponseRedirect('/profile/')
 	else:
-		form = ExperienceForm(initial=initial, request=request)
+		form = ExperienceForm(initial=initial)
 		
 	return render_to_response('homebrewit_experience.html', {'form': form},
 			context_instance=RequestContext(request))

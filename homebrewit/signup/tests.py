@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.utils import simplejson as json
 
 from homebrewit import reddit
+from homebrewit.experiencelevel.models import *
 
 
 class MockResponse:
@@ -74,7 +75,11 @@ class SignupViewsTest(TestCase):
 
 
 class RedditTest(TestCase):
+	fixtures = ['experiencelevels', 'users', 'userexperiencelevels']
+
+
 	def setUp(self):
+		self.user = User.objects.get(username='patrick')
 		self.saved_urlopen = reddit.urllib2.urlopen
 
 	def tearDown(self):
@@ -98,7 +103,6 @@ class RedditTest(TestCase):
 		session = reddit.reddit_login('patrickomatic', 'password')
 		self.assert_(session)
 		self.assert_(session.modhash == 't0t0t0')
-		self.assert_(session.reddit_password == 'password')
 		self.assert_(not session.has_been_used)
 
 	def test_reddit_login__failure(self):
@@ -126,14 +130,14 @@ class RedditTest(TestCase):
 			data = request.get_data()
 			self.assert_('uh=t0t0t0' in data)
 			self.assert_('r=homebrewing' in data)
-			self.assert_('name=patrickomatic' in data)
+			self.assert_('name=patrick' in data)
 			self.assert_('css_class=advanced' in data)
 			self.assert_(request.has_header('User-agent'))
 
 			return MockResponse("")
 
 		reddit.urllib2.urlopen = urlopen_mock
-		reddit.set_flair('patrickomatic', 'advanced', session)
+		reddit.set_flair(UserExperienceLevel(user=self.user, experience_level=ExperienceLevel.objects.get(pk=3)), session)
 
 		self.assert_(session.has_been_used)
 

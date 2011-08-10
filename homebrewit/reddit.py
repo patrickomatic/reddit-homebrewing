@@ -24,10 +24,9 @@ def retry(times, ex):
 
 
 class RedditSession:
-	def __init__(self, cookie_jar=None, modhash=None, reddit_password=None):
+	def __init__(self, cookie_jar=None, modhash=None):
 		self.cookie_jar = cookie_jar
 		self.modhash = modhash
-		self.reddit_password = reddit_password
 		self.has_been_used = False
 
 
@@ -61,7 +60,6 @@ def reddit_login(username, password):
 	assert username and password
 	
 	session = RedditSession()
-	session.reddit_password = password
 
 	fh = reddit_api_url("/login/" + username, 
 		{'user': username, 'passwd': password, 'api_type': 'json'}, session)
@@ -101,9 +99,13 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 
 
 @retry(3, urllib2.HTTPError)
-def set_flair(reddit_username, flair_class, reddit_session=None):
-	if reddit_session.has_been_used:
-		reddit_session = reddit_login(reddit_username, reddit_session.reddit_password)
+def set_flair(user_experience_level, reddit_session=None):
+	if not reddit_session:
+		reddit_session = reddit_login(settings.MODERATOR_USERNAME, settings.MODERATOR_PASSWORD)
+	reddit_api_url("/flair", {'r': 'homebrewing', 'name': user_experience_level.user.username,
+			'css_class': user_experience_level.experience_level.name.lower(), 'text': ''}, reddit_session)
 
-	reddit_api_url("/flair", {'r': 'homebrewing', 'name': reddit_username,
-			'css_class': flair_class, 'text': ''}, reddit_session)
+def set_flair_csv(flair_csv, reddit_session=None):
+	if not reddit_session:
+		reddit_session = reddit_login(settings.MODERATOR_USERNAME, settings.MODERATOR_PASSWORD)
+	reddit_api_url("/flaircsv.json", {'r': 'homebrewing', 'flair_csv': flair_csv}, reddit_session)
