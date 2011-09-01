@@ -97,7 +97,7 @@ class Entry(models.Model):
 	objects = EntryManager()
 
 	class Meta:
-		ordering = ('style', '-score')
+		ordering = ('style', 'score')
 
 
 	def send_shipping_email(self):
@@ -197,6 +197,14 @@ class JudgingResult(models.Model):
 
 	def get_description(self):
 		return rating_description_str(self.overall_rating())
+
+
+	def save(self):
+		# update the entry's score
+		self.entry.score = self.overall_rating()
+		self.entry.save()
+
+		models.Model.save(self)
 
 
 	def __unicode__(self):
