@@ -13,77 +13,77 @@
 
 
 {% block content %}
-	<div class="small-title">Score: 
-		{% if entry.score %}
-			{{entry.score_description}} ({{entry.score}})
-		{% endif %}
-	</div>
-
 	{% if entry.special_ingredients %}
 		<div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
 	{% endif %}
 
 	{% if judging_results %}
-		<div class="medium-title generic-underline">
-			Judging Results:
-		</div>
-
 		{% for result in judging_results %}
 			<div class="small-title">
 				Judge: {{result.judge.username}}
 
-				{% if results.bjcp_id %}
-					(BJCP ID#: {{results.bjcp_id}})
+				{% if result.bjcp_id %}
+					(BJCP ID#: {{result.bjcp_id}})
 				{% endif %}
 			</div>
 
-			<table class="contest-table">
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-th">Aroma</td>
-					<td class="generic-th">{{result.aroma_description}}</td>
-					<td width="10%" class="generic-th">{{result.aroma_score}} / 12</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Appearance</td>
-					<td class="generic-td">{{result.appearance_description}}</td>
-					<td class="generic-td" width="10%">{{result.appearance_score}} / 3</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Flavor</td>
-					<td class="generic-td">{{result.flavor_description}}</td>
-					<td class="generic-td" width="10%">{{result.flavor_score}} / 20</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Mouthfeel</td>
-					<td class="generic-td">{{result.mouthfeel_description}}</td>
-					<td class="generic-td" width="10%">{{result.mouthfeel_score}} / 5</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Overall Impression</td>
-					<td class="generic-td">{{result.overall_impression_description}}</td>
-					<td class="generic-td" width="10%">{{result.overall_impression_score}} / 10</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Stylistic Accuracy</td>
-					<td class="generic-td"></td>
-					<td class="generic-td" width="10%">{{result.stylistic_accuracy}} / 5</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Technical Merit</td>
-					<td class="generic-td"></td>
-					<td class="generic-td" width="10%">{{result.technical_merit}} / 5</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Technical Merit</td>
-					<td class="generic-td"></td>
-					<td class="generic-td" width="10%">{{result.technical_merit}} / 5</td>
-				</tr>
-				<tr class="generic-tr">
-					<td width="15%" class="judging-category generic-td">Intangibles</td>
-					<td class="generic-td"></td>
-					<td class="generic-td" width="10%">{{result.intangibles}} / 5</td>
-				</tr>
-		</table>
+			<ul class="score-list">
+				<li>
+					<div class="small-title score">{{result.aroma_score}} / 12</div>
+					<div class="small-title">Aroma</div>
+
+					<div class="clear" /> 
+					<p>{{result.aroma_description}}</p>
+				</li>
+				<li>
+					<div class="small-title score">{{result.appearance_score}} / 3</div>
+					<div class="small-title">Appearance</div>
+
+					<div class="clear" /> 
+					<p>{{result.appearance_description}}</p>
+				</li>
+				<li>
+					<div class="small-title score">{{result.flavor_score}} / 20</div>
+					<div class="small-title">Flavor</div>
+
+					<div class="clear" /> 
+					<p>{{result.flavor_description}}</p>
+				</li>
+				<li>
+					<div class="small-title score">{{result.mouthfeel_score}} / 5</div>
+					<div class="small-title">Mouthfeel</div>
+
+					<div class="clear" /> 
+					<p>{{result.mouthfeel_description}}</p>
+				</li>
+				<li>
+					<div class="small-title score">{{result.overall_impression_score}} / 10</div>
+					<div class="small-title">Overall Impression</div>
+
+					<div class="clear" /> 
+					<p>{{result.overall_impression_description}}</p>
+				</li>
+				<li>
+					<div class="small-title score">{{result.stylistic_accuracy}} / 5</div>
+					<div class="small-title">Stylistic Accuracy</div>
+					<div class="clear" /> 
+				</li>
+				<li>
+					<div class="small-title score">{{result.technical_merit}} / 5</div>
+					<div class="small-title">Technical Merit</div>
+					<div class="clear" /> 
+				</li>
+				<li>
+					<div class="small-title score">{{result.intangibles}} / 5</div>
+					<div class="small-title">Intangibles</div>
+					<div class="clear" /> 
+				</li>
+				<li>
+					<div class="small-title score">{{result.get_description}}</div>
+					<div class="medium-title">Overall Score</div>
+					<div class="clear" /> 
+				</li>
+			</ul>
 		{% endfor %}
 	{% else %}
 		<div class="small-title">Entry not yet judged</div>

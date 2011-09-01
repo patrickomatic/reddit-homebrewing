@@ -216,3 +216,17 @@ input[type="submit"]:hover {
 	text-align: center;
 }
 
+.score-list {
+	width: 75%;
+}
+
+.score-list li {
+	list-style-type: none;
+	border-top: 1px solid #422E13;
+}
+
+.score {
+	margin-right: 10px;
+	float: right;
+}
+
