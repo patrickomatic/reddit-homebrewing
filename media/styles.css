@@ -77,6 +77,8 @@ ul li {
 }
 
 footer {
+	margin-top: 35px;
+	margin-bottom: 5px;
 	width: 100%;
 	text-align: center;
 	font-size: 0.7em;
