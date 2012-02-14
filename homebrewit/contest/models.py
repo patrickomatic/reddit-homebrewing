@@ -147,8 +147,8 @@ As always, we appreciate your participation and look forward to a great competit
 
 
 	def get_rating_description(self):
-		if self.judging_result:
-			return self.judging_result.get_description()
+		if self.bjcp_judging_result:
+			return self.bjcp_judging_result.get_description()
 		else:
 			return JudgingResult.rating_description_str(self.score)
 
