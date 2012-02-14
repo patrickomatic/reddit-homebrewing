@@ -3,6 +3,7 @@ import datetime, smtplib
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models import Max
 from django.forms.models import model_to_dict
 
 
@@ -21,8 +22,16 @@ def rating_description_str(rating):
 		return "Problematic (%d / 65)" % rating
 
 
+class ContestYearManager(models.Manager):
+	def get_current_contest_year(self):
+		return ContestYear.objects.aggregate(Max('contest_year'))['contest_year__max']
+
+
 class ContestYear(models.Model):
 	contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now())
+
+	objects = ContestYearManager()
+
 
 	class Meta:
 		ordering = ('-contest_year',)
