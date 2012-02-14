@@ -1,11 +1,10 @@
-import datetime 
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import simplejson as json
 
 from homebrewit import reddit
 from homebrewit.experiencelevel.models import *
+from homebrewit.contest.models import *
 
 
 class MockResponse:
@@ -41,7 +40,7 @@ class SignupViewsTest(TestCase):
 		self.assertTemplateUsed(response, 'homebrewit_index.html')
 		self.assert_(len(response.context['contest_data']) == 1)
 		self.assert_(len(response.context['contest_data'][2011]) == 8)
-		self.assert_(response.context['current_year'] == datetime.datetime.now().year)
+		self.assert_(response.context['contest_year'] == 2011)
 		self.assert_(response.context['login_form'])
 
 	def test_index__post_first_time(self):

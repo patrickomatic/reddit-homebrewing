@@ -1,4 +1,4 @@
-import datetime, hashlib, random
+import hashlib, random
 
 from django import forms
 from django.conf import settings
@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from homebrewit.contest.models import BeerStyle, Entry 
+from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
 from homebrewit.signup import secret_key
 from homebrewit.reddit import can_reddit_login, verify_token_in_thread
 
@@ -76,7 +76,7 @@ def index(request):
 
 	return render_to_response('homebrewit_index.html', {
 				'contest_data': contest_data, 
-				'current_year': datetime.datetime.now().year,
+				'contest_year': ContestYear.objects.get_current_contest_year(),
 				'login_form': login_form,
 		}, context_instance=RequestContext(request))
 
