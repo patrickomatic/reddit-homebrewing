@@ -189,7 +189,8 @@ class BJCPJudgingResult(models.Model):
 
 	def overall_rating(self):
 		return self.aroma_score + self.appearance_score \
-				+ self.flavor_score + self.mouthfeel_score 
+				+ self.flavor_score + self.mouthfeel_score \
+				+ self.overall_impression_score
 
 
 	def get_description(self):

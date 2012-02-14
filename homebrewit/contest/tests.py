@@ -124,12 +124,22 @@ class ContestModelsTest(TestCase):
 		self.assert_(not 'None' in message)
 
 
-#	def test_get_description(self):
+	def test_rating_description_str(self):
+		self.assert_(JudgingResult.rating_description_str(60).startswith("Outstanding"))
+		self.assert_(JudgingResult.rating_description_str(30).startswith("Good"))
+		self.assert_(JudgingResult.rating_description_str(1).startswith("Problematic"))
 
-	def test_get_description__bjcp_result(self):
+	def test_get_description(self):
 		result = BJCPJudgingResult(aroma_score=12, appearance_score=3, flavor_score=20, mouthfeel_score=5, overall_impression_score=10)
 
-#		self.assert_(result.get_
+		self.assert_(result.get_description().startswith("Outstanding"))
+
+		result = BJCPJudgingResult(aroma_score=1, appearance_score=1, flavor_score=1, mouthfeel_score=1, overall_impression_score=1)
+		self.assert_(result.get_description().startswith("Problematic"))
+
+		result = BJCPJudgingResult(aroma_score=20, appearance_score=1, flavor_score=1, mouthfeel_score=1, overall_impression_score=1)
+		self.assert_(result.get_description().startswith("Good"))
+
 
 
 class JudgeContestCommandTest(TestCase):
