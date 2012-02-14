@@ -13,7 +13,7 @@
 {% block content %}
 	{% if is_profile_owner %}
 		<ul>
-			<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>
+			{% comment %}			<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>{% endcomment %}
 			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}">Set your experience level</a></li>
 			<li><a href="{% url homebrewit.profile.views.edit_profile %}">Edit your profile and address</a></li>
 		</ul>
