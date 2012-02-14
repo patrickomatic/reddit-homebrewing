@@ -51,7 +51,7 @@ class BeerStyle(models.Model):
 
 class EntryManager(models.Manager):
 	def get_top_n(self, style, n):
-		return Entry.objects.filter(style=style)[:n]
+		return Entry.objects.filter(style=style).order_by('-score')[:n]
 
 	def get_top_3(self, style): 
 		return self.get_top_n(style, 3)
@@ -59,8 +59,7 @@ class EntryManager(models.Manager):
 	def get_top_2(self, style): 
 		return self.get_top_n(style, 2)
 
-	# XXX is the datetime keyword ineficient? when does it get executed?
-	def get_all_winners(self, contest_year=datetime.datetime.now().year):
+	def get_all_winners(self, contest_year=ContestYear.objects.get_current_contest_year):
 		return set([entry.user for entry in Entry.objects.filter(winner=True, 
 										style__contest_year__contest_year=contest_year)])
 
@@ -71,6 +70,7 @@ class EntryManager(models.Manager):
 			total, num = 0, 0
 
 			# get the average of each judge who judged this entry
+			# XXX this needs to generate BJCPJudgingResults
 			results = JudgingResult.objects.filter(entry=entry)
 
 			if results:
