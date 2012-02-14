@@ -7,21 +7,6 @@ from django.db.models import Max
 from django.forms.models import model_to_dict
 
 
-def rating_description_str(rating):
-	if rating > 54:
-		return "Outstanding (%d / 65)" % rating
-	elif rating > 44:
-		return "Excellent (%d / 65)" % rating
-	elif rating > 34:
-		return "Very Good (%d / 65)" % rating
-	elif rating > 24:
-		return "Good (%d / 65)" % rating
-	elif rating > 14:
-		return "Fair (%d / 65)" % rating
-	else:
-		return "Problematic (%d / 65)" % rating
-
-
 class ContestYearManager(models.Manager):
 	def get_current_contest_year(self):
 		return ContestYear.objects.aggregate(Max('contest_year'))['contest_year__max']
@@ -96,6 +81,7 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
 	style = models.ForeignKey('BeerStyle', db_index=True)
+	bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
 	beer_name = models.CharField(max_length=255, null=True, blank=True)
 	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 	user = models.ForeignKey(User)
@@ -161,7 +147,11 @@ As always, we appreciate your participation and look forward to a great competit
 
 
 	def get_rating_description(self):
-		return rating_description_str(self.score)
+		if self.judging_result:
+			return self.judging_result.get_description()
+		else:
+			return JudgingResult.rating_description_str(self.score)
+
 
 	def __unicode__(self):
 		return "%s: %s" % (self.user.username, self.style)
@@ -169,6 +159,67 @@ As always, we appreciate your participation and look forward to a great competit
 
 def integer_range(max_int):
 	return [(x, str(x)) for x in xrange(1, max_int + 1)]
+
+
+class BJCPJudgingResult(models.Model):
+	judge = models.ForeignKey(User)
+	judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
+
+	aroma_description = models.CharField(max_length=5000)
+	aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
+
+	appearance_description = models.CharField(max_length=5000)
+	appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
+
+	flavor_description = models.CharField(max_length=5000)
+	flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
+
+	mouthfeel_description = models.CharField(max_length=5000)
+	mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
+
+	overall_impression_description = models.CharField(max_length=5000)
+	overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
+
+	stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
+
+	technical_merit = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = significant flaws, 5 = flawless')
+
+	intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
+
+
+	def overall_rating(self):
+		return self.aroma_score + self.appearance_score \
+				+ self.flavor_score + self.mouthfeel_score 
+
+
+	def get_description(self):
+		rating = self.overall_rating()
+
+		if rating > 44:
+			return "Outstanding (%d / 50)" % rating
+		elif rating > 37:
+			return "Excellent (%d / 50)" % rating
+		elif rating > 29:
+			return "Very Good (%d / 50)" % rating
+		elif rating > 20:
+			return "Good (%d / 50)" % rating
+		elif rating > 13:
+			return "Fair (%d / 50)" % rating
+		else:
+			return "Problematic (%d / 50)" % rating
+
+
+# XXX need to save the score 
+#	def save(self):
+#		# update the entry's score
+#		self.entry.score = self.overall_rating()
+#		self.entry.save()
+#
+#		models.Model.save(self)
+
+
+	def __unicode__(self):
+		return "%s (score: %s)" % (self.entry, self.overall_rating())
 
 
 class JudgingResult(models.Model):
@@ -199,6 +250,22 @@ class JudgingResult(models.Model):
 	intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
 
 
+	@classmethod
+	def rating_description_str(self, rating):
+		if rating > 54:
+			return "Outstanding (%d / 65)" % rating
+		elif rating > 44:
+			return "Excellent (%d / 65)" % rating
+		elif rating > 34:
+			return "Very Good (%d / 65)" % rating
+		elif rating > 24:
+			return "Good (%d / 65)" % rating
+		elif rating > 14:
+			return "Fair (%d / 65)" % rating
+		else:
+			return "Problematic (%d / 65)" % rating
+
+
 	def overall_rating(self):
 		return self.aroma_score + self.appearance_score \
 				+ self.flavor_score + self.mouthfeel_score \
@@ -207,8 +274,7 @@ class JudgingResult(models.Model):
 
 
 	def get_description(self):
-		return rating_description_str(self.overall_rating())
-
+		return JudgingResult.rating_description_str(self.overall_rating())
 
 	def save(self):
 		# update the entry's score

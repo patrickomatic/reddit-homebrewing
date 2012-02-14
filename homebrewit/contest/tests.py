@@ -124,6 +124,14 @@ class ContestModelsTest(TestCase):
 		self.assert_(not 'None' in message)
 
 
+#	def test_get_description(self):
+
+	def test_get_description__bjcp_result(self):
+		result = BJCPJudgingResult(aroma_score=12, appearance_score=3, flavor_score=20, mouthfeel_score=5, overall_impression_score=10)
+
+#		self.assert_(result.get_
+
+
 class JudgeContestCommandTest(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults']
 
