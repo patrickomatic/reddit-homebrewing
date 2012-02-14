@@ -140,6 +140,11 @@ class ContestModelsTest(TestCase):
 		result = BJCPJudgingResult(aroma_score=20, appearance_score=1, flavor_score=1, mouthfeel_score=1, overall_impression_score=1)
 		self.assert_(result.get_description().startswith("Good"))
 
+	def test_get_current_contest_year(self):
+		for y in range(2005, 2011):
+			ContestYear(contest_year=y).save()
+
+		self.assert_(ContestYear.objects.get_current_contest_year().contest_year == 2011)
 
 
 class JudgeContestCommandTest(TestCase):

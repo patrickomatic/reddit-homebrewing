@@ -13,7 +13,7 @@ from homebrewit.signup.models import UserProfile
 
 
 class EntryForm(forms.Form):
-	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year__contest_year=ContestYear.objects.get_current_contest_year))
+	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year=ContestYear.objects.get_current_contest_year))
 	beer_name = forms.CharField(max_length=255, required=False)
 	special_ingredients = forms.CharField(max_length=1000, required=False)
 

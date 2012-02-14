@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 
 class ContestYearManager(models.Manager):
 	def get_current_contest_year(self):
-		return ContestYear.objects.aggregate(Max('contest_year'))['contest_year__max']
+		return ContestYear.objects.all().order_by('-contest_year')[0]
 
 
 class ContestYear(models.Model):
@@ -29,7 +29,7 @@ class ContestYear(models.Model):
 
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
-	contest_year = models.ForeignKey('ContestYear', default=ContestYear.objects.get(contest_year=ContestYear.objects.get_current_contest_year()))
+	contest_year = models.ForeignKey('ContestYear', default=ContestYear.objects.get_current_contest_year())
 	judge = models.ForeignKey(User, null=True, blank=True)
 
 	def __unicode__(self):
@@ -46,7 +46,7 @@ class EntryManager(models.Manager):
 	def get_top_2(self, style): 
 		return self.get_top_n(style, 2)
 
-	def get_all_winners(self, contest_year=ContestYear.objects.get_current_contest_year):
+	def get_all_winners(self, contest_year=ContestYear.objects.get_current_contest_year().contest_year):
 		return set([entry.user for entry in Entry.objects.filter(winner=True, 
 										style__contest_year__contest_year=contest_year)])
 
@@ -56,17 +56,23 @@ class EntryManager(models.Manager):
 		for entry in Entry.objects.filter(style__contest_year__contest_year=year):
 			total, num = 0, 0
 
-			# get the average of each judge who judged this entry
-			# XXX this needs to generate BJCPJudgingResults
-			results = JudgingResult.objects.filter(entry=entry)
-
-			if results:
-				for result in results:
-					num += 1
-					total += result.overall_rating()
-
-				entry.score = total / num
+			if entry.bjcp_judging_result:
+				# if this is one using the bjcp judging result,
+				# then we're not worried about multiple judges
+				# and don't have to do an average
+				entry.score = entry.bjcp_judging_result.overall_rating()
 				entry.save()
+			else:
+				# get the average of each judge who judged this entry
+				results = JudgingResult.objects.filter(entry=entry)
+
+				if results:
+					for result in results:
+						num += 1
+						total += result.overall_rating()
+
+					entry.score = total / num
+					entry.save()
 
 
 		# now for each style, assign winners
