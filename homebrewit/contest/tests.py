@@ -51,16 +51,24 @@ class ContestViewsTest(TestCase):
 
 	def test_entry(self):
 		response = self.client.get('/contest/2011/styles/1/entries/1')
+
 		self.assertTemplateUsed(response, 'homebrewit_contest_entry.html')
 		self.assert_(response.context['entry'].beer_name == 'Beer name')
 		self.assert_(len(response.context['judging_results']) == 1)
 
 
 	def test_style(self):
+		winner = Entry.objects.filter(style__name='IPA')[0]
+		winner.winner = True
+		winner.score = 50
+		winner.save()
+
 		response = self.client.get('/contest/2011/styles/1')
+
 		self.assertTemplateUsed(response, 'homebrewit_contest_style.html')
 		self.assert_(response.context['style'].name == 'IPA')
 		self.assert_(len(response.context['entries']) == 4)
+		self.assert_(response.context['entries'][0].winner)
 		self.assert_(response.context['address'])
 
 	

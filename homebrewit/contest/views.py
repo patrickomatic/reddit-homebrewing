@@ -65,15 +65,17 @@ def style(request, year, style_id):
 	except BeerStyle.DoesNotExist:
 		raise Http404
 
-	entries = Entry.objects.filter(style=style)
+	scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
 
+	scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
+	
 	address = None
 	if style.judge:
 		address = style.judge.get_profile()
 
 	return render_to_response('homebrewit_contest_style.html', {
 			'style': style, 
-			'entries': entries,
+			'entries': scored_entries,
 			'address': address,
 		}, context_instance=RequestContext(request))
 
