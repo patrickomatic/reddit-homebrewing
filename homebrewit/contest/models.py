@@ -29,7 +29,7 @@ class ContestYear(models.Model):
 
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
-	contest_year = models.ForeignKey('ContestYear')
+	contest_year = models.ForeignKey('ContestYear', default=ContestYear.objects.get(contest_year=ContestYear.objects.get_current_contest_year()))
 	judge = models.ForeignKey(User, null=True, blank=True)
 
 	def __unicode__(self):
