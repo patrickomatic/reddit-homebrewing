@@ -52,7 +52,7 @@ def index(request):
 	for style in BeerStyle.objects.all():
 		year = style.contest_year.contest_year
 
-		top_entry = Entry.objects.filter(style=style).order_by('-score')
+		top_entry = Entry.objects.get_top_n(style, 1)
 		if top_entry and top_entry[0].winner:
 			winner_data = {
 					'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
@@ -76,7 +76,7 @@ def index(request):
 
 
 	return render_to_response('homebrewit_index.html', {
-				'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys())], 
+				'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)], 
 				'contest_year': ContestYear.objects.get_current_contest_year(),
 				'login_form': login_form,
 		}, context_instance=RequestContext(request))

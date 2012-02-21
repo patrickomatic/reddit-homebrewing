@@ -39,7 +39,7 @@
 	{% if contest_data %}
 		<div id="contest-title" class="large-title">/r/Homebrewing Competition</div>
 		<ul>
-			{% for year, style_data in contest_data.iteritems %}
+			{% for year, style_data in contest_data %}
 				<div>
 					<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="large-title">
 						{{year}}'s Competition
