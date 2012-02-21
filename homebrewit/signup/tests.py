@@ -39,7 +39,8 @@ class SignupViewsTest(TestCase):
 
 		self.assertTemplateUsed(response, 'homebrewit_index.html')
 		self.assert_(len(response.context['contest_data']) == 1)
-		self.assert_(len(response.context['contest_data'][2011]) == 8)
+		self.assert_(response.context['contest_data'][0][0] == 2011)
+		self.assert_(len(response.context['contest_data'][0][1]) == 8)
 		self.assert_(response.context['contest_year'] == 2011)
 		self.assert_(response.context['login_form'])
 
