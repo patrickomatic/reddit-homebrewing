@@ -44,9 +44,9 @@ class ContestViewsTest(TestCase):
 		self.assert_(response.context['year'] == 2011)
 		self.assert_(len(response.context['styles']) == 8)
 
-		ipa = BeerStyle.objects.get(name='IPA')
-		self.assert_(len(response.context['styles'][ipa]['entries']) == 4)
-		self.assert_(not response.context['styles'][ipa]['has_more'])
+		stout = BeerStyle.objects.get(name='Stout')
+		self.assert_(len(response.context['styles'][stout]['entries']) == 4)
+		self.assert_(not response.context['styles'][stout]['has_more'])
 
 
 	def test_entry(self):
@@ -87,21 +87,20 @@ class ContestModelsTest(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
 	def setUp(self):
-		self.ipa_style = BeerStyle.objects.get(name='IPA')
-		self.ipa_style = BeerStyle.objects.get(name='IPA')
+		self.stout_style = BeerStyle.objects.get(name='Stout')
 
 
 	def test_get_top_n(self):
-		top_2 = Entry.objects.get_top_n(self.ipa_style, 2)
+		top_2 = Entry.objects.get_top_n(self.stout_style, 2)
 		self.assert_(2 == len(top_2))
 		self.assert_('patrick' 			== top_2[0].user.username)
 		self.assert_('patrickomatic' 	== top_2[1].user.username)
 
 	def test_get_top_2(self):
-		self.assert_(2 == len(Entry.objects.get_top_2(self.ipa_style)))
+		self.assert_(2 == len(Entry.objects.get_top_2(self.stout_style)))
 
 	def test_get_top_3(self):
-		self.assert_(3 == len(Entry.objects.get_top_3(self.ipa_style)))
+		self.assert_(3 == len(Entry.objects.get_top_3(self.stout_style)))
 
 
 	def test_get_all_winners(self):
