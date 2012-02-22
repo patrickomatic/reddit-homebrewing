@@ -1,3 +1,5 @@
+import urllib2
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import simplejson as json
@@ -28,12 +30,33 @@ class ExperienceViewsTest(TestCase):
 	def test_change_level__post(self):
 		def urlopen_mock(request):
 			return MockResponse(json.dumps({"json": {"errors": [], "data": {"modhash": "t0t0t0", "cookie": "1234567,..."}}}))
+
 		reddit.urllib2.urlopen = urlopen_mock
 
 		response = self.client.post('/experience/level', {'experience_level': 4})
 
 		self.assertRedirects(response, '/profile/')
 		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
+
+	def test_change_level__reddit_api_down(self):
+		def urlopen_mock(request):
+			raise urllib2.HTTPError("foo", "bar", None, None, None)
+
+		reddit.urllib2.urlopen = urlopen_mock
+
+		response = self.client.post('/experience/level', {'experience_level': 4})
+
+		self.assertTemplateUsed(response, 'homebrewit_experience.html')
+
+		# this is a little awkward because you have to iterate through a message_set
+		saw_error = False
+		for message in response.context['messages']:
+			if u'Whoops!' in unicode(message):
+				saw_error = True
+				break
+
+		self.assert_(saw_error)
+		self.assert_(response.context['form'])
 
 
 	def test_experience_styles(self):

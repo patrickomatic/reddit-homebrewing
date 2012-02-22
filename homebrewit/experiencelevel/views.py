@@ -1,4 +1,4 @@
-import datetime
+import datetime, urllib2
 
 from django import forms
 from django.core.mail import mail_admins
@@ -37,10 +37,12 @@ def change_level(request):
 				level = UserExperienceLevel(experience_level=data['experience_level'], user=request.user)
 			level.save()
 
-			set_flair(level)
-					
-			request.user.message_set.create(message='Successfully set experience level to %s.' % level.experience_level)
-			return HttpResponseRedirect('/profile/')
+			try:
+				set_flair(level)
+				request.user.message_set.create(message='Successfully set experience level to %s.' % level.experience_level)
+				return HttpResponseRedirect('/profile/')
+			except urllib2.HTTPError:
+				request.user.message_set.create(message='Whoops! There was an error setting your experience level.  This usually happens when reddit\'s API is down.  Try again later and if you continue to have problems, please contact the moderators.')
 	else:
 		form = ExperienceForm(initial=initial)
 		
