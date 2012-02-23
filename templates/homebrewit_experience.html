@@ -1,5 +1,9 @@
 {% extends "homebrewit.html" %}
 
+{% block include %}
+	<link rel="stylesheet" href="/media/css/experiencelevel.css" type="text/css" />
+{% endblock %}
+
 {% block title %}
 	Set your experience level
 {% endblock %}
@@ -10,7 +14,6 @@
 {% endblock %}
 
 {% block content %}
-<!--<hr class="generic-header">-->
 	<p>
 		By setting your experience level, whenever you post on /r/Homebrewing
 		a small icon will appear next to your name indicating your experience
@@ -20,9 +23,14 @@
 	<form action="{% url homebrewit.experiencelevel.views.change_level %}" method="POST">
 		{% csrf_token %}
 
-		{{form.as_p}}
-		<input type="submit" value="Set Experience Level" />
+		<ul id="experience-level-picker" class="experience-level-picker">
+			<li><a href="#" class="beginner generic-border"></a></li>
+			<li><a href="#" class="intermediate generic-border"></a></li>
+			<li><a href="#" class="advanced generic-border"></a></li>
+			<li><a href="#" class="professional generic-border"></a></li>
+		</ul>
+
+		<div class="clear"></div>
 	</form>
 
-	<img src="/media/images/legend.png" id="experience_legend"/>
 {% endblock %}

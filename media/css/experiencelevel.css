@@ -1,16 +1,35 @@
-#beginner {
-	background-image: url(/media/images/legend.png);
-	width: 50px;
+#experience-level-picker {
+	display: block;
+	list-style: none;
+	height: 234px;
+	width: 944px;
+	padding: 0px;
 }
 
-#intermediate {
-
+#experience-level-picker li {
+	margin-right: 20px;
+	float: left;
+	width: 211px;
 }
 
-#advanced {
-	
+#experience-level-picker li a { 
+	height: 234px;
+	display: block;
+	background: url(/media/images/legend.png) no-repeat left center;
 }
 
-#professional {
+#experience-level-picker li a.beginner { 
+	background-position: 0px center;
+}
 
+#experience-level-picker li a.intermediate { 
+	background-position: -211px center;
+}
+
+#experience-level-picker li a.advanced { 
+	background-position: -422px center;
+}
+
+#experience-level-picker li a.professional { 
+	background-position: -633px center;
 }
