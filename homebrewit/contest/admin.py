@@ -5,9 +5,9 @@ from django.db import models
 from homebrewit.contest.models import *
 
 
-class JudgingResultAdminForm(forms.ModelForm):
+class BJCPJudgingResultAdminForm(forms.ModelForm):
 	class Meta:
-		model = JudgingResult
+		model = BJCPJudgingResult
 		widgets = {
 				'aroma_description': forms.Textarea(),
 				'appearance_description': forms.Textarea(),
@@ -16,10 +16,10 @@ class JudgingResultAdminForm(forms.ModelForm):
 				'overall_impression_description': forms.Textarea(),
 		}
 
-class JudgingResultAdmin(admin.ModelAdmin):
-	form = JudgingResultAdminForm
+class BJCPJudgingResultAdmin(admin.ModelAdmin):
+	form = BJCPJudgingResultAdminForm
 
 admin.site.register(BeerStyle)
 admin.site.register(ContestYear)
 admin.site.register(Entry)
-admin.site.register(JudgingResult, JudgingResultAdmin)
+admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)
