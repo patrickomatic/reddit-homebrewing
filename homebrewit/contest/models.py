@@ -29,6 +29,7 @@ class ContestYearManager(models.Manager):
 
 class ContestYear(models.Model):
 	contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now().year)
+	allowing_entries = models.BooleanField(default=False)
 
 	objects = ContestYearManager()
 
