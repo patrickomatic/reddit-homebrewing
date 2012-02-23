@@ -171,6 +171,28 @@ class BJCPJudgingResult(models.Model):
 	judge = models.ForeignKey(User)
 	judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
 
+
+	# descriptor definitions
+	acetaldehyde = models.BooleanField(default=False, help_text='Green apple-like aroma and flavor.')
+	alcoholic = models.BooleanField(default=False, help_text='The aroma, flavor, and warming effect of ethanol and higher alcohols.  Sometimes described as "hot."')
+	astringent = models.BooleanField(default=False, help_text='Puckering, lingering, harshness and/or dryness in the finish/aftertaste.')
+	diacetyl = models.BooleanField(default=False, help_text='Artifical butter, butterscotch or coffee aroma and flavor.  Sometimes perceived as a slickness on the tongue.')
+	dms = models.BooleanField(default=False, help_text='At low levels a sweet, cooked or canned corn-like aroma and flavor.')
+	estery = models.BooleanField(default=False, help_text='Aroma and/or flavor of any ester (fruits, fruit flavorings or roses)')
+	grassy = models.BooleanField(default=False, help_text='Aroma/flavor of fresh-cut grass or green leaves.')
+	light_struck = models.BooleanField(default=False, help_text='Similar to the aroma of a skunk.')
+	metallic = models.BooleanField(default=False, help_text='Tinny, coiny, copper, iron or blood-like flavor.')
+	musty = models.BooleanField(default=False, help_text='Stale, musty or moldy aromas/flavors.')
+	oxidized = models.BooleanField(default=False, help_text='Any one or combinatinos of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
+	phenolic = models.BooleanField(default=False, help_text='Spicy (clove, pepper), smokey, plastic adhesive strip and/or medicinal (chlorophenolic.)')
+	solvent = models.BooleanField(default=False, help_text='Aromas and flavors of higher alcohols (fusel alcohols.)  Similar to acetone or lacquer thinner aromas.')
+	sour_acidic = models.BooleanField(default=False, help_text='Tartness in aroma and flavor.  Can be sharp and clean (lactic acid) or vinegar-like (acetic acid.)')
+	sulfur = models.BooleanField(default=False, help_text='The aroma of rotten eggs or burning matches.')
+	vegetal = models.BooleanField(default=False, help_text='Cooked, canned or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)')
+	yeasty = models.BooleanField(default=False, help_text='A bready, sulfury or yeast-like aroma or flavor.')
+
+
+	# actual scoring areas and points
 	aroma_description = models.CharField(max_length=5000)
 	aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
 
