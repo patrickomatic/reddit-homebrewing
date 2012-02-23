@@ -1,5 +1,4 @@
 #experience-level-picker {
-	display: block;
 	list-style: none;
 	height: 234px;
 	width: 944px;
@@ -16,6 +15,14 @@
 	height: 234px;
 	display: block;
 	background: url(/media/images/legend.png) no-repeat left center;
+}
+
+#experience-level-picker li a.selected {
+	background-color: red;
+}
+
+#experience-level-picker li a:hover { 
+	border-width: 5px;
 }
 
 #experience-level-picker li a.beginner { 

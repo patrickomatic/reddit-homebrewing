@@ -35,6 +35,7 @@ def change_level(request):
 				level.experience_level = data['experience_level']
 			else:
 				level = UserExperienceLevel(experience_level=data['experience_level'], user=request.user)
+
 			level.save()
 
 			try:
@@ -46,8 +47,11 @@ def change_level(request):
 	else:
 		form = ExperienceForm(initial=initial)
 		
-	return render_to_response('homebrewit_experience.html', {'form': form},
-			context_instance=RequestContext(request))
+	return render_to_response('homebrewit_experience.html', {
+				'current_level': level,
+				'experience_levels': ExperienceLevel.objects.all(),
+				'form': form,
+			}, context_instance=RequestContext(request))
 
 
 def experience_styles(request):

@@ -2,6 +2,7 @@
 
 {% block include %}
 	<link rel="stylesheet" href="/media/css/experiencelevel.css" type="text/css" />
+	<script type="text/javascript" src="/media/js/experiencelevel.js"></script>
 {% endblock %}
 
 {% block title %}
@@ -24,10 +25,11 @@
 		{% csrf_token %}
 
 		<ul id="experience-level-picker" class="experience-level-picker">
-			<li><a href="#" class="beginner generic-border"></a></li>
-			<li><a href="#" class="intermediate generic-border"></a></li>
-			<li><a href="#" class="advanced generic-border"></a></li>
-			<li><a href="#" class="professional generic-border"></a></li>
+			{% for level in experience_levels %}
+				<li>
+					<a href="#" class="{{level.name|lower}} generic-border" data-value="{{level.id}}"></a>
+				</li>
+			{% endfor %}
 		</ul>
 
 		<div class="clear"></div>
