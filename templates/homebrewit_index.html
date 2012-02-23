@@ -13,8 +13,12 @@
 
 {% block content %}
 	<p>
-	From here you can set your experience level icon. {% comment %} as well as enter
-	for the {{contest_year}} homebrew contest.  {% endcomment %}
+		{% if contest_year.allowing_entries %}
+			From here you can set your experience level icon as well as enter for the {{contest_year.contest_year}} homebrew contest.
+		{% else %}
+			From here you can set your experience level icon. 
+		{% endif %}
+
 		{% if not user.is_authenticated %}
 			Just login below with the same credentials you use for reddit:
 		{% endif %}
