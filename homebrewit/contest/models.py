@@ -16,9 +16,9 @@ class ContestYear(models.Model):
 	contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now().year)
 	allowing_entries = models.BooleanField(default=False)
 	finished_judging = models.BooleanField(default=False)
+	prize_description = models.CharField(max_length=5000, null=True, blank=True)
 
 	objects = ContestYearManager()
-
 
 	class Meta:
 		ordering = ('-contest_year',)
