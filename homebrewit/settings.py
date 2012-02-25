@@ -130,4 +130,6 @@ REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/comments/gqrp5/post_your_tok
 
 AUTHENTICATION_USER_AGENT = 'www.reddit.com/r/Homebrewing App (reddithomebrewing.com)'
 
-MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
+MODERATOR_USERNAME, MODERATOR_PASSWORD = None, None
+if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
+	MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
