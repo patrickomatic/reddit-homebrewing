@@ -45,7 +45,7 @@
 
 		{% if contest_year.prize_description and not contest_year.finished_judging %}
 			<div class="large-title">Prizes</div>
-
+			<p>{{contest_year.prize_description|linebreaksbr}}</p>
 		{% endif %}
 
 		<ul>
