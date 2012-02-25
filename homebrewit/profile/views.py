@@ -30,6 +30,7 @@ def profile(request, user):
 				'contest_entries': contest_entries, 
                 'is_profile_owner': is_profile_owner, 
 				'level_image': level_image,
+				'contest_year': ContestYear.objects.get_current_contest_year(),
 			}, context_instance=RequestContext(request))
 
 

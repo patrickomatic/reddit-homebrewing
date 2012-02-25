@@ -12,26 +12,28 @@ from homebrewit.contest.models import *
 from homebrewit.signup.models import UserProfile
 
 
-class EntryForm(forms.Form):
-	style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year=ContestYear.objects.get_current_contest_year))
-	beer_name = forms.CharField(max_length=255, required=False)
-	special_ingredients = forms.CharField(max_length=1000, required=False)
-
-	def __init__(self, *args, **kwargs):
-		self.request = kwargs.pop('request', None)
-		super(EntryForm, self).__init__(*args, **kwargs)
-
-	def clean(self):
-		""" Don't allow people to enter the same style twice. """
-		try:
-			Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
-			raise forms.ValidationError('You have already entered in this category')
-		except Entry.DoesNotExist:
-			return self.cleaned_data
-
 
 @login_required
 def register(request):
+	class EntryForm(forms.Form):
+		style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year=ContestYear.objects.get_current_contest_year()))
+		beer_name = forms.CharField(max_length=255, required=False)
+		special_ingredients = forms.CharField(max_length=1000, required=False)
+
+		def __init__(self, *args, **kwargs):
+			self.request = kwargs.pop('request', None)
+			super(EntryForm, self).__init__(*args, **kwargs)
+
+		def clean(self):
+			""" Don't allow people to enter the same style twice. """
+			print "self.cleaned_data=", self.cleaned_data
+			try:
+				Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
+				raise forms.ValidationError('You have already entered in this category')
+			except Entry.DoesNotExist:
+				return self.cleaned_data
+
+
 	# they can't register for the contest unless their profile is complete
 	try:
 		request.user.get_profile()
@@ -39,6 +41,7 @@ def register(request):
 		request.user.message_set.create(message='You must set your address before you can enter the homebrew contest.')
 		return HttpResponseRedirect('/profile/edit?next=/contest/register')
 
+	# XXX verify that the current contest year is allowing entries
 	if request.method == 'POST':
 		form = EntryForm(request.POST, request=request)
 		if form.is_valid():
@@ -81,8 +84,10 @@ def style(request, year, style_id):
 
 
 def contest_year(request, year):
+	contest_year = ContestYear.objects.get(contest_year=year)
+
 	styles = {}
-	for style in BeerStyle.objects.filter(contest_year__contest_year=year):
+	for style in BeerStyle.objects.filter(contest_year=contest_year):
 		top_31 = Entry.objects.get_top_n(style, 31)
 		styles[style] = {
 			'entries': top_31[:30],
@@ -90,9 +95,11 @@ def contest_year(request, year):
 		}
 
 
-	return render_to_response('homebrewit_contest_year.html', 
-			{'styles': styles, 'year': int(year)},
-			context_instance=RequestContext(request))
+	return render_to_response('homebrewit_contest_year.html', {
+				'styles': styles, 
+				'year': int(year),
+				'contest_year': contest_year,
+			}, context_instance=RequestContext(request))
 
 
 def entry(request, year, style_id, entry_id):

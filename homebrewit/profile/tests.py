@@ -6,7 +6,7 @@ from homebrewit.signup.models import UserProfile
 
 
 class ProfileViewsTest(TestCase):
-	fixtures = ['users']
+	fixtures = ['users', 'contestyears']
 
 	def setUp(self):
 		self.user = User.objects.get(username='patrick')
@@ -34,6 +34,7 @@ class ProfileViewsTest(TestCase):
 		self.assert_(len(response.context['contest_entries']) == 0)
 		self.assert_(response.context['is_profile_owner'])
 		self.assert_(response.context['user'] == self.user)
+		self.assert_(response.context['contest_year'].contest_year == 2011)
 
 
 	def test_edit_profile(self):

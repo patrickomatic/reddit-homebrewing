@@ -41,7 +41,7 @@ class SignupViewsTest(TestCase):
 		self.assert_(len(response.context['contest_data']) == 1)
 		self.assert_(response.context['contest_data'][0][0] == 2011)
 		self.assert_(len(response.context['contest_data'][0][1]) == 8)
-		self.assert_(response.context['contest_year'] == 2011)
+		self.assert_(response.context['contest_year'].contest_year == 2011)
 		self.assert_(response.context['login_form'])
 
 	def test_index__post_first_time(self):

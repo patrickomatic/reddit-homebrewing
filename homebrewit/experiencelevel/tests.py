@@ -1,5 +1,6 @@
 import urllib2
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import simplejson as json
@@ -10,12 +11,15 @@ from homebrewit.signup.tests import MockResponse
 
 
 class ExperienceViewsTest(TestCase):
-	fixtures = ['users', 'experiencelevels', 'userexperiencelevels']
+	fixtures = ['users', 'experiencelevels', 'userexperiencelevels', 'contestyears']
 
 	def setUp(self):
 		self.user = User.objects.get(username='patrick')
 		self.client.login(username='patrick', password='password')
 		self.saved_urlopen = reddit.urllib2.urlopen
+		settings.MODERATOR_USERNAME = 'patrick'
+		settings.MODERATOR_PASSWORD = 'password'
+
 
 	def tearDown(self):
 		reddit.urllib2.urlopen = self.saved_urlopen
