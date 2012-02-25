@@ -11,6 +11,10 @@
 
 
 {% block content %}
+	{% if contest_year.prize_description %}
+		<p>{{contest_year.prize_description|linebreaksbr}}</p>
+	{% endif %}
+
 	{% for style, data in styles.iteritems %}
 		<div class="medium-title">
 			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}">
@@ -24,6 +28,7 @@
 				<th class="generic-th" width="20%">Score</th>
 				<th class="generic-th" width="15%">Received Entry</th>
 			</tr>
+
 			{% for entry in data.entries %}
 				<tr class="generic-tr">
 					<td class="generic-td">
@@ -43,7 +48,7 @@
 				</tr>
 			{% endfor %}
 		</table>
-                <br />
+
 		{% if data.has_more %}
 			<a title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
 				More entries...

@@ -42,6 +42,12 @@
 
 	{% if contest_data %}
 		<div id="contest-title" class="large-title">/r/Homebrewing Competition</div>
+
+		{% if contest_year.prize_description and not contest_year.finished_judging %}
+			<div class="large-title">Prizes</div>
+
+		{% endif %}
+
 		<ul>
 			{% for year, style_data in contest_data %}
 				<div>
