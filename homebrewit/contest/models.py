@@ -36,6 +36,14 @@ class BeerStyle(models.Model):
 		return "%s (%s)" % (self.name, self.contest_year)
 
 
+class BeerStyleSubcategory(models.Model):
+	name = models.CharField(max_length=255)
+	beer_style = models.ForeignKey('BeerStyle')
+
+	def __unicode__(self):
+		return self.name
+
+
 class EntryManager(models.Manager):
 	def get_top_n(self, style, n):
 		return Entry.objects.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
