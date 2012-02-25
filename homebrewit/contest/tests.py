@@ -37,6 +37,14 @@ class ContestViewsTest(TestCase):
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
 		self.assertRaises(Entry.DoesNotExist, Entry.objects.get, beer_name="Patrick's super skunky IPA")
 
+	def test_register__not_allowing_entries(self):
+		contest_year = ContestYear.objects.get_current_contest_year()
+		contest_year.allowing_entries = False
+		contest_year.save()
+
+		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+		self.assert_(response.status_code == 404)
+
 
 	def test_contest_year(self):
 		response = self.client.get('/contest/2011/')

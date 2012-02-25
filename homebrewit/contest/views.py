@@ -26,7 +26,6 @@ def register(request):
 
 		def clean(self):
 			""" Don't allow people to enter the same style twice. """
-			print "self.cleaned_data=", self.cleaned_data
 			try:
 				Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
 				raise forms.ValidationError('You have already entered in this category')
@@ -40,6 +39,10 @@ def register(request):
 	except UserProfile.DoesNotExist:
 		request.user.message_set.create(message='You must set your address before you can enter the homebrew contest.')
 		return HttpResponseRedirect('/profile/edit?next=/contest/register')
+
+	contest_year = ContestYear.objects.get_current_contest_year()
+	if not contest_year.allowing_entries:
+		raise Http404
 
 	# XXX verify that the current contest year is allowing entries
 	if request.method == 'POST':
