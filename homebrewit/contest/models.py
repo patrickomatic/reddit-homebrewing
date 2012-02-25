@@ -29,7 +29,7 @@ class ContestYear(models.Model):
 
 class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
-	contest_year = models.ForeignKey('ContestYear', default=ContestYear.objects.get_current_contest_year())
+	contest_year = models.ForeignKey('ContestYear')
 	judge = models.ForeignKey(User, null=True, blank=True)
 
 	def __unicode__(self):
@@ -46,9 +46,12 @@ class EntryManager(models.Manager):
 	def get_top_2(self, style): 
 		return self.get_top_n(style, 2)
 
-	def get_all_winners(self, contest_year=ContestYear.objects.get_current_contest_year().contest_year):
+	def get_all_winners(self, contest_year=None):
+		if contest_year is None:
+			contest_year = ContestYear.objects.get_current_contest_year()
+
 		return set([entry.user for entry in Entry.objects.filter(winner=True, 
-										style__contest_year__contest_year=contest_year)])
+										style__contest_year=contest_year)])
 
 	
 	def judge_entries(self, year):
