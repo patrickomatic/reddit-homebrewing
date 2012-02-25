@@ -44,7 +44,6 @@ def register(request):
 	if not contest_year.allowing_entries:
 		raise Http404
 
-	# XXX verify that the current contest year is allowing entries
 	if request.method == 'POST':
 		form = EntryForm(request.POST, request=request)
 		if form.is_valid():

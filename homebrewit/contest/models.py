@@ -96,6 +96,7 @@ class Entry(models.Model):
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
+# XXX get rid of this
 	score = models.PositiveIntegerField(null=True, blank=True)
 	mailed_entry = models.BooleanField(default=False)
 	received_entry = models.BooleanField(default=False)
@@ -239,15 +240,6 @@ class BJCPJudgingResult(models.Model):
 			return "Fair (%d / 50)" % rating
 		else:
 			return "Problematic (%d / 50)" % rating
-
-
-# XXX need to save the score 
-#	def save(self):
-#		# update the entry's score
-#		self.entry.score = self.overall_rating()
-#		self.entry.save()
-#
-#		models.Model.save(self)
 
 
 	def __unicode__(self):
