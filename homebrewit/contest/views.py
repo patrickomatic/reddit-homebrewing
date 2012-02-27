@@ -15,8 +15,15 @@ from homebrewit.signup.models import UserProfile
 
 @login_required
 def register(request):
+	contest_year = ContestYear.objects.get_current_contest_year()
+	styles = BeerStyle.objects.filter(contest_year=contest_year)
+	style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year)
+
+	# this class definition is inside of this function because it needs
+	# to access local variables
 	class EntryForm(forms.Form):
-		style = forms.ModelChoiceField(queryset=BeerStyle.objects.filter(contest_year=ContestYear.objects.get_current_contest_year()))
+		style = forms.ModelChoiceField(queryset=styles)
+		style_subcategory = forms.ModelChoiceField(queryset=style_subcategories, required=False)
 		beer_name = forms.CharField(max_length=255, required=False)
 		special_ingredients = forms.CharField(max_length=1000, required=False)
 
@@ -25,7 +32,13 @@ def register(request):
 			super(EntryForm, self).__init__(*args, **kwargs)
 
 		def clean(self):
-			""" Don't allow people to enter the same style twice. """
+			""" 
+			* Don't allow people to enter the same style twice. 
+			* If the beer style has subcategories, make sure that they picked one
+			"""
+			# XXX 
+			#if not 'style_subcategory' in self.cleaned_data:
+
 			try:
 				Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
 				raise forms.ValidationError('You have already entered in this category')
@@ -51,6 +64,10 @@ def register(request):
 					beer_name=form.cleaned_data['beer_name'], 
 					special_ingredients=form.cleaned_data['special_ingredients'],
 					user=request.user)
+
+			if 'style_subcategory' in form.cleaned_data:
+				entry.style_subcategory = form.cleaned_data['style_subcategory']
+
 			entry.save()
 
 			entry.send_shipping_email()
@@ -59,8 +76,9 @@ def register(request):
 	else:
 		form = EntryForm()
 
-	return render_to_response('homebrewit_contest_register.html', 
-			{'form': form}, context_instance=RequestContext(request))
+	return render_to_response('homebrewit_contest_register.html', {
+			'form': form,
+		}, context_instance=RequestContext(request))
 
 
 def style(request, year, style_id):

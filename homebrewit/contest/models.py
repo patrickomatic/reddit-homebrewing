@@ -31,6 +31,17 @@ class BeerStyle(models.Model):
 	name = models.CharField(max_length=255)
 	contest_year = models.ForeignKey('ContestYear')
 	judge = models.ForeignKey(User, null=True, blank=True)
+	# XXX make a style comment (for example, for single hop ipa: please put the type of hop in the description)
+
+
+	def get_subcategories(self):
+		try:
+			return BeerStyleSubcategory.objects.filter(beer_style=self)
+		except BeerStyleSubcategory.DoesNotExist:
+			return []
+
+	def has_subcategories(self):
+		return len(self.get_subcategories()) != 0
 
 	def __unicode__(self):
 		return "%s (%s)" % (self.name, self.contest_year)
@@ -43,7 +54,7 @@ class BeerStyleSubcategory(models.Model):
 	def __unicode__(self):
 		return self.name
 
-
+ 
 class EntryManager(models.Manager):
 	def get_top_n(self, style, n):
 		return Entry.objects.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
@@ -98,13 +109,13 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
 	style = models.ForeignKey('BeerStyle', db_index=True)
+	style_subcategory = models.ForeignKey('BeerStyleSubcategory', null=True, blank=True)
 	bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
 	beer_name = models.CharField(max_length=255, null=True, blank=True)
 	special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
 	user = models.ForeignKey(User)
 	winner = models.BooleanField(default=False)
 	rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
-# XXX get rid of this
 	score = models.PositiveIntegerField(null=True, blank=True)
 	mailed_entry = models.BooleanField(default=False)
 	received_entry = models.BooleanField(default=False)
@@ -172,7 +183,11 @@ As always, we appreciate your participation and look forward to a great competit
 
 
 	def __unicode__(self):
-		return "%s: %s" % (self.user.username, self.style)
+		s = ""
+		if self.style_subcategory:
+			s = "(" + self.style_subcategory + ")"
+
+		return "%s: %s%s" % (self.user.username, self.style, s)
 
 
 def integer_range(max_int):

@@ -27,7 +27,7 @@ class ContestViewsTest(TestCase):
 	def test_register__post(self):
 		Entry.objects.filter(user=self.user).delete()
 
-		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1', 'special_ingredients': 'poop'})
 
 		self.assert_(response.context['form'].is_valid())
 
@@ -35,6 +35,9 @@ class ContestViewsTest(TestCase):
 		entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
 		self.assert_(entry is not None)
 		self.assert_(entry.user.username == 'patrick')
+		self.assert_(entry.special_ingredients == 'poop')
+		self.assert_(entry.style_subcategory is None)
+		self.assert_(entry.style.id == 1)
 
 		# should send the registration email
 		self.assert_(len(mail.outbox) == 1)
@@ -45,6 +48,8 @@ class ContestViewsTest(TestCase):
 		self.assertRaises(Entry.DoesNotExist, Entry.objects.get, beer_name="Patrick's super skunky IPA")
 
 	def test_register__not_allowing_entries(self):
+		Entry.objects.filter(user=self.user).delete()
+
 		contest_year = ContestYear.objects.get_current_contest_year()
 		contest_year.allowing_entries = False
 		contest_year.save()
@@ -53,11 +58,17 @@ class ContestViewsTest(TestCase):
 		self.assert_(response.status_code == 404)
 
 	def test_register__style_subcategory(self):
-		response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6, 'style_subcategory': 2})
+		Entry.objects.filter(user=self.user).delete()
+
+		name = 'Super dank Stout'
+		response = self.client.post('/contest/register', {'beer_name': name, 'style': 6, 'style_subcategory': 2})
+
+		self.assert_(Entry.objects.get(beer_name=name).style_subcategory.id == 2)
 
 	def test_register__style_subcategory_required(self):
 		response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6})
-#		self.assert
+		
+		self.assert_(not response.context['form'].is_valid())
 
 
 	def test_contest_year(self):
