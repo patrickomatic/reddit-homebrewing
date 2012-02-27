@@ -8,7 +8,7 @@ from homebrewit.contest.views import *
 
 
 class ContestViewsTest(TestCase):
-	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'userprofiles', 'judgingresults']
+	fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'judgingresults']
 
 	def setUp(self):
 		self.client.login(username='patrick', password='password')
@@ -28,13 +28,20 @@ class ContestViewsTest(TestCase):
 		Entry.objects.filter(user=self.user).delete()
 
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+
+		self.assert_(response.context['form'].is_valid())
+
+		# the entry now exists
 		entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
+		self.assert_(entry is not None)
 		self.assert_(entry.user.username == 'patrick')
+
 		# should send the registration email
 		self.assert_(len(mail.outbox) == 1)
 
 	def test_register__post_already_entered(self):
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+		self.assert_(not response.context['form'].is_valid())
 		self.assertRaises(Entry.DoesNotExist, Entry.objects.get, beer_name="Patrick's super skunky IPA")
 
 	def test_register__not_allowing_entries(self):
@@ -44,6 +51,13 @@ class ContestViewsTest(TestCase):
 
 		response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
 		self.assert_(response.status_code == 404)
+
+	def test_register__style_subcategory(self):
+		response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6, 'style_subcategory': 2})
+
+	def test_register__style_subcategory_required(self):
+		response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6})
+#		self.assert
 
 
 	def test_contest_year(self):
@@ -82,8 +96,6 @@ class ContestViewsTest(TestCase):
 	
 	def test_winner_styles(self):
 		response = self.client.get('/contest/winner-styles.css')
-#		self.assert_('Cache-Control' in str(response))
-#		self.assert_('ETag' in str(response))
 
 		content = response.content
 		self.assert_('a[href*="user/patrickomatic"]:after' in content)
@@ -91,7 +103,7 @@ class ContestViewsTest(TestCase):
 		self.assert_(not 'a[href*="user/loser"]:after' in content)
 
 
-class ContestModelsTest(TestCase):
+class EntryModelTest(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
 	def setUp(self):
@@ -148,11 +160,38 @@ class ContestModelsTest(TestCase):
 		result = BJCPJudgingResult(aroma_score=20, appearance_score=1, flavor_score=1, mouthfeel_score=1, overall_impression_score=1)
 		self.assert_(result.get_description().startswith("Good"))
 
+
+class ContestYearModelTests(TestCase):
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
+
+
 	def test_get_current_contest_year(self):
 		for y in range(2005, 2011):
 			ContestYear(contest_year=y).save()
 
 		self.assert_(ContestYear.objects.get_current_contest_year().contest_year == 2011)
+
+
+class BeerStyleModelTests(TestCase):
+	fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
+
+	def setUp(self):
+		self.stout_style = BeerStyle.objects.get(name='Stout')
+		self.ipa_style = BeerStyle.objects.get(name='IPA')
+
+
+	def test_get_subcategories(self):
+		self.assert_(len(self.stout_style.get_subcategories()) == 3)
+
+	def test_get_subcategories__none(self):
+		self.assert_(len(self.ipa_style.get_subcategories()) == 0)
+
+
+	def test_has_subcategories(self):
+		self.assert_(self.stout_style.has_subcategories())
+
+	def test_has_subcategories__doesnt(self):
+		self.assert_(not self.ipa_style.has_subcategories())
 
 
 class JudgeContestCommandTest(TestCase):
