@@ -20,6 +20,7 @@ class BJCPJudgingResultAdmin(admin.ModelAdmin):
 	form = BJCPJudgingResultAdminForm
 
 admin.site.register(BeerStyle)
+admin.site.register(BeerStyleSubcategory)
 admin.site.register(ContestYear)
 admin.site.register(Entry)
 admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)
