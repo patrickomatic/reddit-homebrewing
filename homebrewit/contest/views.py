@@ -18,7 +18,7 @@ from homebrewit.signup.models import UserProfile
 def register(request):
 	contest_year = ContestYear.objects.get_current_contest_year()
 	styles = BeerStyle.objects.filter(contest_year=contest_year)
-	style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year)
+	style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
 
 	# this class definition is inside of this function because it needs
 	# to access local variables
