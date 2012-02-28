@@ -7,8 +7,8 @@
 
 
 {% block contenttitle %}
-	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>: 
-	{% if entry.beer_name %}{{entry.beer_name}} ({% endif %}{{entry.style.name}}{% if entry.beer_name %}){% endif %}
+	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>
+	{{entry.beer_name}}
 {% endblock %}
 
 
@@ -16,6 +16,14 @@
 	{% if entry.special_ingredients %}
 		<div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
 	{% endif %}
+
+	<div class="small-header">
+		Style: {{entry.style.name}}
+		{% if entry.style_subcategory %}
+			({{entry.style_subcategory.name}})
+		{% endif %}
+	</div>
+	<div class="small-header">Year: {{entry.style.contest_year.contest_year}}</div>
 
 	{% if judging_results %}
 		{% for result in judging_results %}

@@ -183,11 +183,14 @@ As always, we appreciate your participation and look forward to a great competit
 
 
 	def __unicode__(self):
-		s = ""
+		s = unicode(self.style)
 		if self.style_subcategory:
-			s = "(" + self.style_subcategory + ")"
+			s = s + " (" + unicode(self.style_subcategory) + ")"
 
-		return "%s: %s%s" % (self.user.username, self.style, s)
+		if self.beer_name:
+			s = s + " / " + self.beer_name
+
+		return s
 
 
 def integer_range(max_int):
