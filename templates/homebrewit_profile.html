@@ -14,7 +14,7 @@
 	{% if is_profile_owner %}
 		<ul>
 			{% if contest_year.allowing_entries %}
-				<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the /r/homebrewing contest</a></li>
+				<li><a href="{% url homebrewit.contest.views.register %}">Sign up for the {{contest_year.contest_year}} homebrewing contest</a></li>
 			{% endif %}
 			<li><a href="{% url homebrewit.experiencelevel.views.change_level %}">Set your experience level</a></li>
 			<li><a href="{% url homebrewit.profile.views.edit_profile %}">Edit your profile and address</a></li>
