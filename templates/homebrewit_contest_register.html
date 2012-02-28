@@ -9,6 +9,7 @@ var style_data = {{style_data_as_json|safe}};
 $(document).ready(function() {
 	var label_el = $('label[for="id_style_subcategory"]');
 	var subcategory_el = $('select[name="style_subcategory"]');
+	var style_el = $('select[name="style"]');
 
 	function hide_subcategories() {
 		label_el.hide();
@@ -20,31 +21,38 @@ $(document).ready(function() {
 		subcategory_el.show();
 	}
 
-	$('select[name="style"]').change(function() {
-		var selected = $(this).val();
-		if (style_data[selected].length == 0) {
+	function setup_categories(style_value, subcategory_value) {
+		if (style_data[style_value].length == 0) {
 			hide_subcategories();
 			return true;
 		}
 
 		var options = "";
-		for (var i = 0; i < style_data[selected].length; i++) { 
-			var sub = style_data[selected][i];
-			options += "<option value=\"" + sub.id + "\">" + sub.name + "</option>";
+		for (var i = 0; i < style_data[style_value].length; i++) { 
+			var sub = style_data[style_value][i];
+			options += "<option " + (sub.id == subcategory_value ? "selected" : "") + " value=\"" + sub.id + "\">" + sub.name + "</option>";
 		}
 
 		subcategory_el.html(options);
 		show_subcategories();
 
 		return true;
+	}
+
+
+	style_el.change(function() {
+		setup_categories($(this).val(), "");
 	});
+
+	// call it to set up an initial state
+	setup_categories(style_el.val(), subcategory_el.val());
 });
 	</script>
 {% endblock %}
 
 
 {% block title %}
-	{{form.style}}
+	Register
 {% endblock %}
 
 
