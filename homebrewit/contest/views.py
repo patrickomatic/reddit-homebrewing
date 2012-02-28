@@ -126,7 +126,7 @@ def contest_year(request, year):
 
 	styles = {}
 	for style in BeerStyle.objects.filter(contest_year=contest_year):
-		top_31 = Entry.objects.get_top_n(style, 31)
+		top_31 = Entry.objects.filter(style=style)[:31]
 		styles[style] = {
 			'entries': top_31[:30],
 			'has_more': len(top_31) > 30,
