@@ -122,6 +122,10 @@ input[type="password"] {
 	border: 1px solid #422E13;
 }
 
+select { 
+	width: 300px;
+}
+
 input[type="submit"] {
 	background-color: #EEDDA4;
 	color: #422E13;
