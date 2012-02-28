@@ -66,6 +66,8 @@ class ContestViewsTest(TestCase):
 		self.assert_(Entry.objects.get(beer_name=name).style_subcategory.id == 2)
 
 	def test_register__style_subcategory_required(self):
+		Entry.objects.filter(user=self.user).delete()
+
 		response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6})
 		
 		self.assert_(not response.context['form'].is_valid())

@@ -31,14 +31,24 @@ def register(request):
 			self.request = kwargs.pop('request', None)
 			super(EntryForm, self).__init__(*args, **kwargs)
 
-		def clean(self):
-			""" 
-			* Don't allow people to enter the same style twice. 
-			* If the beer style has subcategories, make sure that they picked one
-			"""
-			# XXX 
-			#if not 'style_subcategory' in self.cleaned_data:
 
+		def clean_style_subcategory(self):
+			cd = self.cleaned_data
+			style = cd['style']
+
+			if not style.has_subcategories():
+				return None
+			
+			if not cd.get('style_subcategory'):
+				raise forms.ValidationError("You must specify a subcategory.")
+			subcategory = cd['style_subcategory']
+			if subcategory.beer_style != style:
+				raise forms.ValidationError("That subcategory doesn't belong to this style")
+			
+			return subcategory
+
+
+		def clean(self):
 			try:
 				Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
 				raise forms.ValidationError('You have already entered in this category')
