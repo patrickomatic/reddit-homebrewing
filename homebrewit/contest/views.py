@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils import simplejson as json
 from django.views.decorators.cache import cache_page
 
 from homebrewit.contest.models import *
@@ -86,8 +87,15 @@ def register(request):
 	else:
 		form = EntryForm()
 
+
+	# make some json-friendly style data
+	style_data = dict([(style.id, []) for style in styles])
+	for sub in style_subcategories:
+		style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
+
 	return render_to_response('homebrewit_contest_register.html', {
 			'form': form,
+			'style_data_as_json': json.dumps(style_data),
 		}, context_instance=RequestContext(request))
 
 
