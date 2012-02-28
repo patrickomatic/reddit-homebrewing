@@ -1,8 +1,6 @@
 {% extends "homebrewit.html" %}
 
 {% block include %}
-	<link rel="stylesheet" href="/media/css/contest.css" type="text/css" />
-
 	<script type="text/javascript">
 var style_data = {{style_data_as_json|safe}};
 
@@ -22,7 +20,7 @@ $(document).ready(function() {
 	}
 
 	function setup_categories(style_value, subcategory_value) {
-		if (style_data[style_value].length == 0) {
+		if (!style_value || style_data[style_value].length == 0) {
 			hide_subcategories();
 			return true;
 		}
