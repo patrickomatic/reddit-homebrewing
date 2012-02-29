@@ -43,8 +43,8 @@
 		<hr class="generic-header">
 		<div class="clear"></div>
 
-		{% if messages %}
-			<div>
+		<div id="messages">
+			{% if messages %}
 				{% for message in messages %}
 					<ul>
 						<li class="messages">{{message}}</li>
@@ -54,8 +54,8 @@
 				{% block message %}
 
 				{% endblock %}
-			</div>
-		{% endif %}
+			{% endif %}
+		</div>
 
 		<article>
 			{% block content %}{% endblock %}
