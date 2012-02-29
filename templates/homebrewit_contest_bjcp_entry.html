@@ -1,0 +1,84 @@
+{% extends "homebrewit.html" %}
+
+
+{% block title %}
+	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
+{% endblock %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/media/css/bjcpentry.css" type="text/css">
+{% endblock %}
+
+
+{% block contenttitle %}
+	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>
+	{{entry.beer_name}}
+{% endblock %}
+
+
+{% block content %}
+	{% if judging_results %}
+		{% for result in judging_results %}
+			<div id="main_container">
+				<h1 class="bjcp_header">BEER SCORESHEET</h1>
+				<hr class="generic-header">
+				<div id="left">
+					<p>Judge Name: </p>
+					<p>
+						<ul class="descriptors"><span class="descriptor_header">Descriptor Definitions (Mark all that apply):</span>
+							<li {% if result.acetaldehyde %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Acetaldehyde</b> - Green apple-like aroma and flavor.</li>
+							<li {% if result.alcoholic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Alcoholic</b> - The aroma, flavor, and warming effect of ethanol and higher alcohols. Sometimes described as “hot.”</li>
+							<li {% if result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Astringent</b> - Puckering, lingering harshness and/or dryness in the finish/aftertaste; harsh graininess; huskiness.</li>
+							<li {% if result.diacetyl %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Diacetyl</b> - Artificial butter, butterscotch, or toffee aroma and flavor. Sometimes perceived as a slickness on the tongue.</li>
+							<li {% if result.dms %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>DMS (dimethyl sulfide)</b> - At low levels a sweet, cooked or canned corn-like aroma and flavor</li>
+							<li {% if result.estery %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Estery</b> - Aroma and/or flavor of any ester (fruits, fruit flavorings, or roses).</li>
+							<li {% if result.grassy %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Grassy</b> - Aroma/flavor of fresh-cut grass or green leaves.</li>
+							<li {% if result.light_struck %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Light-Struck</b> - Similar to the aroma of a skunk.</li>
+							<li {% if result.metallic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Metallic</b> - Tinny, coiny, copper, iron, or blood-like flavor.</li>
+							<li {% if result.musty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Musty</b> - Stale, musty, or moldy aromas/flavors</li>
+							<li {% if result.oxidized %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Oxidized</b> - Any one or combination of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.</li>
+							<li {% if result.phenolic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Phenolic</b> - Spicy (clove, pepper), smoky, plastic, plastic adhesive strip, and/or medicinal (chlorophenolic).</li>
+							<li {% if result.solvent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Solvent</b> - Aromas and flavors of higher alcohols (fusel alcohols). Similar to acetone or lacquer thinner aromas.</li>
+							<li {% if result.sour_acidic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Sour/Acidic</b> - Tartness in aroma and flavor. Can be sharp and clean (lactic acid), or vinegar-like (acetic acid).</li>
+							<li {% if result.sulfur %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Sulfur</b> - The aroma of rotten eggs or burning matches.</li>
+							<li {% if result.vegetal %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Vegetal</b> - Cooked, canned, or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)</li>
+							<li {% if result.yeasty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Yeasty</b> - A bready, sulfury or yeast-like aroma or flavor.</li>
+						</ul>
+					</p>
+					<p>
+						<ul><span class="scoring_guide">Scoring Guide</span>
+							<li>Outstanding (45 - 50):  World-class example of style</li>
+							<li>Excellent  (38 - 44):  Exemplifies style well, requires minor fine-tuning</li>
+							<li>Very Good (30 - 37):  Generally within style parameters, some minor flaws</li>
+							<li>Good (21 - 29):  Misses the mark on style and/or minor flaws</li>
+							<li>Fair (14 - 20):  Off flavors, aromas or major style deficiencies</li>
+							<li>Problematic (0 - 13): Major off flavors and aromas dominat</li>
+						</ul>
+					</p>
+				</div>
+				<div id="right">
+					<p>Category#: ______ Subcategory: ______ Entry#: ______</p>
+					<p>Special Ingredients: ____________</p>
+					<p class="multi_line_text">
+						<b>Aroma</b> (as appropriate for style) Comment on malt, hops, esters and other aromatics _____/12 
+					</p>
+					<p class="multi_line_text">
+						<b>Appearance</b> (as appropriate for style) Comment on color, clarity, and head (retention, color, and texture) _____/3
+					</p>
+					<p class="multi_line_text">
+						<b>Flavor</b> (as appropriate for style) Comment on malt, hops, fermentation characteristics, balance, finish/aftertaste, and other flavor characteristics _____/20
+					</p>
+					<p class="multi_line_text">
+						<b>Mouthfeel</b> (as appropriate for style) Comment on body, carbonation, warmth, creaminess, astringency, and other palate sensations _____/5
+					</p>
+					<p class="multi_line_text">
+						<b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement _____/10
+					</p>
+					<p><b>Total</b> _____/50</p>
+				</div>
+			</div>
+		{% endfor %}
+	{% else %}
+		<div class="small-title">Entry not yet judged</div>
+	{% endif %}
+{% endblock %}
