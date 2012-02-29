@@ -269,7 +269,7 @@ class BJCPJudgingResult(models.Model):
 
 
 	def __unicode__(self):
-		return "%s (score: %s)" % (self.entry, self.overall_rating())
+		return self.get_description()
 
 
 class JudgingResult(models.Model):
