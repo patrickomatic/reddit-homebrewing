@@ -1,24 +1,24 @@
 #experience-level-picker {
 	list-style: none;
 	height: 234px;
-	width: 944px;
+	width: 880px;
 	padding: 0px;
 }
 
 #experience-level-picker li {
 	margin-right: 20px;
 	float: left;
-	width: 211px;
+	width: 200px;
 }
 
 #experience-level-picker li a { 
 	height: 234px;
 	display: block;
-	background: url(/media/images/legend.png) no-repeat left center;
+	background: url(/media/images/legend-800w.png) no-repeat left center;
 }
 
 #experience-level-picker li a.selected {
-	background-color: red;
+	background: url(/media/images/legend-checked-800w.png) no-repeat left center;
 }
 
 #experience-level-picker li a:hover { 
@@ -30,13 +30,13 @@
 }
 
 #experience-level-picker li a.intermediate { 
-	background-position: -211px center;
+	background-position: -200px center;
 }
 
 #experience-level-picker li a.advanced { 
-	background-position: -422px center;
+	background-position: -400px center;
 }
 
 #experience-level-picker li a.professional { 
-	background-position: -633px center;
+	background-position: -600px center;
 }
