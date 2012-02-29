@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils import simplejson as json
 from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
@@ -40,10 +41,19 @@ def change_level(request):
 
 			try:
 				set_flair(level)
-				request.user.message_set.create(message='Successfully set experience level to %s.' % level.experience_level)
-				return HttpResponseRedirect('/profile/')
+
+				message = 'Successfully set experience level to %s.' % level.experience_level
+				success = True
 			except urllib2.HTTPError:
-				request.user.message_set.create(message='Whoops! There was an error setting your experience level.  This usually happens when reddit\'s API is down.  Try again later and if you continue to have problems, please contact the moderators.')
+				message = 'Whoops! There was an error setting your experience level.  This usually happens when reddit\'s API is down.  Try again later and if you continue to have problems, please contact the moderators.'
+				success = False
+
+			if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+				return HttpResponse(json.dumps({'success': success, 'message': message}), content_type='application/json')
+			else:
+				request.user.message_set.create(message=message)
+				if success:
+					return HttpResponseRedirect('/profile/')
 	else:
 		form = ExperienceForm(initial=initial)
 		

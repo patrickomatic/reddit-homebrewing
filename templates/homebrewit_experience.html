@@ -27,7 +27,7 @@
 		<ul id="experience-level-picker" class="experience-level-picker">
 			{% for level in experience_levels %}
 				<li>
-					<a href="#" class="{{level.name|lower}} generic-border" data-value="{{level.id}}"></a>
+					<a href="#" class="{{level.name|lower}} generic-border {% if current_level.experience_level == level %}selected{% endif %}" data-value="{{level.id}}"></a>
 				</li>
 			{% endfor %}
 		</ul>
