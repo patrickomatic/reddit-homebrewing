@@ -148,8 +148,13 @@ def entry(request, year, style_id, entry_id):
 	except Entry.DoesNotExist:
 		raise Http404
 
-	return render_to_response('homebrewit_contest_entry.html',
-			{'entry': entry, 'judging_results': JudgingResult.objects.filter(entry=entry)}, 
+	template = 'homebrewit_contest_entry.html'
+	if entry.bjcp_judging_result:
+		template = 'homebrewit_contest_bjcp_entry.html'
+
+	return render_to_response(template,
+			{'entry': entry, 
+			'judging_results': BJCPJudgingResult.objects.filter(entry=entry)}, 
 			context_instance=RequestContext(request))
 
 
