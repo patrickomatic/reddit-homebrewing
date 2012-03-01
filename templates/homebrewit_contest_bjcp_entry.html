@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="/media/css/bjcpentry.css" type="text/css">
+	<link rel="stylesheet" href="/media/css/bjcpentry.css" type="text/css" />
+	<link rel="stylesheet" href="/media/css/bjcpentry-print.css" type="text/css" media="print" />
 {% endblock %}
-
 
 {% block contenttitle %}
 	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>
@@ -17,15 +17,34 @@
 
 
 {% block content %}
+<script>
+$(document).ready(function() {
+$('.hotcold_marker').hover(
+    function(event) {
+		$('#img_hover')
+			.css({top: event.pageY + 'px', left: event.pageX + 'px'})
+			.append('<img src="' + $(this).attr('src') + '" />')
+			.show();
+    },
+    function() {
+        $('#img_hover')
+			.hide()
+			.children()
+			.remove();
+    });
+});
+</script>
+
 	{% if judging_results %}
 		{% for result in judging_results %}
 			<div id="main_container">
-				<h1 class="bjcp_header">BEER SCORESHEET</h1>
-				<hr class="generic-header">
+				<h1 class="scoresheet_title">BEER SCORESHEET<a href="javascript:print()" class="print_button"><img src=/media/icons/printer.png></a></h1>
+				<hr>
 				<div id="left">
-					<p>Judge Name: </p>
+					<p><span class="bold underline">Judge Name: </span>{{ result.judge }}</p>
+					{% if result.judge_bjcp_id %}<p><span class="bold underline">Judge BJCP ID: </span>{{ result.judge_bjcp_id }}</p>{% endif %}
 					<p>
-						<ul class="descriptors"><span class="descriptor_header">Descriptor Definitions (Mark all that apply):</span>
+						<ul><span class="bold underline">Descriptor Definitions (Mark all that apply):</span>
 							<li {% if result.acetaldehyde %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Acetaldehyde</b> - Green apple-like aroma and flavor.</li>
 							<li {% if result.alcoholic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Alcoholic</b> - The aroma, flavor, and warming effect of ethanol and higher alcohols. Sometimes described as “hot.”</li>
 							<li {% if result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}><b>Astringent</b> - Puckering, lingering harshness and/or dryness in the finish/aftertaste; harsh graininess; huskiness.</li>
@@ -46,37 +65,94 @@
 						</ul>
 					</p>
 					<p>
-						<ul><span class="scoring_guide">Scoring Guide</span>
-							<li>Outstanding (45 - 50):  World-class example of style</li>
-							<li>Excellent  (38 - 44):  Exemplifies style well, requires minor fine-tuning</li>
-							<li>Very Good (30 - 37):  Generally within style parameters, some minor flaws</li>
-							<li>Good (21 - 29):  Misses the mark on style and/or minor flaws</li>
-							<li>Fair (14 - 20):  Off flavors, aromas or major style deficiencies</li>
-							<li>Problematic (0 - 13): Major off flavors and aromas dominat</li>
+						<ul class="scoring_guide"><span class="bold underline">Scoring Guide</span>
+							<li><span class="bold">Outstanding (45 - 50):</span>  World-class example of style</li>
+							<li><span class="bold">Excellent  (38 - 44):</span>  Exemplifies style well, requires minor fine-tuning</li>
+							<li><span class="bold">Very Good (30 - 37):</span>  Generally within style parameters, some minor flaws</li>
+							<li><span class="bold">Good (21 - 29):</span>  Misses the mark on style and/or minor flaws</li>
+							<li><span class="bold">Fair (14 - 20):</span>  Off flavors, aromas or major style deficiencies</li>
+							<li><span class="bold">Problematic (0 - 13):</span> Major off flavors and aromas dominate</li>
 						</ul>
 					</p>
 				</div>
 				<div id="right">
-					<p>Category#: ______ Subcategory: ______ Entry#: ______</p>
-					<p>Special Ingredients: ____________</p>
-					<p class="multi_line_text">
-						<b>Aroma</b> (as appropriate for style) Comment on malt, hops, esters and other aromatics _____/12 
+					<p class="smalltext">
+						<span class="bold underline">Category:</span>&nbsp;&nbsp;<span class="italic">{{ entry.style }}</span>
+						{% if entry.style_subcategory %}
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<span class="bold underline">Subcategory:</span>&nbsp;&nbsp;<span class="italic">{{ entry.style_subcategory }}</span>
+						{% endif %}
+						{% if entry.special_ingredients %}
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<span class="bold underline">Special Ingredients:</span>&nbsp;&nbsp;<span class="italic">{{ entry.special_ingredients }}</span>
+						{% endif %}
 					</p>
 					<p class="multi_line_text">
-						<b>Appearance</b> (as appropriate for style) Comment on color, clarity, and head (retention, color, and texture) _____/3
+						<span class="multi_line_header"><b>Aroma</b> (as appropriate for style) Comment on malt, hops, esters and other aromatics: <span class="underline bold">{{ result.aroma_score}} / 12</span></span>
+						<p class="multi_line_description">{{ result.aroma_description  }}</p>
 					</p>
 					<p class="multi_line_text">
-						<b>Flavor</b> (as appropriate for style) Comment on malt, hops, fermentation characteristics, balance, finish/aftertaste, and other flavor characteristics _____/20
+						<span class="multi_line_header"><b>Appearance</b> (as appropriate for style) Comment on color, clarity, and head (retention, color, and texture): <span class="underline bold">{{ result.appearance_score}} / 3</span></span>
+						<p class="multi_line_description">{{ result.appearance_description }}</p>
 					</p>
 					<p class="multi_line_text">
-						<b>Mouthfeel</b> (as appropriate for style) Comment on body, carbonation, warmth, creaminess, astringency, and other palate sensations _____/5
+						<span class="multi_line_header"><b>Flavor</b> (as appropriate for style) Comment on malt, hops, fermentation characteristics, balance, finish/aftertaste, and other flavor characteristics: <span class="underline bold">{{ result.flavor_score}} / 20</span></span>
+						<p class="multi_line_description">{{ result.flavor_description }}</p>
 					</p>
 					<p class="multi_line_text">
-						<b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement _____/10
+						<span class="multi_line_header"><b>Mouthfeel</b> (as appropriate for style) Comment on body, carbonation, warmth, creaminess, astringency, and other palate sensations: <span class="underline bold">{{ result.mouthfeel_score}} / 5</span></span>
+						<p class="multi_line_description">{{ result.mouthfeel_description }}</p>
 					</p>
-					<p><b>Total</b> _____/50</p>
+					<p class="multi_line_text">
+						<span class="multi_line_header"><b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement: <span class="underline bold">{{ result.overall_impression_score}} / 10</span></span>
+						<p class="multi_line_description">{{ result.overall_impression_description }}</p>
+					</p>
+					<p class="bold underline">Total Score: {{ entry.score }} / 50</p>
+					<div class="hotcold_chart">
+						<table class="hotcold_chart">
+							<tr>
+								<th colspan="3">Stylistic Accuracy</th>
+							</tr>
+							<tr>
+								<td class="hotcold_label">Classic Example</td>
+								<td>
+									<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+									<span class="hotcold_marker_container">
+										<img src="/media/images/markers/hotcold_marker_{{ result.stylistic_accuracy }}.png" class="hotcold_marker_{{ result.stylistic_accuracy }} hotcold_marker" />
+									</span>
+								</td>
+								<td class="hotcold_label">Not To Style</td>
+							<tr>
+								<th colspan="3" class="hotcold_title">Technical Merit</th>
+							</tr>
+							<tr>
+								<td class="hotcold_label">Flawless</td>
+								<td>
+									<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+									<span class="hotcold_marker_container">
+										<img src="/media/images/markers/hotcold_marker_{{ result.technical_merit }}.png" class="hotcold_marker_{{ result.technical_merit }} hotcold_marker" />
+									</span>
+								</td>
+								<td class="hotcold_label">Significant Flaws</td>
+							</tr>
+							<tr>
+								<th colspan="3">Intangibles</th>
+							</tr>
+							<tr>
+								<td class="hotcold_label">Wonderful</td>
+								<td>
+									<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+									<span class="hotcold_marker_container">
+										<img src="/media/images/markers/hotcold_marker_{{ result.intangibles }}.png" class="hotcold_marker_{{ result.intangibles }} hotcold_marker" />
+									</span>
+								</td>
+								<td class="hotcold_label">Lifeless</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
+			<div id="img_hover"></div>
 		{% endfor %}
 	{% else %}
 		<div class="small-title">Entry not yet judged</div>

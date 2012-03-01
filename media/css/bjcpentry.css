@@ -1,3 +1,4 @@
+/* Content Containers */
 body {
     margin: 10px;
     padding: 10px;
@@ -10,34 +11,34 @@ body {
 	border: 1px solid #422E13;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
-	width: 1000px;
+	width: 90%;
 	padding: 20px;
 	margin: 0 auto;
 	overflow: auto;
 }
 
-#left {
-	width: 450px;
+#left, #right {
+	width: 49.5%;
 	float: left;
 	position: relative;
 }
 
 #right {
-	width: 450px;
 	float: right;
-	position: relative;
+	padding-left: 10px;
 }
 
-a {
-    font-weight: bold;
-    color: #422E13;
-}
-a:hover {
-    text-decoration: underline;
-    color: #8E6B3E;
+#left {
+	border-right: 1px dotted;
 }
 
+#img_hover {
+	display: none;
+	position: absolute;
+	z-index: 2;
+}
 
+/* Headers & Footers */
 #header {
     text-align: right;
     font-size: 0.8em;
@@ -48,53 +49,12 @@ a:hover {
     margin: 0px;
 }
 
-.generic-header {
+hr {
     width: 100%;
     border: 1px solid #422E13; /* Chrome doesn't like horizontal rules < 3px in height */
     color: #422E13; /* IE is redarded */
     background-color: #422E13; /* Mozilla and Opera are retarded also */
 	margin-bottom: 40px;
-}
-
-
-.header-logo {
-    float: left;
-    height: 100px;
-    border: 0px;
-    padding-right: 10px;
-}
-
-.bjcp_header {
-	text-align: center;
-	font-style: italic;
-}
-
-.large-title {
-    padding-top: 10px;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.descriptor_header {
-	font-weight: bold;
-	text-decoration: underline;
-}
-
-.descriptors {
-	list-style-type: none;
-	font-size: 11pt;
-}
-
-.list_checkmark {
-	list-style-image: url('/media/icons/checkmark.png');
-}
-
-.list_nocheckmark {
-	list-style-image: url('/media/icons/nocheckmark.png');
-}
-
-.multi_line_text {
-	height: 110px;
 }
 
 footer {
@@ -105,3 +65,158 @@ footer {
     font-size: 0.7em;
 }
 
+
+/* Labels & Titles */
+.scoresheet_title {
+    text-align: center;
+    font-style: italic;
+}
+
+
+/* Text Elements */
+.underline {
+	text-decoration: underline;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.smalltext {
+	font-size: 10pt;
+}
+
+a {                          
+    font-weight: bold;
+    color: #422E13;
+}
+a:hover {
+    text-decoration: underline;
+    color: #8E6B3E;
+}
+
+.multi_line_text {
+    font-size: 11pt;
+}
+
+.multi_line_description {
+	height: 110px;
+	width: 100%;
+    font-style: italic;
+    font-size: 10pt;
+	overflow: auto;
+}
+
+
+/* List Elements */
+li {
+	font-size: 11pt;
+	list-style-type: none;
+}
+
+.list_checkmark {
+	list-style-image: url('/media/icons/checkmark.png');
+	padding-bottom: 20px;
+}
+
+.list_nocheckmark {
+	list-style-image: url('/media/icons/nocheckmark.png');
+	padding-bottom: 20px;
+}
+
+.scoring_guide li{
+	padding-bottom: 2px;
+}
+
+/* Elements from parent template (homebrewit.html) */
+.large-title {
+    padding-top: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.header-logo {
+    float: left;
+    height: 100px;
+    border: 0px;
+    padding-right: 10px;
+}
+
+
+/* Buttons */
+.print_button {
+	position: relative;
+	float: right;
+}
+
+
+/* "hot/cold" Chart -- this deserved it's own section */
+table.hotcold_chart {
+	text-align: center;
+	margin: 0 auto;
+}
+
+div.hotcold_chart {
+	margin: 0 auto;
+	width: 90%;
+	text-align: center;
+	border: 1px dotted;
+}
+
+.hotcold_title {
+	text-align: center;
+	font-size: 11pt;
+}
+
+.hotcold_label {
+	font-size: 10pt;
+}
+
+.hotcoldbar {
+	z-index: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.hotcold_marker {
+	z-index: 1;
+}
+
+.hotcold_marker_1 {
+	position: relative;
+	left: -15%;
+	width: 25px;
+	top: 5px;
+}
+
+.hotcold_marker_2 {
+    position: relative;
+    left: -35%;
+	width: 25px;
+    top: 5px;
+}
+
+.hotcold_marker_3 {
+    position: relative;
+    left: -50%;
+	width: 25px;
+    top: 5px;
+}
+
+.hotcold_marker_4 {
+    position: relative;
+    left: -70%;
+	width: 25px;
+    top: 5px;
+}
+
+.hotcold_marker_5 {
+    position: relative;
+    left: -90%;
+	width: 25px;
+    top: 5px;
+}

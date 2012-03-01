@@ -1,0 +1,11 @@
+#main_container {
+	width: 8in;
+}
+
+#left, #right {
+	width: 48%;
+}
+
+.print_button {
+	display: none;
+}
