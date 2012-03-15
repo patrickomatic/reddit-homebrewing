@@ -1,6 +1,8 @@
-import urllib, urllib2, json, cookielib
+import urllib, urllib2, json, cookielib, datetime
 from django.conf import settings
 
+
+last_rate_limit = None
 
 def retry(times, ex):
 	""" A decorator which can be called as:
@@ -21,6 +23,10 @@ def retry(times, ex):
 			return fn(*args, **kwargs)
 		return fn_wrap
 	return retry_wrap
+
+
+class RedditRateLimitingError(Exception):
+	pass
 
 
 class RedditSession:
@@ -58,7 +64,15 @@ def reddit_login(username, password):
 	next request.  Returns None if login was unsuccessful.  """
 
 	assert username and password
-	
+
+	# let's not hit reddit's api if they're rate limiting us
+	# XXX write tests for this functionality!
+	if reddit_login.rate_limit and reddit_login.rate_limit.hour == datetime.datetime.now().hour:
+		raise RedditRateLimitingError()
+	else:
+		reddit_login.rate_limit = None	
+
+
 	session = RedditSession()
 
 	fh = reddit_api_url("/login/" + username, 
@@ -66,11 +80,17 @@ def reddit_login(username, password):
 
 	resp = json.loads(fh.read())
 
-	if 'errors' in resp['json'] and len(resp['json']['errors']) == 0:
-		session.modhash = resp['json']['data']['modhash']
-		return session
+	if 'errors' in resp['json']:
+		if len(resp['json']['errors']) == 0:
+			session.modhash = resp['json']['data']['modhash']
+			return session
+		elif resp['json']['errors'][0][0] == u'RATELIMIT':
+			reddit_login.rate_limit = datetime.datetime.now()
+			raise RedditRateLimitingError()
 
 	return None
+
+reddit_login.rate_limit = None
 
 
 def can_reddit_login(username, password):
