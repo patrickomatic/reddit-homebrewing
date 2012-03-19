@@ -12,7 +12,7 @@ from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
 from homebrewit.signup import secret_key
-from homebrewit.reddit import can_reddit_login, verify_token_in_thread
+from homebrewit.reddit import *
 
 
 class RedditAuthenticationForm(AuthenticationForm):
@@ -25,8 +25,11 @@ class RedditAuthenticationForm(AuthenticationForm):
 			try:
 				User.objects.get(username=username)
 			except User.DoesNotExist:
-				if not can_reddit_login(username, password):
-					raise forms.ValidationError("This username and password don't seem to work on reddit")
+				try:
+					if not can_reddit_login(username, password):
+						raise forms.ValidationError("This username and password don't seem to work on reddit")
+				except RedditRateLimitingError:
+					raise forms.ValidationError("Sorry, but Reddit's API is currently rate limiting requests.  Please try again in a couple hours!")
 
 				# ok they authenticate on reddit - create them
 				User.objects.create_user(username, '', password)

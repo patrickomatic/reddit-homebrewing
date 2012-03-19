@@ -19,8 +19,16 @@ class BJCPJudgingResultAdminForm(forms.ModelForm):
 class BJCPJudgingResultAdmin(admin.ModelAdmin):
 	form = BJCPJudgingResultAdminForm
 
+class ContestYearAdminForm(forms.ModelForm):
+	class Meta:
+		model = ContestYear
+		widgets = { 'prize_description': forms.Textarea(), }
+
+class ContestYearAdmin(admin.ModelAdmin):
+	form = ContestYearAdminForm
+
 admin.site.register(BeerStyle)
 admin.site.register(BeerStyleSubcategory)
-admin.site.register(ContestYear)
 admin.site.register(Entry)
+admin.site.register(ContestYear, ContestYearAdmin)
 admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)

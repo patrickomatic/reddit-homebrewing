@@ -12,7 +12,7 @@
 
 {% block content %}
 	{% if contest_year.prize_description %}
-		<p>{{contest_year.prize_description|linebreaksbr}}</p>
+		<p>{{contest_year.prize_description|safe}}</p>
 	{% endif %}
 
 	{% for style, data in styles.iteritems %}
