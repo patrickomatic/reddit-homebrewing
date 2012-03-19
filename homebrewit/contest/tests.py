@@ -7,7 +7,7 @@ from homebrewit.contest.models import *
 from homebrewit.contest.views import *
 
 
-class ContestViewsTest(TestCase):
+class ContestViewsTests(TestCase):
 	fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'judgingresults']
 
 	def setUp(self):
@@ -117,7 +117,7 @@ class ContestViewsTest(TestCase):
 		self.assert_(not 'a[href*="user/loser"]:after' in content)
 
 
-class EntryModelTest(TestCase):
+class EntryModelTests(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
 	def setUp(self):
@@ -208,7 +208,7 @@ class BeerStyleModelTests(TestCase):
 		self.assert_(not self.ipa_style.has_subcategories())
 
 
-class JudgeContestCommandTest(TestCase):
+class JudgeContestCommandTests(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults']
 
 	def setUp(self):
