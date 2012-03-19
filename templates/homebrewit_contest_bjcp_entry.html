@@ -16,25 +16,26 @@
 {% endblock %}
 
 
-{% block content %}
+{% block inclue %}
 <script>
 $(document).ready(function() {
-$('.hotcold_marker').hover(
-    function(event) {
+	$('.hotcold_marker').hover(function(event) {
 		$('#img_hover')
 			.css({top: event.pageY + 'px', left: event.pageX + 'px'})
 			.append('<img src="' + $(this).attr('src') + '" />')
 			.show();
-    },
-    function() {
-        $('#img_hover')
+	}, function() {
+		$('#img_hover')
 			.hide()
 			.children()
 			.remove();
-    });
+	});
 });
 </script>
+{% endblock %}
 
+
+{% block content %}
 	{% if judging_results %}
 		{% for result in judging_results %}
 			<div id="main_container">
