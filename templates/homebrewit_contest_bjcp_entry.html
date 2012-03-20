@@ -181,11 +181,11 @@ $(document).ready(function() {
 				</p>
 
 				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement: <span class="underline bold">{{entry.bjcp_judging_entry.bjcp_judging_result.overall_impression_score}} / 10</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_entry.bjcp_judging_result.overall_impression_description}}</p>
+					<span class="multi_line_header"><b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement: <span class="underline bold">{{entry.bjcp_judging_result.overall_impression_score}} / 10</span></span>
+					<p class="multi_line_description">{{entry.bjcp_judging_entry.overall_impression_description}}</p>
 				</p>
 
-				<p class="bold underline">Total Score: {{entry.bjcp_judging_entry.bjcp_judging_result.overall_score}} / 50</p>
+				<p class="bold underline">Total Score: {{entry.bjcp_judging_entry.overall_score}} / 50</p>
 
 				<div class="hotcold_chart">
 					<table class="hotcold_chart">
