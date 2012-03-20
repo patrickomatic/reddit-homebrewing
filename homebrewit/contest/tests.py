@@ -8,7 +8,7 @@ from homebrewit.contest.views import *
 
 
 class ContestViewsTests(TestCase):
-	fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'judgingresults']
+	fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'bjcpjudgingresults', 'judgingresults']
 
 	def setUp(self):
 		self.client.login(username='patrick', password='password')
@@ -91,6 +91,14 @@ class ContestViewsTests(TestCase):
 		self.assertTemplateUsed(response, 'homebrewit_contest_entry.html')
 		self.assert_(response.context['entry'].beer_name == 'Beer name')
 		self.assert_(len(response.context['judging_results']) == 1)
+
+	def test_entry__bjcp_judging_result(self):
+		response = self.client.get('/contest/2011/styles/1/entries/2')
+
+		self.assertTemplateUsed(response, 'homebrewit_contest_bjcp_entry.html')
+		self.assert_(response.context['entry'].beer_name == 'Beer name')
+		self.assert_(response.context['entry'].bjcp_judging_result is not None)
+		self.assert_(response.context['form'] is not None)
 
 
 	def test_style(self):
@@ -209,7 +217,7 @@ class BeerStyleModelTests(TestCase):
 
 
 class JudgeContestCommandTests(TestCase):
-	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults']
+	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults', 'bjcpjudgingresults']
 
 	def setUp(self):
 		self.command = JudgeContestCommand()

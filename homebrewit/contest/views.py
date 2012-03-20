@@ -165,7 +165,7 @@ def entry(request, year, style_id, entry_id):
 	else:
 		return render_to_response('homebrewit_contest_entry.html', {
 				'entry': entry,
-				'judging_results': BJCPJudgingResult.objects.filter(entry=entry)
+				'judging_results': JudgingResult.objects.filter(entry=entry)
 			}, context_instance=RequestContext(request))
 
 
