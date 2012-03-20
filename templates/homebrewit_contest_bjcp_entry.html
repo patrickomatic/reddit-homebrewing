@@ -38,7 +38,7 @@ $(document).ready(function() {
 
 
 {% block content %}
-	{% if result %}
+	{% if form %}
 		<div id="main_container">
 			<h1 class="scoresheet_title">
 				Beer Scoresheet
@@ -50,7 +50,7 @@ $(document).ready(function() {
 			<hr /> 
 
 			<div id="left">
-				<p><span class="bold underline">{{result.judge.label}}</span>: {{entry.bjcp_judging_result.judge}}</p>
+				<p><span class="bold underline">{{form.judge.label}}</span>: {{entry.bjcp_judging_result.judge}}</p>
 
 				{% if entry.bjcp_judging_result.judge_bjcp_id %}
 					<p>
@@ -62,54 +62,54 @@ $(document).ready(function() {
 					<span class="bold underline">Descriptor Definitions (Mark all that apply):</span>
 					<ul>
 						<li {% if entry.bjcp_judging_result.acetaldehyde %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.acetaldehyde.label}}</span> - {{result.acetaldehyde.help_text}}
+							<span class="bold">{{form.acetaldehyde.label}}</span> - {{form.acetaldehyde.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.alcoholic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.alcoholic.label}}</span> - {{result.alcoholic.help_text}} </li>
-						<li {% if result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.astringent.label}}</span> - {{result.astringent.help_text}}
+							<span class="bold">{{form.alcoholic.label}}</span> - {{form.alcoholic.help_text}} </li>
+						<li {% if entry.bjcp_judging_result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+							<span class="bold">{{form.astringent.label}}</span> - {{form.astringent.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.diacetyl %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.diacetyl.label}}</span> - {{result.diacetyl.help_text}}
+							<span class="bold">{{form.diacetyl.label}}</span> - {{form.diacetyl.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.dms %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.dms.label}}</span> - {{result.dms.help_text}}
+							<span class="bold">{{form.dms.label}}</span> - {{form.dms.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.estery %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.estery.label}}</span> - {{result.estery.help_text}}
+							<span class="bold">{{form.estery.label}}</span> - {{form.estery.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.grassy %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.grassy.label}}</span> - {{result.grassy.help_text}}
+							<span class="bold">{{form.grassy.label}}</span> - {{form.grassy.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.light_struck %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.light_struck.label}}</span> - {{result.light_struck.help_text}}
+							<span class="bold">{{form.light_struck.label}}</span> - {{form.light_struck.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.metallic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.metallic.label}}</span> - {{result.metallic.help_text}}
+							<span class="bold">{{form.metallic.label}}</span> - {{form.metallic.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.musty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.musty.label}}</span> - {{result.musty.help_text}}
+							<span class="bold">{{form.musty.label}}</span> - {{form.musty.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.oxidized %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.oxidized.label}}</span> - {{result.oxidized.help_text}}
+							<span class="bold">{{form.oxidized.label}}</span> - {{form.oxidized.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.phenolic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.phenolic.label}}</span> - {{result.phenolic.help_text}}
+							<span class="bold">{{form.phenolic.label}}</span> - {{form.phenolic.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.solvent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.solvent.label}}</span> - {{result.solvent.help_text}}
+							<span class="bold">{{form.solvent.label}}</span> - {{form.solvent.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.sour_acidic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.sour_acidic.label}}</span> - {{result.sour_acidic.help_text}}
+							<span class="bold">{{form.sour_acidic.label}}</span> - {{form.sour_acidic.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.sulfur %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.sulfur.label}}</span> - {{result.sulfur.help_text}}
+							<span class="bold">{{form.sulfur.label}}</span> - {{form.sulfur.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.vegetal %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.vegetal.label}}</span> - {{result.vegetal.help_text}}
+							<span class="bold">{{form.vegetal.label}}</span> - {{form.vegetal.help_text}}
 						</li>
 						<li {% if entry.bjcp_judging_result.yeasty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{result.yeasty.label}}</span> - {{result.yeasty.help_text}}
+							<span class="bold">{{form.yeasty.label}}</span> - {{form.yeasty.help_text}}
 						</li>
 					</ul>
 				</p>
@@ -202,7 +202,7 @@ $(document).ready(function() {
 							</td>
 							<td class="hotcold_label">Not To Style</td>
 						<tr>
-							<th colspan="3" class="hotcold_title">{{result.technical_merit.label}}</th>
+							<th colspan="3" class="hotcold_title">{{form.technical_merit.label}}</th>
 						</tr>
 						<tr>
 							<td class="hotcold_label">Flawless</td>
@@ -215,7 +215,7 @@ $(document).ready(function() {
 							<td class="hotcold_label">Significant Flaws</td>
 						</tr>
 						<tr>
-							<th colspan="3">{{result.intangibles.label}}</th>
+							<th colspan="3">{{form.intangibles.label}}</th>
 						</tr>
 						<tr>
 							<td class="hotcold_label">Wonderful</td>

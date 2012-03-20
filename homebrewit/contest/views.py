@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.forms import ModelForm
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -140,6 +141,10 @@ def contest_year(request, year):
 			}, context_instance=RequestContext(request))
 
 
+class BJCPJudgingResultForm(ModelForm):
+	class Meta:
+		model = BJCPJudgingResult
+
 def entry(request, year, style_id, entry_id):
 	try:
 		entry = Entry.objects.get(pk=entry_id)
@@ -148,14 +153,20 @@ def entry(request, year, style_id, entry_id):
 	except Entry.DoesNotExist:
 		raise Http404
 
-	template = 'homebrewit_contest_entry.html'
-	if entry.bjcp_judging_result:
-		template = 'homebrewit_contest_bjcp_entry.html'
 
-	return render_to_response(template,
-			{'entry': entry, 
-			'judging_results': BJCPJudgingResult.objects.filter(entry=entry)}, 
-			context_instance=RequestContext(request))
+	# this split is an unfortunate artifact of switching the way that we judge the contest
+	# after already having data.  basically, if it uses the new BJCP scoresheet, we show
+	# that template, otherwise the other (old) one
+	if entry.bjcp_judging_result:
+		return render_to_response('homebrewit_contest_bjcp_entry.html', {
+				'entry': entry,
+				'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result),
+			}, context_instance=RequestContext(request))
+	else:
+		return render_to_response('homebrewit_contest_entry.html', {
+				'entry': entry,
+				'judging_results': BJCPJudgingResult.objects.filter(entry=entry)
+			}, context_instance=RequestContext(request))
 
 
 # XXX @cache_page(600)
