@@ -143,20 +143,16 @@ $(document).ready(function() {
 					</ul>
 				</p>
 			</div>
-
 			<div id="right">
-				{% comment %}XXX ewww no &nbsp;s! {% endcomment %}
 				<p class="smalltext">
-					<span class="bold underline">{{entry.category.label}}</span>&nbsp;&nbsp;<span class="italic">{{entry.style}}</span>
+					<span class="bold underline">{{ entry.style }}</span><br />
 
 					{% if entry.style_subcategory %}
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="bold underline">{{entry.subcategory.label}}</span>&nbsp;&nbsp;<span class="italic">{{entry.style_subcategory}}</span>
+						<span class="bold underline">Subcategory:</span><span class="italic"> {{entry.style_subcategory}}</span><br />
 					{% endif %}
 
 					{% if entry.special_ingredients %}
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="bold underline">Special Ingredients:</span>&nbsp;&nbsp;<span class="italic">{{entry.special_ingredients}}</span>
+						<span class="bold underline">Special Ingredients:</span><span class="italic"> {{entry.special_ingredients}}</span><br />
 					{% endif %}
 				</p>
 
@@ -193,39 +189,39 @@ $(document).ready(function() {
 							<th colspan="3">{{entry.bjcp_judging_result.stylistic_accuracy.label}}</th>
 						</tr>
 						<tr>
-							<td class="hotcold_label">Classic Example</td>
+							<td class="hotcold_label">Not To Style</td>
 							<td>
 								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
 									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}} hotcold_marker" />
 								</span>
 							</td>
-							<td class="hotcold_label">Not To Style</td>
+							<td class="hotcold_label">Classic Example</td>
 						<tr>
 							<th colspan="3" class="hotcold_title">{{form.technical_merit.label}}</th>
 						</tr>
 						<tr>
-							<td class="hotcold_label">Flawless</td>
+							<td class="hotcold_label">Significant Flaws</td>
 							<td>
 								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
 									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.technical_merit}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.technical_merit}} hotcold_marker" />
 								</span>
 							</td>
-							<td class="hotcold_label">Significant Flaws</td>
+							<td class="hotcold_label">Flawless</td>
 						</tr>
 						<tr>
 							<th colspan="3">{{form.intangibles.label}}</th>
 						</tr>
 						<tr>
-							<td class="hotcold_label">Wonderful</td>
+							<td class="hotcold_label">Lifeless</td>
 							<td>
 								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
 									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.intangibles}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.intangibles}} hotcold_marker" />
 								</span>
 							</td>
-							<td class="hotcold_label">Lifeless</td>
+							<td class="hotcold_label">Wonderful</td>
 						</tr>
 					</table>
 				</div>

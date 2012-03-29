@@ -10,14 +10,14 @@
 	display: none;
 }
 
-.hotcold_marker_1 {
+.hotcold_marker_5 {
     position: relative;
     left: 40%;
     width: 25px;
     top: -25px;
 }
 
-.hotcold_marker_2 {
+.hotcold_marker_4 {
     position: relative;
     left: 20%;
     width: 25px;
@@ -31,14 +31,14 @@
     top: -25px;
 }
 
-.hotcold_marker_4 {
+.hotcold_marker_2 {
     position: relative;
     left: -20%;
     width: 25px;
     top: -25px;
 }
 
-.hotcold_marker_5 {
+.hotcold_marker_1 {
     position: relative;
     left: -50%;
     width: 25px;
