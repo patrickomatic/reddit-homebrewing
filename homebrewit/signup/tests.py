@@ -69,11 +69,6 @@ class SignupViewsTest(TestCase):
 		self.assertRedirects(response, '/')
 
 
-	def test_related_reddits(self):
-		response = self.client.get('/related')
-		self.assertTemplateUsed(response, 'homebrewit_related_reddits.html')
-
-
 class RedditTest(TestCase):
 	fixtures = ['experiencelevels', 'users', 'userexperiencelevels']
 
