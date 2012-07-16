@@ -11,6 +11,9 @@ class UserProfile(models.Model):
 	state = models.CharField(max_length=255)
 	zip_code = models.CharField(max_length=255)
 	country = models.CharField(max_length=255)
+    
+    class Meta:
+        ordering = ('user',)
 
 	def __unicode__(self):
 		return self.user.username
