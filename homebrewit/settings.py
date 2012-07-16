@@ -81,6 +81,7 @@ if DEBUG:
 	    'experiencelevel',
 	    'signup',
 	    'profile',
+		'related',
 	)
 else:
 	OUR_APPS = (
@@ -88,6 +89,7 @@ else:
 	    'homebrewit.experiencelevel',
 	    'homebrewit.signup',
 	    'homebrewit.profile',
+		'homebrewit.related',
 	)
 
 INSTALLED_APPS = (
