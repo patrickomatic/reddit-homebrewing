@@ -12,7 +12,7 @@ class UserProfile(models.Model):
 	zip_code = models.CharField(max_length=255)
 	country = models.CharField(max_length=255)
     
-    class Meta:
+	class Meta:
         ordering = ('user',)
 
 	def __unicode__(self):
