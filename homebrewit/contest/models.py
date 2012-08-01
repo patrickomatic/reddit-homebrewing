@@ -136,9 +136,14 @@ class Entry(models.Model):
 			return
 
 		try:
+			judge_profile = self.style.judge.get_profile()
+		except UserProfile.DoesNotExist:
+			return
+
+		try:
 			contest_year = self.style.contest_year.contest_year
 
-			email_vars = model_to_dict(self.style.judge.get_profile())
+			email_vars = model_to_dict(judge_profile)
 			email_vars.update({
 				'username': self.user.username,
 				'contest_year': contest_year,

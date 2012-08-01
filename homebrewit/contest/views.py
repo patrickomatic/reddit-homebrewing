@@ -113,7 +113,10 @@ def style(request, year, style_id):
 	
 	address = None
 	if style.judge:
-		address = style.judge.get_profile()
+		try:
+			address = style.judge.get_profile()
+		except UserProfile.DoesNotExist:
+			pass
 
 	return render_to_response('homebrewit_contest_style.html', {
 			'style': style, 
