@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 	country = models.CharField(max_length=255)
     
 	class Meta:
-		ordering = ('user',)
+		ordering = ('user__username',)
 
 	def __unicode__(self):
 		return self.user.username
