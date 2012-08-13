@@ -1,0 +1,90 @@
+[
+    {
+        "pk": 1,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/beer",
+            "display": "Beer"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/beergeek",
+            "display": "Beergeek"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/beerporn",
+            "display": "Beerporn"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/beertrade",
+            "display": "Beertrade"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/ciderpron",
+            "display": "Ciderporn"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/distilling",
+            "display": "Distilling"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/firewater",
+            "display": "Firewater"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/HBL",
+            "display": "Homebrew Labels"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/mead",
+            "display": "Mead"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/TheBrewery",
+            "display": "TheBrewery"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "related.relatedsubreddit",
+        "fields": {
+            "url": "http://reddit.com/r/winemaking",
+            "display": "Winemaking"
+        }
+    }
+]
