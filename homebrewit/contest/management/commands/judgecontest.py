@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from homebrewit.contest.models import *
 
 
-class JudgeContestCommand(BaseCommand):
+class Command(BaseCommand):
 	args = '<year1 year2 ...>'
 	help = "Compile the results and set the winners of a contest for a given year"
 
