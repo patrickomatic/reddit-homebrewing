@@ -47,6 +47,9 @@ def change_level(request):
 			except urllib2.HTTPError:
 				message = 'Whoops! There was an error setting your experience level.  This usually happens when reddit\'s API is down.  Try again later and if you continue to have problems, please contact the moderators.'
 				success = False
+			except RedditRateLimitingError:
+				message = 'Whoops! There was an error setting your experience level.  It appears that reddit\'s servers are not accepting requests at the moment.  Please try again in a couple of minutes.'
+				success = False
 
 			if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
 				return HttpResponse(json.dumps({'success': success, 'message': message}), content_type='application/json')
