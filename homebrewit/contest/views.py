@@ -13,6 +13,8 @@ from django.views.decorators.cache import cache_page
 from homebrewit.contest.models import *
 from homebrewit.signup.models import UserProfile
 
+from contest.forms import JudgeEntrySelectionForm, JudgingForm
+
 
 
 @login_required
@@ -177,3 +179,26 @@ def winner_styles(request):
 	return render_to_response('winner_styles.css', 
 			{'icon_url': settings.WINNER_ICON, 'winners': Entry.objects.get_all_winners()},
 			mimetype='text/css')
+
+
+
+@login_required
+def entry_judging_form(request):
+    if request.method == 'POST':
+        entry_selection_form = JudgeEntrySelectionForm(request.POST)
+        judge_form = JudgingForm(request.POST)
+        if entry_selection_form.is_valid() and judge_form.is_valid():
+            judging_result = judge_form.save() #Save the data and get the BJCPJudgingResult instance that we're working with
+            entry_instance = Entry.objects.get(pk = request.POST['entry'])
+            entry_instance.bjcp_judging_result = judging_result
+            entry_instance.save()
+#            return HttpResponseRedirect('/profile/') #Temporary redirect... change this later
+    else:
+        entry_selection_form = JudgeEntrySelectionForm()
+        judge_form = JudgingForm()
+
+    return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 
+                                                    'judge_form': judge_form}, 
+                                                    context_instance=RequestContext(request))
+
+
