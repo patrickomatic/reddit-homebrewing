@@ -1,0 +1,153 @@
+[
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "patrickomatic",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-01-03 13:15:15",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$68a2c$bb0ea4f85b8c29a222c79e4e3c2c5cb4a63108de",
+            "email": "patrickomatic@gmail.com",
+            "date_joined": "2011-01-03 13:15:15"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-03-07 08:56:20",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$91049$e972407b6076bb1b63d04f8cdf3a9aed19aabd55",
+            "email": "test@test.com",
+            "date_joined": "2012-07-16 13:06:28"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.user",
+        "fields": {
+            "username": "musashi",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-03-07 08:45:55",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$b65d4$63750d67ac1f045c78c494b01ba98fb7d7371272",
+            "email": "musashi@nefaria.com",
+            "date_joined": "2013-02-13 08:31:13"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.user",
+        "fields": {
+            "username": "testuser",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-03-07 08:44:41",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$3aafe$7256a813e7f75b3f70818bcb2d1ae09e78a9ad71",
+            "email": "",
+            "date_joined": "2013-03-05 15:50:54"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "contest.contestyear",
+        "fields": {
+            "contest_year": 2013,
+            "allowing_entries": true,
+            "prize_description": "",
+            "finished_judging": false
+        }
+    },
+    {
+        "pk": 1,
+        "model": "contest.beerstyle",
+        "fields": {
+            "contest_year": 10,
+            "judge": 2,
+            "name": "Imperial Stout"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "contest.beerstyle",
+        "fields": {
+            "contest_year": 10,
+            "judge": 7,
+            "name": "Pale Ale"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "contest.entry",
+        "fields": {
+            "style": 1,
+            "mailed_entry": true,
+            "score": null,
+            "winner": false,
+            "style_subcategory": null,
+            "rank": null,
+            "special_ingredients": "",
+            "beer_name": "Musashi's Imperial Stout",
+            "bjcp_judging_result": null,
+            "received_entry": true,
+            "user": 7
+        }
+    },
+    {
+        "pk": 2,
+        "model": "contest.entry",
+        "fields": {
+            "style": 2,
+            "mailed_entry": true,
+            "score": null,
+            "winner": false,
+            "style_subcategory": null,
+            "rank": null,
+            "special_ingredients": "",
+            "beer_name": "Patrick's Pale Ale",
+            "bjcp_judging_result": null,
+            "received_entry": true,
+            "user": 2
+        }
+    },
+    {
+        "pk": 3,
+        "model": "contest.entry",
+        "fields": {
+            "style": 2,
+            "mailed_entry": true,
+            "score": null,
+            "winner": false,
+            "style_subcategory": null,
+            "rank": null,
+            "special_ingredients": "",
+            "beer_name": "Musashi's Pale Ale",
+            "bjcp_judging_result": null,
+            "received_entry": true,
+            "user": 7
+        }
+    }
+]

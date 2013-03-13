@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
-
-from homebrewit.contest.management.commands.judgecontest import JudgeContestCommand
+from homebrewit.contest.management.commands.judgecontest import Command
 from homebrewit.contest.models import *
 from homebrewit.contest.views import *
+from homebrewit.contest.forms import *
 
 
 class ContestViewsTests(TestCase):
@@ -216,11 +216,11 @@ class BeerStyleModelTests(TestCase):
 		self.assert_(not self.ipa_style.has_subcategories())
 
 
-class JudgeContestCommandTests(TestCase):
+class CommandTests(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'judgingresults', 'bjcpjudgingresults']
 
 	def setUp(self):
-		self.command = JudgeContestCommand()
+		self.command = Command()
 
 
 	def test_handle(self):
@@ -233,3 +233,88 @@ class JudgeContestCommandTests(TestCase):
 		self.assert_(ipa.winner)
 		self.assert_(ipa.rank == 1)
 		self.assert_(ipa.score == 63)
+
+
+class EntryJudgingFormTests(TestCase):
+    fixtures = ['judgingform.json']
+
+    def test_access_judges_only(self):
+        """
+            Only judges have access to the judging form.
+        """
+        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
+        self.assertEqual(judge_successful_login, True)
+        response = self.client.get('/contest/judgeentry')
+        self.assertEqual(response.status_code, 200)
+
+        non_judge_successful_login = self.client.login(username = 'admin', password = 'admin')
+        self.assertEqual(non_judge_successful_login, True)
+        self.assertRaises(RuntimeError, self.client.get, '/contest/judgeentry')
+
+    def test_entry_selection_filter(self):
+        """
+            The only entries that should appear in the entry selection dropdown box
+            are the entries that pertain to the style category for the currently
+            logged-in judge.
+        """
+        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
+        response = self.client.get('/contest/judgeentry')
+        user = User.objects.get(username = 'patrickomatic') 
+        form = JudgeEntrySelectionForm(user = user)
+        form_queryset = form.fields['entry'].queryset
+        self.assertEqual(len(form_queryset), 1) #There is only one entry in the Imperial Stout category 
+        self.assertEqual(form_queryset[0].beer_name, "Musashi's Imperial Stout")
+
+        judge_successful_login = self.client.login(username = 'musashi', password = 'musashi')
+        response = self.client.get('/contest/judgeentry')
+        user = User.objects.get(username = 'musashi')
+        form = JudgeEntrySelectionForm(user = user)
+        form_queryset = form.fields['entry'].queryset
+        self.assertEqual(len(form_queryset), 2) #There are two entries in the Pale Ale category
+        self.assertEqual(form_queryset[0].beer_name, "Patrick's Pale Ale")
+
+    def test_judging_form(self):
+        form_data = {
+                        u'stylistic_accuracy': [u'1'],
+                        u'mouthfeel_score': [u'1'],
+                        u'mouthfeel_description': [u'Steel wool'],
+                        u'appearance_score': [u'1'],
+                        u'overall_impression_score': [u'1'],
+                        u'astringent': [u'on'], u'flavor_score': [u'1'],
+                        u'technical_merit': [u'1'], u'intangibles': [u'1'],
+                        u'flavor_description': [u'Disgusting'],
+                        u'acetaldehyde': [u'on'], u'overall_impression_description': [u'Awful'],
+                        u'entry': [u'2'], #Entry to be judged
+                        u'judge_bjcp_id': [u'121212'],
+                        u'aroma_description': [u'Stinky'],
+                        u'csrfmiddlewaretoken': [u'ac792da0f7fcf289d807d102da8174c6'],
+                        u'aroma_score': [u'1'],
+                        u'appearance_description': [u'Nasty']}
+
+        #Style Category: Imperial Stout, judge: patrickomatic
+        #Style Category: Pale Ale, judge: musashi
+
+        #Entry #1: Musashi's Imperial Stout
+        #Entry #2: Patrick's Pale Ale
+        #Entry #3: Musashi's Pale Ale
+
+        #patrickomatic should not be allowed to judge "Patrick's Pale Ale" (Entry #2)
+        #because even though he is a judge, he is not a judge for the Pale Ale category.
+        form_data['entry'] = 2
+        self.client.login(username = 'patrickomatic', password = 'patrickomatic')
+        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', form_data)
+
+        #musashi should not be allowed to judge "Musashi's Pale Ale" (Entry #3)
+        #because even though he is a judge for the Pale Ale category
+        #this would result in him judging his own entry.
+        self.client.login(username = 'musashi', password = 'musashi')
+        form_data['entry'] = 3 
+        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', form_data)
+
+        #Only musashi should be allowed to judge "Patrick's Pale Ale" (Entry #2)
+        form_data['entry'] = 2
+        self.client.login(username = 'musashi', password = 'musashi')
+        self.assertEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)
+        response = self.client.post('/contest/judgeentry', form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)

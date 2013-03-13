@@ -124,6 +124,8 @@ input[type="password"] {
 
 select { 
 	width: 300px;
+    background-color: #EEDDA4;
+    border: 1px solid #422E13;
 }
 
 input[type="submit"] {
@@ -138,6 +140,7 @@ input[type="submit"]:hover {
 	color: #EEE4C5;
 	cursor: pointer;
 }
+
 
 .signup-form label {
 	display: block;
