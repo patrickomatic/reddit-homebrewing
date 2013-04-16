@@ -11,7 +11,7 @@ from django.utils import simplejson as json
 from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
-from homebrewit.reddit import set_flair, reddit_login
+from homebrewit.reddit import set_flair, reddit_login, RedditRateLimitingError
 
 
 class ExperienceForm(forms.Form):
