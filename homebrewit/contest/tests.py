@@ -238,43 +238,8 @@ class CommandTests(TestCase):
 class EntryJudgingFormTests(TestCase):
     fixtures = ['judgingform.json']
 
-    def test_access_judges_only(self):
-        """
-            Only judges have access to the judging form.
-        """
-        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
-        self.assertEqual(judge_successful_login, True)
-        response = self.client.get('/contest/judgeentry')
-        self.assertEqual(response.status_code, 200)
-
-        non_judge_successful_login = self.client.login(username = 'admin', password = 'admin')
-        self.assertEqual(non_judge_successful_login, True)
-        self.assertRaises(RuntimeError, self.client.get, '/contest/judgeentry')
-
-    def test_entry_selection_filter(self):
-        """
-            The only entries that should appear in the entry selection dropdown box
-            are the entries that pertain to the style category for the currently
-            logged-in judge.
-        """
-        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
-        response = self.client.get('/contest/judgeentry')
-        user = User.objects.get(username = 'patrickomatic') 
-        form = JudgeEntrySelectionForm(user = user)
-        form_queryset = form.fields['entry'].queryset
-        self.assertEqual(len(form_queryset), 1) #There is only one entry in the Imperial Stout category 
-        self.assertEqual(form_queryset[0].beer_name, "Musashi's Imperial Stout")
-
-        judge_successful_login = self.client.login(username = 'musashi', password = 'musashi')
-        response = self.client.get('/contest/judgeentry')
-        user = User.objects.get(username = 'musashi')
-        form = JudgeEntrySelectionForm(user = user)
-        form_queryset = form.fields['entry'].queryset
-        self.assertEqual(len(form_queryset), 2) #There are two entries in the Pale Ale category
-        self.assertEqual(form_queryset[0].beer_name, "Patrick's Pale Ale")
-
-    def test_judging_form(self):
-        form_data = {
+    def setUp(self):
+        self.form_data = {
                         u'stylistic_accuracy': [u'1'],
                         u'mouthfeel_score': [u'1'],
                         u'mouthfeel_description': [u'Steel wool'],
@@ -291,6 +256,45 @@ class EntryJudgingFormTests(TestCase):
                         u'aroma_score': [u'1'],
                         u'appearance_description': [u'Nasty']}
 
+    def test_judge_with_access(self):
+        """
+            Only judges have access to the judging form.
+        """
+        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
+        self.assertEqual(judge_successful_login, True)
+        response = self.client.get('/contest/judgeentry')
+        self.assertEqual(response.status_code, 200)
+
+    def test_judge_without_access(self):
+        non_judge_successful_login = self.client.login(username = 'admin', password = 'admin')
+        self.assertEqual(non_judge_successful_login, True)
+        self.assertRaises(RuntimeError, self.client.get, '/contest/judgeentry')
+
+
+    def test_entry_selection_filter(self):
+        """
+            The only entries that should appear in the entry selection dropdown box
+            are the entries that pertain to the style category for the currently
+            logged-in judge.
+        """
+        judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
+        response = self.client.get('/contest/judgeentry')
+        user = User.objects.get(username = 'patrickomatic') 
+        form = JudgeEntrySelectionForm(user = user)
+        form_queryset = form.fields['entry'].queryset
+        self.assertEqual(len(form_queryset), 1) #There is only one entry in the Imperial Stout category 
+        self.assertEqual(form_queryset[0].beer_name, "Musashi's Imperial Stout")
+
+    def test_entry_selection_filter__multiple_entries(self):
+        judge_successful_login = self.client.login(username = 'musashi', password = 'musashi')
+        response = self.client.get('/contest/judgeentry')
+        user = User.objects.get(username = 'musashi')
+        form = JudgeEntrySelectionForm(user = user)
+        form_queryset = form.fields['entry'].queryset
+        self.assertEqual(len(form_queryset), 2) #There are two entries in the Pale Ale category
+        self.assertEqual(form_queryset[0].beer_name, "Patrick's Pale Ale")
+
+    def test_judging_form(self):
         #Style Category: Imperial Stout, judge: patrickomatic
         #Style Category: Pale Ale, judge: musashi
 
@@ -300,21 +304,23 @@ class EntryJudgingFormTests(TestCase):
 
         #patrickomatic should not be allowed to judge "Patrick's Pale Ale" (Entry #2)
         #because even though he is a judge, he is not a judge for the Pale Ale category.
-        form_data['entry'] = 2
+        self.form_data['entry'] = 2
         self.client.login(username = 'patrickomatic', password = 'patrickomatic')
-        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', form_data)
+        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', self.form_data)
 
+    def test_judging_form__judge_judging_his_own_entry(self):
         #musashi should not be allowed to judge "Musashi's Pale Ale" (Entry #3)
         #because even though he is a judge for the Pale Ale category
         #this would result in him judging his own entry.
         self.client.login(username = 'musashi', password = 'musashi')
-        form_data['entry'] = 3 
-        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', form_data)
+        self.form_data['entry'] = 3 
+        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', self.form_data)
 
+    def test_judging_form__only_musashi_allowed(self):
         #Only musashi should be allowed to judge "Patrick's Pale Ale" (Entry #2)
-        form_data['entry'] = 2
+        self.form_data['entry'] = 2
         self.client.login(username = 'musashi', password = 'musashi')
         self.assertEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)
-        response = self.client.post('/contest/judgeentry', form_data)
+        response = self.client.post('/contest/judgeentry', self.form_data)
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)
