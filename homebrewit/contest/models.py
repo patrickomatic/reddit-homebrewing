@@ -158,7 +158,7 @@ class Entry(models.Model):
 				""" 
 Hey %(username)s,
 
-Thanks for entering the %(contest_year)s %(style)s category.  When
+Thanks for entering the %(contest_year)s %(style)s category!  When
 sending your samples, we request two 12oz bottles including your
 reddit username and the style of the samples.  You can send them to:
 
