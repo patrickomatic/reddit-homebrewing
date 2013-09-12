@@ -1,5 +1,5 @@
 from django.forms import Form, ModelForm, ModelChoiceField, CharField, HiddenInput
-from contest.models import BeerStyle, BJCPJudgingResult, Entry, ContestYear
+from homebrewit.contest.models import BeerStyle, BJCPJudgingResult, Entry, ContestYear
 from django.contrib.auth.models import User
 import datetime
 

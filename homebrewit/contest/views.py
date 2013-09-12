@@ -13,7 +13,7 @@ from django.views.decorators.cache import cache_page
 from homebrewit.contest.models import *
 from homebrewit.signup.models import UserProfile
 
-from contest.forms import JudgeEntrySelectionForm, JudgingForm
+from homebrewit.contest.forms import JudgeEntrySelectionForm, JudgingForm
 
 
 
