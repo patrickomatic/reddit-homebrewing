@@ -1,0 +1,25 @@
+{% extends "homebrewit.html" %}
+
+{% block title %}
+        Entry Judging Form
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/media/css/styles.css" type="text/css" />
+{% endblock %}
+
+{% block contenttitle %}
+    Entry Judging Form
+{% endblock %}
+
+{% block content %}
+        <form action="/contest/judgeentry" method="POST">
+            {% if status_message %}
+                <span class="messages small-title">{{ status_message }}</span>
+            {% endif %}
+            {{ entry_selection_form.as_p }}
+            {{ judge_form.as_p }}
+            {% csrf_token %}
+            <input type="submit">
+        </form>
+{% endblock %}
