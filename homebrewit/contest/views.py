@@ -189,7 +189,11 @@ def entry_judging_form(request):
         raise RuntimeError(request.user.username + " is not a judge.")
 
     if request.method == 'POST':
-        this_entry = Entry.objects.get(pk = request.POST['entry'])
+        try:
+            this_entry = Entry.objects.get(pk = request.POST['entry'])
+            print this_entry
+        except ValueError:
+            raise RuntimeError("Select an entry to judge!")
         judgable_categories = BeerStyle.objects.filter(judge = request.user)
         if not this_entry.style in judgable_categories:
             raise RuntimeError(request.user.username + " is not a valid judge for category: " + this_entry.style.name)
@@ -202,12 +206,12 @@ def entry_judging_form(request):
             judge_form_instance = judge_form.save(commit = False)
             judge_form_instance.judge = request.user
             judge_form_instance.save()
-            entry_instance = Entry.objects.get(pk = request.POST['entry'])
-            entry_instance.bjcp_judging_result = judge_form_instance #Save the judge_form and return the BJCPJudgingResult instance we're working with
-            entry_instance.save()
+            this_entry.bjcp_judging_result = judge_form_instance #Save the judge_form and return the BJCPJudgingResult instance we're working with
+            this_entry.save()
             judge_form = JudgingForm()
             return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 
-                                                            'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'})
+                                                            'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'},
+                                                            context_instance=RequestContext(request))
     else:
         entry_selection_form = JudgeEntrySelectionForm(user = request.user)
         judge_form = JudgingForm()

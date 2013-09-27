@@ -193,7 +193,7 @@ As always, we appreciate your participation and look forward to a great competit
 			s = s + " (" + unicode(self.style_subcategory) + ")"
 
 		if self.beer_name:
-			s = s + " / " + self.beer_name
+			s = s + " / " + self.beer_name + " (" + self.user.username + ")"
 
 		return s
 

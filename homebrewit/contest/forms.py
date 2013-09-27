@@ -1,13 +1,24 @@
-from django.forms import Form, ModelForm, ModelChoiceField, CharField, HiddenInput
+from django.forms import Form, ModelForm, ModelChoiceField, CharField, HiddenInput, Textarea
 from homebrewit.contest.models import BeerStyle, BJCPJudgingResult, Entry, ContestYear
 from django.contrib.auth.models import User
 import datetime
 
 
 class JudgingForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(JudgingForm, self).__init__(*args, **kwargs)
+        
+
     class Meta:
         model = BJCPJudgingResult
         exclude = ('judge',)
+        widgets = {
+                    'aroma_description': Textarea,
+                    'appearance_description': Textarea,
+                    'flavor_description': Textarea,
+                    'mouthfeel_description': Textarea,
+                    'overall_impression_description': Textarea,
+                    }
         
         
 class JudgeEntrySelectionForm(Form):
