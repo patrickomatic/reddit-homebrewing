@@ -191,7 +191,6 @@ def entry_judging_form(request):
     if request.method == 'POST':
         try:
             this_entry = Entry.objects.get(pk = request.POST['entry'])
-            print this_entry
         except ValueError:
             raise RuntimeError("Select an entry to judge!")
         judgable_categories = BeerStyle.objects.filter(judge = request.user)
