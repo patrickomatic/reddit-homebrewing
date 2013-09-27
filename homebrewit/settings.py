@@ -175,11 +175,6 @@ LOGGING = {
 			'level': 'DEBUG',
 			'propagate': True,
 		},  
-		'HOMEBREWIT Error': {
-			'handlers': ['default'],
-			'level': 'DEBUG',
-			'propagate': True,
-		},  
 		'django.request': {
 			'handlers': ['request_handler'],
 			'level': 'DEBUG',

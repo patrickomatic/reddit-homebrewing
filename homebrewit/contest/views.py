@@ -1,4 +1,4 @@
-import datetime
+import datetime, logging
 
 from django import forms
 from django.conf import settings
@@ -184,37 +184,38 @@ def winner_styles(request):
 
 @login_required
 def entry_judging_form(request):
+	logger = logging.getLogger('HOMEBREWIT')
 
-    if not BeerStyle.objects.filter(judge = request.user.id):
-        raise RuntimeError(request.user.username + " is not a judge.")
+	if not BeerStyle.objects.filter(judge = request.user.id):
+		raise RuntimeError(request.user.username + " is not a judge.")
 
-    if request.method == 'POST':
-        try:
-            this_entry = Entry.objects.get(pk = request.POST['entry'])
-        except ValueError:
-            raise RuntimeError("Select an entry to judge!")
-        judgable_categories = BeerStyle.objects.filter(judge = request.user)
-        if not this_entry.style in judgable_categories:
-            raise RuntimeError(request.user.username + " is not a valid judge for category: " + this_entry.style.name)
-        if this_entry.user == request.user:
-            raise RuntimeError(request.user.username + " is not allowed to judge his own entry.")
+	if request.method == 'POST':
+		try:
+			this_entry = Entry.objects.get(pk = request.POST['entry'])
+		except ValueError:
+			raise RuntimeError("Select an entry to judge!")
+		judgable_categories = BeerStyle.objects.filter(judge = request.user)
+		if not this_entry.style in judgable_categories:
+			raise RuntimeError(request.user.username + " is not a valid judge for category: " + this_entry.style.name)
+		if this_entry.user == request.user:
+			raise RuntimeError(request.user.username + " is not allowed to judge his own entry.")
 
-        entry_selection_form = JudgeEntrySelectionForm(user = request.user) #Nothing needs to be posted from this form
-        judge_form = JudgingForm(request.POST)
-        if judge_form.is_valid():
-            judge_form_instance = judge_form.save(commit = False)
-            judge_form_instance.judge = request.user
-            judge_form_instance.save()
-            this_entry.bjcp_judging_result = judge_form_instance #Save the judge_form and return the BJCPJudgingResult instance we're working with
-            this_entry.save()
-            judge_form = JudgingForm()
-            return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 
-                                                            'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'},
-                                                            context_instance=RequestContext(request))
-    else:
-        entry_selection_form = JudgeEntrySelectionForm(user = request.user)
-        judge_form = JudgingForm()
+		entry_selection_form = JudgeEntrySelectionForm(user = request.user)
+		judge_form = JudgingForm(request.POST)
+		if judge_form.is_valid():
+			judge_result = judge_form.save(commit = False)
+			judge_result.judge = request.user
+			judge_result.save()
+			this_entry.bjcp_judging_result = judge_result 
+			this_entry.save()
+			judge_form = JudgingForm()
+			return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 
+															'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'},
+															context_instance=RequestContext(request))
+	else:
+		entry_selection_form = JudgeEntrySelectionForm(user = request.user)
+		judge_form = JudgingForm()
 
-    return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 
-                                                    'judge_form': judge_form, 'status_message': None}, 
-                                                    context_instance=RequestContext(request))
+	return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 
+													'judge_form': judge_form, 'status_message': None}, 
+													context_instance=RequestContext(request))
