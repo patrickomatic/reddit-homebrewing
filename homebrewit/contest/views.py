@@ -206,7 +206,7 @@ def entry_judging_form(request):
 			judge_result = judge_form.save(commit = False)
 			judge_result.judge = request.user
 			judge_result.save()
-			this_entry.bjcp_judging_result = judge_result 
+			this_entry.bjcp_judging_result = BJCPJudgingResult.objects.get(id = judge_result.id)
 			this_entry.save()
 			judge_form = JudgingForm()
 			return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 

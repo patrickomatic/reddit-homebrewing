@@ -218,7 +218,7 @@ class BJCPJudgingResult(models.Model):
 	light_struck = models.BooleanField(default=False, help_text='Similar to the aroma of a skunk.')
 	metallic = models.BooleanField(default=False, help_text='Tinny, coiny, copper, iron or blood-like flavor.')
 	musty = models.BooleanField(default=False, help_text='Stale, musty or moldy aromas/flavors.')
-	oxidized = models.BooleanField(default=False, help_text='Any one or combinatinos of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
+	oxidized = models.BooleanField(default=False, help_text='Any one or combinations of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
 	phenolic = models.BooleanField(default=False, help_text='Spicy (clove, pepper), smokey, plastic adhesive strip and/or medicinal (chlorophenolic.)')
 	solvent = models.BooleanField(default=False, help_text='Aromas and flavors of higher alcohols (fusel alcohols.)  Similar to acetone or lacquer thinner aromas.')
 	sour_acidic = models.BooleanField(default=False, help_text='Tartness in aroma and flavor.  Can be sharp and clean (lactic acid) or vinegar-like (acetic acid.)', verbose_name='Sour/Acidic')
