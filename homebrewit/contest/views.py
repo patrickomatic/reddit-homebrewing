@@ -201,13 +201,18 @@ def entry_judging_form(request):
 
 		entry_selection_form = JudgeEntrySelectionForm(user = request.user)
 		judge_form = JudgingForm(request.POST)
+
 		if judge_form.is_valid():
 			judge_result = judge_form.save(commit = False)
 			judge_result.judge = request.user
 			judge_result.save()
+
 			this_entry.bjcp_judging_result = judge_result
+			this_entry.score = judge_result.overall_rating()
 			this_entry.save()
+
 			judge_form = JudgingForm()
+
 			return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 
 															'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'},
 															context_instance=RequestContext(request))
