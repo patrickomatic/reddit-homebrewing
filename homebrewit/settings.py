@@ -46,7 +46,7 @@ MEDIA_URL = '/media/'
 
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
-SECRET_KEY = '%jz%s8d*sa--zso2572_s#6z8+z79gfyrypfc&rkp-04t3&@tg'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%jz%s8d*sa--zso2572_s#6z8+z79gfyrypfc&rkp-04t3&@tg')
 
 TEMPLATE_LOADERS = (
 	'django.template.loaders.filesystem.Loader',
