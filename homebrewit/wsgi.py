@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "homebrewit.settings")
+import django.core.handlers.wsgi 
 
-from django.core.handlers.wsgi 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "homebrewit.settings")
 application = django.core.handles.wsgi.WSGIHandler()
