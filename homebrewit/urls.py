@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import patterns, include
 
+print "In urls?"
 admin.autodiscover()
 
 urlpatterns = patterns('',

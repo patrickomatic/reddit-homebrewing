@@ -41,6 +41,7 @@ class RedditAuthenticationForm(AuthenticationForm):
 
 
 def index(request):
+	print "In dinex"
 	# if it's a login...
 	if request.method == 'POST':
 		login_form = RedditAuthenticationForm(data=request.POST)
