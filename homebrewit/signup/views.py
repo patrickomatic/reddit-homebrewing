@@ -2,6 +2,7 @@ import hashlib, random
 
 from django import forms
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -123,7 +124,7 @@ def signup(request):
 			user = authenticate(username=signup_form.cleaned_data['username'],
 					password=signup_form.cleaned_data['password1'])
 			login(request, user)
-			user.message_set.create(message='Successfully verified your reddit account.')
+			messages.success(request, 'Successfully verified your reddit account.')
 				
 			return HttpResponseRedirect('/profile/%s' % user.username)
 	else:

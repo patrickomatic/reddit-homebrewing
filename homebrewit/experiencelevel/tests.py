@@ -61,7 +61,6 @@ class ExperienceViewsTest(TestCase):
 
 		self.assertTemplateUsed(response, 'homebrewit_experience.html')
 
-		# this is a little awkward because you have to iterate through a message_set
 		saw_error = False
 		for message in response.context['messages']:
 			if u'Whoops!' in unicode(message):

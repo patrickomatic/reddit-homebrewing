@@ -100,10 +100,6 @@ if DEBUG:
 else:
 	CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
-# for some reason, when allowing django to run all tests, some of them
-# fail with a NoReverseMatch exception
-TEST_RUNNER = 'local_tests.run_tests'
-
 LOGIN_URL = '/'
 LOGOUT_URL = '/logout'
 
