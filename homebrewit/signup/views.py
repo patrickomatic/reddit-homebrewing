@@ -41,6 +41,7 @@ class RedditAuthenticationForm(AuthenticationForm):
 
 
 def index(request):
+	print "In dinex"
 	# if it's a login...
 	if request.method == 'POST':
 		login_form = RedditAuthenticationForm(data=request.POST)
@@ -53,7 +54,9 @@ def index(request):
 	# XXX this is a lot of stuff to have in a controller
 	# get each years beer styles
 	contest_data = {} 
+	print "getting beerstyle aobject"
 	for style in BeerStyle.objects.all():
+		print "style=", style
 		year = style.contest_year.contest_year
 
 		top_entry = Entry.objects.get_top_n(style, 1)
@@ -73,12 +76,14 @@ def index(request):
 				'style': style,
 		}
 
+		print "doing stuff"
 		if year in contest_data:
 			contest_data[year].append(data)
 		else:
 			contest_data[year] = [data]
 
 
+	print "rendienrg to response"
 	return render_to_response('homebrewit_index.html', {
 				'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)], 
 				'contest_year': ContestYear.objects.get_current_contest_year(),

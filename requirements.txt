@@ -1,2 +1,15 @@
-mock
-django == 1.6.2
+Django==1.6.2
+South==0.8.4
+dj-database-url==0.3.0
+dj-static==0.0.5
+django-toolbelt==0.0.1
+ecdsa==0.11
+gunicorn==18.0
+mock==1.0.1
+newrelic==2.18.1.15
+paramiko==1.12.3
+psycopg2==2.5.2
+pycrypto==2.6.1
+pystache==0.5.3
+static==1.0.2
+wsgiref==0.1.2

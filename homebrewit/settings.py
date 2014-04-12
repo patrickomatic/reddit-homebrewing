@@ -3,8 +3,9 @@ import os
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.split(__file__)[0], '..'))
 
 # Django settings for homebrewit project.
+PROD_DB_URL = 'HEROKU_POSTGRESQL_BLACK_URL'
 
-DEBUG = not 'HOMEBREWIT_DB_PASS' in os.environ
+DEBUG = not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -15,27 +16,16 @@ ADMINS = (
 MANAGERS = ADMINS
 
 if DEBUG:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.sqlite3', 
-			'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
-			'USER': '',					 
-			'PASSWORD': '',				
-			'HOST': '',				   
-			'PORT': '',				  
-		}
-	}
+    DATABASES = {
+            'default': {
+                    'ENGINE': 'django.db.backends.sqlite3', 
+                    'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+            }
+    }
 else:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-			'NAME': 'homebrewit',					  
-			'USER': 'homebrewit',					 
-			'PASSWORD': os.environ['HOMEBREWIT_DB_PASS'],
-			'HOST': '',
-			'PORT': '', 
-		}
-	}
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config(default=os.environ[PROD_DB_URL])
+
 
 TIME_ZONE = 'America/New_York'
 
@@ -46,6 +36,10 @@ SITE_ID = 1
 USE_I18N = True
 
 USE_L10N = True
+
+USE_TZ = True
+
+WSGI_APPLICATION = 'homebrewit.wsgi.application'
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
 MEDIA_URL = '/media/'
@@ -84,13 +78,13 @@ OUR_APPS = (
 )
 
 INSTALLED_APPS = (
+        'south',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.admin',
-#	'debug_toolbar',
 ) + OUR_APPS
 
 # If someone wants to work on this locally, they shouldn't have
@@ -125,47 +119,67 @@ if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
 
 
 
-if DEBUG:
-    LOGDIR = os.path.expanduser('~')
-else:
-    LOGDIR = '/srv/homebrewit/logs/django'
-    
-LOGGING = { 
-	'version': 1,
-	'disable_existing_loggers': True,
-	'formatters': {
-		'standard': {
-			'format': '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
-		},  
-	},  
-	'handlers': {
-		'default': {
-			'level': 'DEBUG',
-			'class': 'logging.handlers.RotatingFileHandler',
-			'filename': os.path.join(LOGDIR, 'homebrewit.log'),
-			'maxBytes': 1024*1024*20,
-			'backupCount': 30, 
-			'formatter': 'standard',
-		},  
-		'request_handler': {
-			'level': 'DEBUG',
-			'class': 'logging.handlers.RotatingFileHandler',
-			'filename': os.path.join(LOGDIR, 'homebrewit-request.log'),
-			'maxBytes': 1024*1024*20,
-			'backupCount': 30, 
-			'formatter': 'standard',
-		}   
-	},  
-	'loggers': {
-		'HOMEBREWIT': {
-			'handlers': ['default'],
-			'level': 'DEBUG',
-			'propagate': True,
-		},  
-		'django.request': {
-			'handlers': ['request_handler'],
-			'level': 'DEBUG',
-			'propagate': False
-		}
-	}
-}
+if False:
+    if DEBUG:
+         LOGDIR = os.path.expanduser('~')
+    else:
+        LOGDIR = '/srv/homebrewit/logs/django'
+    LOGGING = { 
+            'version': 1,
+            'disable_existing_loggers': True,
+            'formatters': {
+                    'standard': {
+                            'format': '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
+                    },  
+            },  
+            'handlers': {
+                    'default': {
+                            'level': 'DEBUG',
+                            'class': 'logging.handlers.RotatingFileHandler',
+                            'filename': os.path.join(LOGDIR, 'homebrewit.log'),
+                            'maxBytes': 1024*1024*20,
+                            'backupCount': 30, 
+                            'formatter': 'standard',
+                    },  
+                    'request_handler': {
+                            'level': 'DEBUG',
+                            'class': 'logging.handlers.RotatingFileHandler',
+                            'filename': os.path.join(LOGDIR, 'homebrewit-request.log'),
+                            'maxBytes': 1024*1024*20,
+                            'backupCount': 30, 
+                            'formatter': 'standard',
+                    }   
+            },  
+            'loggers': {
+                    'HOMEBREWIT': {
+                            'handlers': ['default'],
+                            'level': 'DEBUG',
+                            'propagate': True,
+                    },  
+                    'django.request': {
+                            'handlers': ['request_handler'],
+                            'level': 'DEBUG',
+                            'propagate': False
+                    }
+            }
+    }
+
+
+# Parse database configuration from $DATABASE_URL
+# XXX make this use DATABASE_URL in heroku
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
