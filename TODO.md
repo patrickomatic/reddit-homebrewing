@@ -6,4 +6,4 @@
 - [ ] Add support for BJCPs idea of some things that must be specified and some that may be specified
 - [ ] Have deployments working with virtualenvwrapper and pulling in requirements.txt
 - [ ] Set up a logger
-- [ ] Improve tables with this: http://darkhorseanalytics.com/blog/clear-off-the-table/
+- [X] Improve tables with this: http://darkhorseanalytics.com/blog/clear-off-the-table/
