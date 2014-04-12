@@ -139,46 +139,69 @@ if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
 
 
 
-if DEBUG:
-     LOGDIR = os.path.expanduser('~')
-else:
-    LOGDIR = '/srv/homebrewit/logs/django'
-LOGGING = { 
-	'version': 1,
-	'disable_existing_loggers': True,
-	'formatters': {
-		'standard': {
-			'format': '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
-		},  
-	},  
-	'handlers': {
-		'default': {
-			'level': 'DEBUG',
-			'class': 'logging.handlers.RotatingFileHandler',
-			'filename': os.path.join(LOGDIR, 'homebrewit.log'),
-			'maxBytes': 1024*1024*20,
-			'backupCount': 30, 
-			'formatter': 'standard',
-		},  
-		'request_handler': {
-			'level': 'DEBUG',
-			'class': 'logging.handlers.RotatingFileHandler',
-			'filename': os.path.join(LOGDIR, 'homebrewit-request.log'),
-			'maxBytes': 1024*1024*20,
-			'backupCount': 30, 
-			'formatter': 'standard',
-		}   
-	},  
-	'loggers': {
-		'HOMEBREWIT': {
-			'handlers': ['default'],
-			'level': 'DEBUG',
-			'propagate': True,
-		},  
-		'django.request': {
-			'handlers': ['request_handler'],
-			'level': 'DEBUG',
-			'propagate': False
-		}
-	}
-}
+if False:
+    if DEBUG:
+         LOGDIR = os.path.expanduser('~')
+    else:
+        LOGDIR = '/srv/homebrewit/logs/django'
+    LOGGING = { 
+            'version': 1,
+            'disable_existing_loggers': True,
+            'formatters': {
+                    'standard': {
+                            'format': '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
+                    },  
+            },  
+            'handlers': {
+                    'default': {
+                            'level': 'DEBUG',
+                            'class': 'logging.handlers.RotatingFileHandler',
+                            'filename': os.path.join(LOGDIR, 'homebrewit.log'),
+                            'maxBytes': 1024*1024*20,
+                            'backupCount': 30, 
+                            'formatter': 'standard',
+                    },  
+                    'request_handler': {
+                            'level': 'DEBUG',
+                            'class': 'logging.handlers.RotatingFileHandler',
+                            'filename': os.path.join(LOGDIR, 'homebrewit-request.log'),
+                            'maxBytes': 1024*1024*20,
+                            'backupCount': 30, 
+                            'formatter': 'standard',
+                    }   
+            },  
+            'loggers': {
+                    'HOMEBREWIT': {
+                            'handlers': ['default'],
+                            'level': 'DEBUG',
+                            'propagate': True,
+                    },  
+                    'django.request': {
+                            'handlers': ['request_handler'],
+                            'level': 'DEBUG',
+                            'propagate': False
+                    }
+            }
+    }
+
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
