@@ -47,6 +47,10 @@ USE_I18N = True
 
 USE_L10N = True
 
+USE_TZ = True
+
+WSGI_APPLICATION = 'homebrewit.wsgi.application'
+
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
 MEDIA_URL = '/media/'
 
@@ -75,22 +79,13 @@ TEMPLATE_DIRS = (
 	os.path.join(PROJECT_PATH, 'templates')
 )
 
-if DEBUG:
-	OUR_APPS = (
-		'contest',
-		'experiencelevel',
-		'signup',
-		'profile',
-		'related',
-	)
-else:
-	OUR_APPS = (
-		'homebrewit.contest',
-		'homebrewit.experiencelevel',
-		'homebrewit.signup',
-		'homebrewit.profile',
-		'homebrewit.related',
-	)
+OUR_APPS = (
+        'homebrewit.contest',
+        'homebrewit.experiencelevel',
+        'homebrewit.signup',
+        'homebrewit.profile',
+        'homebrewit.related',
+)
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -99,7 +94,6 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.admin',
-#	'debug_toolbar',
 ) + OUR_APPS
 
 # If someone wants to work on this locally, they shouldn't have
