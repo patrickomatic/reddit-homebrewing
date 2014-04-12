@@ -1,1 +1,2 @@
-web: gunicorn homebrewit.wsgi --workers $WEB_CONCURRENCY
+web: waitress-serve --port=$PORT homebrewit.wsgi:application
+
