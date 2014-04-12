@@ -4,6 +4,7 @@ dj-static==0.0.5
 django-toolbelt==0.0.1
 ecdsa==0.11
 mock==1.0.1
+newrelic==2.18.1.15
 paramiko==1.12.3
 psycopg2==2.5.2
 pycrypto==2.6.1
