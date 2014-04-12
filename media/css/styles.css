@@ -1,10 +1,15 @@
 a {
-	font-weight: bold;
 	color: #422E13;
+	text-decoration: none;
 }
+
 a:hover {
 	text-decoration: underline;
 	color: #8E6B3E;
+}
+
+p { 
+	margin: 1.0em;
 }
 
 .generic-border {
@@ -13,9 +18,9 @@ a:hover {
 
 .generic-header { 
 	width: 100%;
-	border: 1px solid #422E13; /* Chrome doesn't like horizontal rules < 3px in height */
-	color: #422E13; /* IE is redarded */
-	background-color: #422E13; /* Mozilla and Opera are retarded also */
+	border: 1px solid #422E13; 
+	color: #422E13; 
+	background-color: #422E13; 
 }   
 
 .generic-table {
@@ -23,22 +28,11 @@ a:hover {
 }
 
 .generic-th {
-	border: 1px solid #422E13;
+	border-bottom: 1px solid #422E13;
 }
 
 .generic-td {
-	border-bottom: 1px solid #422E13;
-	border-right: 1px solid #422E13;
-	border-left: 1px solid #422E13;
 	padding: 2px;
-}
-
-.generic-tr:nth-child(odd) {
-	background-color: #EEDDA4;
-}
-
-.generic-tr:nth-child(even) {
-	background-color: #DDB686;
 }
 
 .generic-underline {
@@ -48,6 +42,14 @@ a:hover {
 .contest-table {
 	width: 95%;
 	margin-bottom: 15px;
+}
+
+.text-td {
+	text-align: left;
+}
+
+.numeric-td {
+	text-align: right;
 }
 
 div { 
@@ -124,8 +126,8 @@ input[type="password"] {
 
 select { 
 	width: 300px;
-    background-color: #EEDDA4;
-    border: 1px solid #422E13;
+	background-color: #EEDDA4;
+	border: 1px solid #422E13;
 }
 
 input[type="submit"] {
@@ -185,21 +187,24 @@ input[type="submit"]:hover {
 }
 
 .small-title {
-	padding-top: 10px;
+	padding: 0.5em;
 	font-size: 1.0em;
 	font-weight: bold;
+	display: block;
 }
 
 .medium-title {
-	padding-top: 10px;
+	padding: 0.75em;
 	font-size: 1.3em;
 	font-weight: bold;
+	display: block;
 }
 
 .large-title {
-	padding-top: 10px;
+	padding: 1.0em;
 	font-size: 1.5em;
 	font-weight: bold;
+	display: block;
 }
 
 .judging-category {
@@ -239,5 +244,3 @@ input[type="submit"]:hover {
 	margin-right: 10px;
 	float: right;
 }
-
-

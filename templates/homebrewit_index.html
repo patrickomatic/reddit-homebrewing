@@ -50,42 +50,44 @@
 
 		<ul>
 			{% for year, style_data in contest_data %}
-				<div>
-					<a title="{{year}} Competition" href="{% url "homebrewit.contest.views.contest_year" year %}" class="large-title">
-						{{year}}'s Competition
-					</a>
-				</div>
+				<a title="{{year}} Competition" href="{% url "homebrewit.contest.views.contest_year" year %}" class="large-title">
+					{{year}}'s Competition
+				</a>
 
 				<table class="contest-table">
 					<tr class="generic-tr">
-						<th class="generic-th" width="50%">Style</th>
-						<th class="generic-th" width="20%">Winner</th>
-						<th class="generic-th">Entries</th>
-						<th class="generic-th"># Received</th>
-						<th class="generic-th"># Judged</th>
+						<th class="generic-th text-td">Style</th>
+						<th class="generic-th text-td" width="20%">Winner</th>
+						<th class="generic-th numeric-td" width="8%">Entries</th>
+						<th class="generic-th numeric-td" width="8%"># Received</th>
+						<th class="generic-th numeric-td" width="8%"># Judged</th>
 					</tr>
 
 					{% for style in style_data %}
 						<tr class="generic-tr">
-							<td class="generic-td">
+							<td class="generic-td text-td">
 								<a href="{% url "homebrewit.contest.views.style" year style.style.id %}" title="{{year}} - {{style.style.name}}">
 									{{style.style.name}}
 								</a>
 							</td>
-							<td class="generic-td">
+
+							<td class="generic-td text-td">
 								{% if style.winner %}
 									<a title="{{year}} {{style.style.name}} Winner" href="{% url "homebrewit.contest.views.entry" year style.style.id style.winner.id %}">
 										{{style.winner.winner}}
 									</a>
 								{% endif %}
 							</td>
-							<td class="centered generic-td">
+
+							<td class="generic-td numeric-td">
 								{{style.n_entries}}
 							</td>
-							<td class="centered generic-td">
+
+							<td class="generic-td numeric-td">
 								{{style.n_received}}
 							</td>
-							<td class="centered generic-td">
+
+							<td class="generic-td numeric-td">
 								{{style.n_judged}}
 							</td>
 						</tr>
