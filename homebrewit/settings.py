@@ -14,28 +14,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if DEBUG:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.sqlite3', 
-			'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
-			'USER': '',					 
-			'PASSWORD': '',				
-			'HOST': '',				   
-			'PORT': '',				  
-		}
-	}
-else:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-			'NAME': 'homebrewit',					  
-			'USER': 'homebrewit',					 
-			'PASSWORD': os.environ['HOMEBREWIT_DB_PASS'],
-			'HOST': '',
-			'PORT': '', 
-		}
-	}
+DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.sqlite3', 
+                'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+        }
+}
 
 TIME_ZONE = 'America/New_York'
 
