@@ -11,4 +11,4 @@ import os
 import django.core.handlers.wsgi 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "homebrewit.settings")
-application = django.core.handles.wsgi.WSGIHandler()
+application = django.core.handlers.wsgi.WSGIHandler()
