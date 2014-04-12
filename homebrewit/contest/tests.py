@@ -236,7 +236,7 @@ class CommandTests(TestCase):
 
 
 class EntryJudgingFormTests(TestCase):
-    fixtures = ['judgingform.json']
+    fixtures = ['contestyears', 'judgingform']
 
     def setUp(self):
         self.form_data = {

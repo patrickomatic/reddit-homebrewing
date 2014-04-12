@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -64,7 +65,7 @@ def register(request):
 	try:
 		request.user.get_profile()
 	except UserProfile.DoesNotExist:
-		request.user.message_set.create(message='You must set your address before you can enter the homebrew contest.')
+		messages.error(request, 'You must set your address before you can enter the homebrew contest.')
 		return HttpResponseRedirect('/profile/edit?next=/contest/register')
 
 	contest_year = ContestYear.objects.get_current_contest_year()
@@ -86,7 +87,7 @@ def register(request):
 
 			entry.send_shipping_email()
 
-			request.user.message_set.create(message='You are now entered in the %s category' % entry.style)
+			messages.success(request, 'You are now entered in the %s category' % entry.style)
 	else:
 		form = EntryForm()
 

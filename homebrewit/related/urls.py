@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns
 
 urlpatterns = patterns('homebrewit.related.views',
 	(r'^$', 'view_related'),

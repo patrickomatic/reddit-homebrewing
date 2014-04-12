@@ -3,6 +3,7 @@ import datetime, urllib2
 from django import forms
 from django.core.mail import mail_admins
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
@@ -54,7 +55,7 @@ def change_level(request):
 			if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
 				return HttpResponse(json.dumps({'success': success, 'message': message}), content_type='application/json')
 			else:
-				request.user.message_set.create(message=message)
+				messages.success(request, message)
 				if success:
 					return HttpResponseRedirect('/profile/')
 	else:

@@ -12,7 +12,7 @@
 
 {% block content %}
 	<div class="medium-title">
-		<a title="Change Password" href="{% url homebrewit.profile.views.change_password %}">Change Password</a>
+		<a title="Change Password" href="{% url "homebrewit.profile.views.change_password" %}">Change Password</a>
 	</div>
 
 	<div class="medium-title">
@@ -23,7 +23,7 @@
 		you to give us your address before entering the contest.
 	</p>
 
-	<form method="POST" action="{% url homebrewit.profile.views.edit_profile %}" class="setaddress">
+	<form method="POST" action="{% url "homebrewit.profile.views.edit_profile" %}" class="setaddress">
 		{% csrf_token %}
 
 		{{email_form.as_p}}

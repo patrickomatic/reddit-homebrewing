@@ -103,10 +103,6 @@ if DEBUG:
 else:
 	CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
-# for some reason, when allowing django to run all tests, some of them
-# fail with a NoReverseMatch exception
-TEST_RUNNER = 'local_tests.run_tests'
-
 LOGIN_URL = '/'
 LOGOUT_URL = '/logout'
 
@@ -129,7 +125,6 @@ AUTHENTICATION_USER_AGENT = 'www.reddit.com/r/Homebrewing App (reddithomebrewing
 MODERATOR_USERNAME, MODERATOR_PASSWORD = None, None
 if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
 	MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
-
 
 
 

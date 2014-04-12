@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -78,7 +79,7 @@ def edit_profile(request):
 			request.user.email = email_form.cleaned_data['email']
 			request.user.save()
 
-			request.user.message_set.create(message='Successfully set address info.')
+			messages.success(request, 'Successfully set address info.')
 			if address_form.cleaned_data.get('next'):
 				return HttpResponseRedirect(address_form.cleaned_data['next'])
 	else:
@@ -100,7 +101,7 @@ def change_password(request):
 		form = PasswordChangeForm(request.user, request.POST)
 		if form.is_valid():
 			form.save()
-			request.user.message_set.create(message='Successfully set password')
+			messages.success(request, 'Successfully set password')
 			return HttpResponseRedirect('/profile/edit')
 	else:
 		form = PasswordChangeForm(request.user)

@@ -46,7 +46,7 @@ $(document).ready(function() {
 		are aware of the problem and working on a fix.
 	</p>
 
-	<form id="signup-form" class="signup-form" method="POST" action="{% url homebrewit.signup.views.signup %}">
+	<form id="signup-form" class="signup-form" method="POST" action="{% url "homebrewit.signup.views.signup" %}">
 		{% csrf_token %}
 
 		{{signup_form.as_p}}
