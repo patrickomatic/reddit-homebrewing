@@ -118,52 +118,29 @@ if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
 	MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
 
 
-
-if False:
-    if DEBUG:
-         LOGDIR = os.path.expanduser('~')
-    else:
-        LOGDIR = '/srv/homebrewit/logs/django'
-    LOGGING = { 
-            'version': 1,
-            'disable_existing_loggers': True,
-            'formatters': {
-                    'standard': {
-                            'format': '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
-                    },  
-            },  
-            'handlers': {
-                    'default': {
-                            'level': 'DEBUG',
-                            'class': 'logging.handlers.RotatingFileHandler',
-                            'filename': os.path.join(LOGDIR, 'homebrewit.log'),
-                            'maxBytes': 1024*1024*20,
-                            'backupCount': 30, 
-                            'formatter': 'standard',
-                    },  
-                    'request_handler': {
-                            'level': 'DEBUG',
-                            'class': 'logging.handlers.RotatingFileHandler',
-                            'filename': os.path.join(LOGDIR, 'homebrewit-request.log'),
-                            'maxBytes': 1024*1024*20,
-                            'backupCount': 30, 
-                            'formatter': 'standard',
-                    }   
-            },  
-            'loggers': {
-                    'HOMEBREWIT': {
-                            'handlers': ['default'],
-                            'level': 'DEBUG',
-                            'propagate': True,
-                    },  
-                    'django.request': {
-                            'handlers': ['request_handler'],
-                            'level': 'DEBUG',
-                            'propagate': False
-                    }
-            }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
-
+}
 
 # Parse database configuration from $DATABASE_URL
 # XXX make this use DATABASE_URL in heroku
