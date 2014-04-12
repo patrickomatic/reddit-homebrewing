@@ -1,1 +1,1 @@
-web: gunicorn homebrewit.wsgi
+web: gunicorn homebrewit:app --workers $WEB_CONCURRENCY
