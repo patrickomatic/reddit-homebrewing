@@ -75,22 +75,13 @@ TEMPLATE_DIRS = (
 	os.path.join(PROJECT_PATH, 'templates')
 )
 
-if DEBUG:
-	OUR_APPS = (
-		'contest',
-		'experiencelevel',
-		'signup',
-		'profile',
-		'related',
-	)
-else:
-	OUR_APPS = (
-		'homebrewit.contest',
-		'homebrewit.experiencelevel',
-		'homebrewit.signup',
-		'homebrewit.profile',
-		'homebrewit.related',
-	)
+OUR_APPS = (
+        'homebrewit.contest',
+        'homebrewit.experiencelevel',
+        'homebrewit.signup',
+        'homebrewit.profile',
+        'homebrewit.related',
+)
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -138,11 +129,11 @@ if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
 
 
 
-
 if DEBUG:
-     LOGDIR = os.path.expanduser('~')
+    LOGDIR = os.path.expanduser('~')
 else:
     LOGDIR = '/srv/homebrewit/logs/django'
+    
 LOGGING = { 
 	'version': 1,
 	'disable_existing_loggers': True,

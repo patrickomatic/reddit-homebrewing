@@ -26,12 +26,12 @@
 
 	{% if user.is_authenticated %}
 		<div class="large-title">
-			<a href="{% url homebrewit.profile.views.logged_in_profile %}" title="Your profile">
+			<a href="{% url "homebrewit.profile.views.logged_in_profile" %}" title="Your profile">
 				Edit your profile
 			</a>
 		</div>
 	{% else %}
-		<form class="login-form" method="POST" action="{% url homebrewit.signup.views.index %}">
+		<form class="login-form" method="POST" action="{% url "homebrewit.signup.views.index" %}">
 			{% csrf_token %} 
 
 			{{login_form.as_p}}
@@ -51,7 +51,7 @@
 		<ul>
 			{% for year, style_data in contest_data %}
 				<div>
-					<a title="{{year}} Competition" href="{% url homebrewit.contest.views.contest_year year %}" class="large-title">
+					<a title="{{year}} Competition" href="{% url "homebrewit.contest.views.contest_year" year %}" class="large-title">
 						{{year}}'s Competition
 					</a>
 				</div>
@@ -68,13 +68,13 @@
 					{% for style in style_data %}
 						<tr class="generic-tr">
 							<td class="generic-td">
-								<a href="{% url homebrewit.contest.views.style year style.style.id %}" title="{{year}} - {{style.style.name}}">
+								<a href="{% url "homebrewit.contest.views.style" year style.style.id %}" title="{{year}} - {{style.style.name}}">
 									{{style.style.name}}
 								</a>
 							</td>
 							<td class="generic-td">
 								{% if style.winner %}
-									<a title="{{year}} {{style.style.name}} Winner" href="{% url homebrewit.contest.views.entry year style.style.id style.winner.id %}">
+									<a title="{{year}} {{style.style.name}} Winner" href="{% url "homebrewit.contest.views.entry" year style.style.id style.winner.id %}">
 										{{style.winner.winner}}
 									</a>
 								{% endif %}

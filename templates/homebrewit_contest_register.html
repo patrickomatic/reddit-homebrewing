@@ -62,7 +62,7 @@ $(document).ready(function() {
 {% block content %}
 	<p>Just pick which style you'll be brewing:</p>
 
-	<form class="contest-entry-form" method="POST" action="{% url homebrewit.contest.views.register %}">
+	<form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}">
 		{% csrf_token %}
 
 		{{form.as_p}}

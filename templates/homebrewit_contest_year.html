@@ -17,7 +17,7 @@
 
 	{% for style, data in styles.iteritems %}
 		<div class="medium-title">
-			<a title="{{year}} - {{style.name}}" href="{% url homebrewit.contest.views.style year style.id %}">
+			<a title="{{year}} - {{style.name}}" href="{% url "homebrewit.contest.views.style" year style.id %}">
 				{{style.name}}
 			</a>
 		</div>
@@ -33,7 +33,7 @@
 				{% for entry in data.entries %}
 					<tr class="generic-tr">
 						<td class="generic-td">
-							<a title="{{entry}}" href="{% url homebrewit.contest.views.entry style.contest_year style.id entry.id %}">
+							<a title="{{entry}}" href="{% url "homebrewit.contest.views.entry" style.contest_year style.id entry.id %}">
 								{{entry.user}} 
 								{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
 							</a>
@@ -51,7 +51,7 @@
 			</table>
 
 			{% if data.has_more %}
-				<a title="More entries for {{style}}" href="{% url homebrewit.contest.views.style style.contest_year style.id %}">
+				<a title="More entries for {{style}}" href="{% url "homebrewit.contest.views.style" style.contest_year style.id %}">
 					More entries...
 				</a>
 			{% endif %}

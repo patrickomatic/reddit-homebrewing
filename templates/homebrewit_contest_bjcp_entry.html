@@ -13,7 +13,7 @@
 
 
 {% block contenttitle %}
-	<a title="{{entry.user.username}}" href="{% url homebrewit.profile.views.anonymous_profile entry.user.username %}">{{entry.user}}</a>
+	<a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile entry.user.username" %}">{{entry.user}}</a>
 	{{entry.beer_name}}
 {% endblock %}
 

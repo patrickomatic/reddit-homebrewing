@@ -21,7 +21,7 @@
 		level as a homebrewer.
 	</p>
 
-	<form action="{% url homebrewit.experiencelevel.views.change_level %}" method="POST">
+	<form action="{% url "homebrewit.experiencelevel.views.change_level" %}" method="POST">
 		{% csrf_token %}
 
 		<ul id="experience-level-picker" class="experience-level-picker">
