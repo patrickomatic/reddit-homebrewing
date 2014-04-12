@@ -3,8 +3,9 @@ import os
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.split(__file__)[0], '..'))
 
 # Django settings for homebrewit project.
+PROD_DB_URL = 'HEROKU_POSTGRESQL_BLACK_URL'
 
-DEBUG = False
+DEBUG = not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -14,12 +15,17 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3', 
-                'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
-        }
-}
+if DEBUG:
+    DATABASES = {
+            'default': {
+                    'ENGINE': 'django.db.backends.sqlite3', 
+                    'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+            }
+    }
+else:
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config(default=os.environ[PROD_DB_URL])
+
 
 TIME_ZONE = 'America/New_York'
 
@@ -72,6 +78,7 @@ OUR_APPS = (
 )
 
 INSTALLED_APPS = (
+        'south',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
@@ -159,8 +166,7 @@ if False:
 
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config(default=os.environ['HEROKU_POSTGRESQL_BLACK_URL'])
+# XXX make this use DATABASE_URL in heroku
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
