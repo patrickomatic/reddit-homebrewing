@@ -5,7 +5,7 @@ PROJECT_PATH = os.path.abspath(os.path.join(os.path.split(__file__)[0], '..'))
 # Django settings for homebrewit project.
 PROD_DB_URL = 'DATABASE_URL'
 
-DEBUG = not PROD_DB_URL in os.environ
+DEBUG = True #not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -15,16 +15,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if DEBUG:
-    DATABASES = {
-            'default': {
-                    'ENGINE': 'django.db.backends.sqlite3', 
-                    'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
-            }
-    }
-else:
-    import dj_database_url
-    DATABASES = { 'default': dj_database_url.config(default=os.environ[PROD_DB_URL]) }
+#if DEBUG:
+#    DATABASES = {
+#            'default': {
+#                    'ENGINE': 'django.db.backends.sqlite3', 
+#                    'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+#            }
+#    }
+#else:
+import dj_database_url
+DATABASES = { 'default': dj_database_url.config(default=os.environ[PROD_DB_URL]) }
 
 
 TIME_ZONE = 'America/New_York'
@@ -41,44 +41,33 @@ USE_TZ = True
 
 WSGI_APPLICATION = 'homebrewit.wsgi.application'
 
-if DEBUG:
-    MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
-    MEDIA_URL = '/media/'
+#if DEBUG:
+    #MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
+    #MEDIA_URL = '/media/'
+#
+#else:
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
 
-else:
-    import os
-    PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-    STATIC_ROOT = 'staticfiles'
-    STATIC_URL = '/static/'
-
-    STATICFILES_DIRS = (
-        os.path.join(PROJECT_PATH, 'static'),
-    )
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)
 
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%jz%s8d*sa--zso2572_s#6z8+z79gfyrypfc&rkp-04t3&@tg')
 
-TEMPLATE_LOADERS = (
-	'django.template.loaders.filesystem.Loader',
-	'django.template.loaders.app_directories.Loader',
-#	 'django.template.loaders.eggs.Loader',
-)
-
 MIDDLEWARE_CLASSES = (
-	'django.middleware.common.CommonMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-#	'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'homebrewit.urls'
-
-TEMPLATE_DIRS = (
-	os.path.join(PROJECT_PATH, 'templates')
-)
 
 OUR_APPS = (
         'homebrewit.contest',
