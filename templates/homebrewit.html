@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html id="home" lang="en">
 	<head>
+	{#
 		<meta charset="utf-8" />
 		<meta name="description" content="Reddit /r/homebrewing app" />
 		<meta name="keywords" content="reddit.com, reddit, homebrew, brew, beer, contest, competition, experience, level, 2011, 2012" />
@@ -22,8 +23,11 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
+#}
 	</head>
+	thisins
 	<body>
+	{#
 		<header id="header">
 			{% if user.is_authenticated %}
 				<a title="{{user.username}}'s Profile" href="{% url "homebrewit.profile.views.logged_in_profile" %}">{{user.username}}</a> 
@@ -76,5 +80,6 @@
 				{% endblock %}
 			</p>
 		</footer>
+		#}
 	</body>
 </html>
