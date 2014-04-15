@@ -1,2 +1,1 @@
-web: gunicorn homebrewit.wsgi --workers $WEB_CONCURRENCY
-
+web: newrelic-admin run-program gunicorn homebrewit:app --workers $WEB_CONCURRENCY 
