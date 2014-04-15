@@ -3,7 +3,7 @@ import os
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.split(__file__)[0], '..'))
 
 # Django settings for homebrewit project.
-PROD_DB_URL = 'HEROKU_POSTGRESQL_BLACK_URL'
+PROD_DB_URL = 'DATABASE_URL'
 
 DEBUG = not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
