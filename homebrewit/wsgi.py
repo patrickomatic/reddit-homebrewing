@@ -13,6 +13,4 @@ from dj_static import Cling
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "homebrewit.settings")
-application = django.core.handlers.wsgi.WSGIHandler()
-
 application = Cling(get_wsgi_application())
