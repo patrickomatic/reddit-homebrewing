@@ -79,6 +79,7 @@ def index(request):
 			contest_data[year] = [data]
 
 
+	print "rendering to response"
 	return render_to_response('homebrewit_index.html', {
 				'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)], 
 				'contest_year': ContestYear.objects.get_current_contest_year(),
