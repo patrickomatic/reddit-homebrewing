@@ -41,8 +41,19 @@ USE_TZ = True
 
 WSGI_APPLICATION = 'homebrewit.wsgi.application'
 
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
-MEDIA_URL = '/media/'
+if DEBUG:
+    MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
+    MEDIA_URL = '/media/'
+
+else:
+    import os
+    PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = 'staticfiles'
+    STATIC_URL = '/static/'
+
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_PATH, 'static'),
+    )
 
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
