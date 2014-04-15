@@ -24,7 +24,7 @@ if DEBUG:
     }
 else:
     import dj_database_url
-    DATABASES['default'] = dj_database_url.config(default=os.environ[PROD_DB_URL])
+    DATABASES = { 'default' = dj_database_url.config(default=os.environ[PROD_DB_URL]) }
 
 
 TIME_ZONE = 'America/New_York'
