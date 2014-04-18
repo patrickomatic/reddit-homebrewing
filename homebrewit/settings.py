@@ -46,13 +46,7 @@ USE_TZ = True
 
 WSGI_APPLICATION = 'homebrewit.wsgi.application'
 
-#if DEBUG:
-    #MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') 
-    #MEDIA_URL = '/media/'
-#
-#else:
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -90,6 +84,7 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.admin',
+        'django.contrib.staticfiles',
 ) + OUR_APPS
 
 # If someone wants to work on this locally, they shouldn't have

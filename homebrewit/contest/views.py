@@ -1,4 +1,4 @@
-import datetime
+import datetime, json
 
 from django import forms
 from django.conf import settings
@@ -8,7 +8,6 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.utils import simplejson as json
 from django.views.decorators.cache import cache_page
 
 from homebrewit.contest.models import *
