@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 class ExperienceLevel(models.Model):
 	name = models.CharField(max_length=255)
-	img_url = models.FilePathField(path=join(settings.STATIC_ROOT, 'images/icons/experience_levels'))
-	css_img_url = models.FilePathField(path=join(settings.STATIC_ROOT, 'images/icons/experience_levels'))
+	img_url = models.FilePathField(path=join(settings.STATIC_ROOT, '/images/icons/experience_levels'))
+	css_img_url = models.FilePathField(path=join(settings.STATIC_ROOT, '/images/icons/experience_levels'))
 	order = models.PositiveSmallIntegerField()
 
 	class Meta:
