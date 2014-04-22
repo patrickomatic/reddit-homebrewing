@@ -5,21 +5,26 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="/media/css/styles.css" type="text/css" />
+	<link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
 {% endblock %}
 
 {% block contenttitle %}
-    Entry Judging Form
+	Entry Judging Form
 {% endblock %}
 
 {% block content %}
+	{# XXX use a url helper for this #}
         <form action="/contest/judgeentry" method="POST">
+            {% csrf_token %}
+
             {% if status_message %}
                 <span class="messages small-title">{{ status_message }}</span>
             {% endif %}
+
             {{ entry_selection_form.as_p }}
+
             {{ judge_form.as_p }}
-            {% csrf_token %}
-            <input type="submit">
+
+            <input type="submit" />
         </form>
 {% endblock %}

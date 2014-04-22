@@ -7,8 +7,8 @@
 
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="/media/css/bjcpentry.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/bjcpentry-print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="{% static "css/bjcpentry.css" %}" type="text/css" />
+	<link rel="stylesheet" href="{% static "css/bjcpentry-print.css" %}" type="text/css" media="print" />
 {% endblock %}
 
 
@@ -43,7 +43,7 @@ $(document).ready(function() {
 			<h1 class="scoresheet_title">
 				Beer Scoresheet
 				<a href="javascript:print()" class="print_button">
-					<img src=/media/icons/printer.png />
+					<img src="{% static "icons/printer.png" %}" />
 				</a>
 			</h1>
 
@@ -191,9 +191,9 @@ $(document).ready(function() {
 						<tr>
 							<td class="hotcold_label">Not To Style</td>
 							<td>
-								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
-									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}} hotcold_marker" />
+									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}} hotcold_marker" />
 								</span>
 							</td>
 							<td class="hotcold_label">Classic Example</td>
@@ -203,9 +203,9 @@ $(document).ready(function() {
 						<tr>
 							<td class="hotcold_label">Significant Flaws</td>
 							<td>
-								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
-									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.technical_merit}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.technical_merit}} hotcold_marker" />
+									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.technical_merit}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.technical_merit}} hotcold_marker" />
 								</span>
 							</td>
 							<td class="hotcold_label">Flawless</td>
@@ -216,9 +216,9 @@ $(document).ready(function() {
 						<tr>
 							<td class="hotcold_label">Lifeless</td>
 							<td>
-								<img src="/media/icons/hotcoldbar.png" class="hotcoldbar" />
+								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
 								<span class="hotcold_marker_container">
-									<img src="/media/images/markers/hotcold_marker_{{entry.bjcp_judging_result.intangibles}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.intangibles}} hotcold_marker" />
+									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.intangibles}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.intangibles}} hotcold_marker" />
 								</span>
 							</td>
 							<td class="hotcold_label">Wonderful</td>

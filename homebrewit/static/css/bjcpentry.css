@@ -109,12 +109,12 @@ li {
 }
 
 .list_checkmark {
-	list-style-image: url('/media/icons/checkmark.png');
+	list-style-image: url('/static/icons/checkmark.png');
 	padding-bottom: 20px;
 }
 
 .list_nocheckmark {
-	list-style-image: url('/media/icons/nocheckmark.png');
+	list-style-image: url('/static/icons/nocheckmark.png');
 	padding-bottom: 20px;
 }
 
