@@ -14,11 +14,11 @@
 #experience-level-picker li a { 
 	height: 234px;
 	display: block;
-	background: url(/media/images/legend-800w.png) no-repeat left center;
+	background: url(/static/images/legend-800w.png) no-repeat left center;
 }
 
 #experience-level-picker li a.selected {
-	background: url(/media/images/legend-checked-800w.png) no-repeat left center;
+	background: url(/static/images/legend-checked-800w.png) no-repeat left center;
 }
 
 #experience-level-picker li a:hover { 

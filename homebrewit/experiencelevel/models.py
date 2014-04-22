@@ -6,9 +6,8 @@ from django.contrib.auth.models import User
 
 class ExperienceLevel(models.Model):
 	name = models.CharField(max_length=255)
-#	description = models.CharField(max_length=500)
-	img_url = models.FilePathField(path=join(settings.MEDIA_ROOT, 'images/icons/experience_levels'))
-	css_img_url = models.FilePathField(path=join(settings.MEDIA_ROOT, 'images/icons/experience_levels'))
+	img_url = models.FilePathField(path=join(settings.STATIC_ROOT, 'images/icons/experience_levels'))
+	css_img_url = models.FilePathField(path=join(settings.STATIC_ROOT, 'images/icons/experience_levels'))
 	order = models.PositiveSmallIntegerField()
 
 	class Meta:
@@ -16,10 +15,10 @@ class ExperienceLevel(models.Model):
 
 
 	def get_absolute_url(self):
-		return 'http://reddithomebrewing.com' + self.img_url.replace(settings.MEDIA_ROOT, '/media')
+		return 'http://reddithomebrewing.com' + self.img_url.replace(settings.STATIC_ROOT, '/static')
 
 	def get_absolute_css_url(self):
-		return 'http://reddithomebrewing.com' + self.css_img_url.replace(settings.MEDIA_ROOT, '/media')
+		return 'http://reddithomebrewing.com' + self.css_img_url.replace(settings.STATIC_ROOT, '/static')
 
 	def get_reddit_css_icon(self):
 		return self.name.lower()
