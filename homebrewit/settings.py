@@ -46,13 +46,6 @@ USE_TZ = True
 
 WSGI_APPLICATION = 'homebrewit.wsgi.application'
 
-STATIC_ROOT = 'static'
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, 'static'),
-)
-
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%jz%s8d*sa--zso2572_s#6z8+z79gfyrypfc&rkp-04t3&@tg')
@@ -152,10 +145,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static'),
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+   STATIC_ROOT 
 )
 
