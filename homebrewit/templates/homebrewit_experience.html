@@ -1,9 +1,12 @@
 {% extends "homebrewit.html" %}
 
+{% load staticfiles %}
+
 {% block include %}
 	<link rel="stylesheet" href="{% static "css/experiencelevel.css" %}" type="text/css" />
 	<script type="text/javascript" src="{% static "js/experiencelevel.js" %}"></script>
 {% endblock %}
+
 
 {% block title %}
 	Set your experience level
@@ -13,6 +16,7 @@
 {% block contenttitle %}
 	Set your homebrewing experience level
 {% endblock %}
+
 
 {% block content %}
 	<p>
@@ -34,5 +38,4 @@
 
 		<div class="clear"></div>
 	</form>
-
 {% endblock %}

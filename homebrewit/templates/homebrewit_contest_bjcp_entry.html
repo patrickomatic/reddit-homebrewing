@@ -1,5 +1,7 @@
 {% extends "homebrewit.html" %}
 
+{% load staticfiles %}
+
 
 {% block title %}
 	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
