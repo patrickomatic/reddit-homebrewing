@@ -12,7 +12,7 @@
 
 {% block content %}
 	{% if is_profile_owner %}
-		<ul>
+		<ul class="profile-actions">
 			{% if contest_year.allowing_entries %}
 				<li><a href="{% url "homebrewit.contest.views.register" %}">Sign up for the {{contest_year.contest_year}} homebrewing contest</a></li>
 			{% endif %}
@@ -31,9 +31,9 @@
 		<span>{{level.experience_level}}</span>
 	{% endif %}
 
-	<div class="medium-title">Contest Entries</div>
-	<p>
-		{% if contest_entries %}
+	{% if contest_entries %}
+		<div class="medium-title">Contest Entries</div>
+		<p>
 			<ul>
 				{% for entry in contest_entries %}
 					<li>
@@ -46,13 +46,6 @@
 					</li>
 				{% endfor %}
 			</ul>
-		{% else %}
-			{% if is_profile_owner %}
-				You haven't
-			{% else %}
-				{{user.username}} hasn't 
-			{% endif %}
-			participated in any contests.
-		{% endif %}
-	</p>
+		</p>
+	{% endif %}
 {% endblock %}

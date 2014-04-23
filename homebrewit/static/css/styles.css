@@ -244,3 +244,12 @@ input[type="submit"]:hover {
 	margin-right: 10px;
 	float: right;
 }
+
+.profile-actions {
+	list-style: square inside none;
+	margin: 2em;
+}
+
+.profile-actions li {
+	margin: 1em;
+}
