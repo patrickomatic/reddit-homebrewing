@@ -12,4 +12,4 @@ urlpatterns = patterns('',
     (r'^related/', include('homebrewit.related.urls')),
     (r'^admin/', include(admin.site.urls)),
     ('', include('homebrewit.signup.urls')),
-) + static(settings.STATIC_URL)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
