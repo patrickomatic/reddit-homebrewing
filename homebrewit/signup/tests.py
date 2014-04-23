@@ -1,6 +1,6 @@
+import json
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.utils import simplejson as json
 
 from homebrewit import reddit
 from homebrewit.experiencelevel.models import *

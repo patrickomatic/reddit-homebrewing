@@ -1,4 +1,4 @@
-import urllib, urllib2, json, cookielib, datetime
+import cookielib, datetime, json, urllib, urllib2
 from django.conf import settings
 
 

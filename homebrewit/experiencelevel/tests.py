@@ -1,9 +1,8 @@
-import urllib2
+import json, urllib2
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.utils import simplejson as json
 
 from homebrewit.experiencelevel.models import *
 from homebrewit import reddit

@@ -1,4 +1,4 @@
-import datetime, urllib2
+import datetime, json, urllib2
 
 from django import forms
 from django.core.mail import mail_admins
@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.utils import simplejson as json
 from django.views.decorators.cache import cache_page
 
 from homebrewit.experiencelevel.models import *
