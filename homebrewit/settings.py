@@ -5,8 +5,7 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 # Django settings for homebrewit project.
 PROD_DB_URL = 'DATABASE_URL'
 
-#DEBUG = not PROD_DB_URL in os.environ
-DEBUG = True
+DEBUG = not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -16,7 +15,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if False:
+if DEBUG:
     DATABASES = {
             'default': {
                     'ENGINE': 'django.db.backends.sqlite3', 
@@ -100,9 +99,6 @@ DEFAULT_FROM_EMAIL = 'do.not.reply@reddithomebrewing.com'
 EMAIL_HOST = 'cmx.dyercpa.com'
 
 WINNER_ICON = '/media/winner.png'
-
-REDDIT_REGISTRATION_THREAD_JSON = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/.json?limit=100000'
-REDDIT_REGISTRATION_THREAD = 'http://www.reddit.com/comments/gqrp5/post_your_tokens_here_for_reddithomebrewingcom/'
 
 AUTHENTICATION_USER_AGENT = 'www.reddit.com/r/Homebrewing App (reddithomebrewing.com)'
 
