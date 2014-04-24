@@ -23,7 +23,7 @@ class JudgingForm(ModelForm):
         
 class JudgeEntrySelectionForm(Form):
     def __init__(self, *args, **kwargs):
-        self.thisyear = ContestYear.objects.get(contest_year = datetime.datetime.now().year)
+        self.thisyear = ContestYear.objects.latest('contest_year')
         self.user = kwargs.pop('user', None)
         super(JudgeEntrySelectionForm, self).__init__(*args, **kwargs)
         self.fields['entry'] = ModelChoiceField(

@@ -1,8 +1,8 @@
 - [ ] Make sure that email works
-- [ ] Fix tests
 - [ ] Add support for BJCPs idea of some things that must be specified and some that may be specified
 - [ ] Fix the deprecated auth profile thing
 
+- [X] Fix tests
 - [X] Embrace HTML5 more
 - [X] Use South
 - [X] Remove SECRET_KEY from source control
