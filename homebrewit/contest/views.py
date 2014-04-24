@@ -174,13 +174,6 @@ def entry(request, year, style_id, entry_id):
 			}, context_instance=RequestContext(request))
 
 
-# XXX @cache_page(600)
-def winner_styles(request):
-	return render_to_response('winner_styles.css', 
-			{'icon_url': settings.WINNER_ICON, 'winners': Entry.objects.get_all_winners()},
-			mimetype='text/css')
-
-
 
 @login_required
 def entry_judging_form(request):

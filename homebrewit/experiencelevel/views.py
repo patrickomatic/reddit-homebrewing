@@ -65,10 +65,3 @@ def change_level(request):
 				'experience_levels': ExperienceLevel.objects.all(),
 				'form': form,
 			}, context_instance=RequestContext(request))
-
-
-def experience_styles(request):
-	return render_to_response('experience_styles.css',
-			{'experience_levels': UserExperienceLevel.objects.all()},
-			mimetype='text/css')
-

@@ -68,12 +68,3 @@ class ExperienceViewsTest(TestCase):
 
 		self.assert_(saw_error)
 		self.assert_(response.context['form'])
-
-
-	def test_experience_styles(self):
-		response = self.client.get('/experience/experience-styles.css')
-
-		content = response.content
-		self.assert_('a[href*="user/patrickomatic"]:after' in content)
-		self.assert_('a[href*="user/musashiXXX"]:after' in content)
-		self.assert_('a[href*="user/loser"]:after' in content)

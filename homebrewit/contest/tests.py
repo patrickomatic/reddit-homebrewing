@@ -114,16 +114,7 @@ class ContestViewsTests(TestCase):
 		self.assert_(len(response.context['entries']) == 4)
 		self.assert_(response.context['entries'][0].winner)
 		self.assert_(response.context['address'])
-
 	
-	def test_winner_styles(self):
-		response = self.client.get('/contest/winner-styles.css')
-
-		content = response.content
-		self.assert_('a[href*="user/patrickomatic"]:after' in content)
-		self.assert_('a[href*="user/musashiXXX"]:after' in content)
-		self.assert_(not 'a[href*="user/loser"]:after' in content)
-
 
 class EntryModelTests(TestCase):
 	fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
