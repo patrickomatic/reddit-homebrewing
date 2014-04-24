@@ -1,6 +1,7 @@
 - [ ] Make sure that email works
 - [ ] Fix tests
 - [ ] Add support for BJCPs idea of some things that must be specified and some that may be specified
+- [ ] Fix the deprecated auth profile thing
 
 - [X] Embrace HTML5 more
 - [X] Use South

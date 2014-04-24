@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 
 from homebrewit.contest.models import *
@@ -25,14 +25,14 @@ def profile(request, user):
 
 	is_profile_owner = request.user.is_authenticated() and user.username == request.user.username
 
-	return render_to_response('homebrewit_profile.html', {
+	return render(request, 'homebrewit_profile.html', {
 				'user': user,
 				'level': level, 
 				'contest_entries': contest_entries, 
                 'is_profile_owner': is_profile_owner, 
 				'level_image': level_image,
 				'contest_year': ContestYear.objects.get_current_contest_year(),
-			}, context_instance=RequestContext(request))
+			})
 
 
 def anonymous_profile(request, username):
@@ -89,10 +89,10 @@ def edit_profile(request):
 		email_form = EmailForm(initial={'email': request.user.email})
 
 
-	return render_to_response('homebrewit_edit_profile.html', {
+	return render(request, 'homebrewit_edit_profile.html', {
 				'address_form': address_form, 
 				'email_form': email_form,
-			}, context_instance=RequestContext(request))
+			})
 
 
 @login_required
@@ -106,6 +106,4 @@ def change_password(request):
 	else:
 		form = PasswordChangeForm(request.user)
 
-	return render_to_response('homebrewit_change_password.html', {
-			'form': form,
-		}, context_instance=RequestContext(request))
+	return render(request, 'homebrewit_change_password.html', {'form': form})

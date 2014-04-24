@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
@@ -60,8 +60,8 @@ def change_level(request):
 	else:
 		form = ExperienceForm(initial=initial)
 		
-	return render_to_response('homebrewit_experience.html', {
+	return render(request, 'homebrewit_experience.html', {
 				'current_level': level,
 				'experience_levels': ExperienceLevel.objects.all(),
 				'form': form,
-			}, context_instance=RequestContext(request))
+			})

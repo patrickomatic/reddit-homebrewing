@@ -8,7 +8,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 
 from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
@@ -79,11 +79,11 @@ def index(request):
 			contest_data[year] = [data]
 
 
-	return render_to_response('homebrewit_index.html', {
+	return render(request, 'homebrewit_index.html', {
 				'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)], 
 				'contest_year': ContestYear.objects.get_current_contest_year(),
 				'login_form': login_form,
-		}, context_instance=RequestContext(request))
+		})
 
 
 class RedditCommentTokenUserCreationForm(UserCreationForm):
@@ -130,10 +130,10 @@ def signup(request):
 	else:
 		signup_form = RedditCommentTokenUserCreationForm()
 
-	return render_to_response('homebrewit_signup.html', {
+	return render(request, 'homebrewit_signup.html', {
 				'signup_form': signup_form,
 				'registration_thread': settings.REDDIT_REGISTRATION_THREAD,
-		}, context_instance=RequestContext(request))
+		})
 	
 
 def logout(request):
@@ -141,8 +141,3 @@ def logout(request):
 		auth_logout(request)
 
 	return HttpResponseRedirect("/")
-
-
-def related_reddits(request):
-    return render_to_response('homebrewit_related_reddits.html', {}, 
-			context_instance=RequestContext(request))

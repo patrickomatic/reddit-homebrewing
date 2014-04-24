@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
@@ -96,10 +96,9 @@ def register(request):
 	for sub in style_subcategories:
 		style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
 
-	return render_to_response('homebrewit_contest_register.html', {
+	return render(request, 'homebrewit_contest_register.html', {
 			'form': form,
-			'style_data_as_json': json.dumps(style_data),
-		}, context_instance=RequestContext(request))
+			'style_data_as_json': json.dumps(style_data)})
 
 
 def style(request, year, style_id):
@@ -120,11 +119,10 @@ def style(request, year, style_id):
 		except UserProfile.DoesNotExist:
 			pass
 
-	return render_to_response('homebrewit_contest_style.html', {
+	return render(request, 'homebrewit_contest_style.html', {
 			'style': style, 
 			'entries': scored_entries,
-			'address': address,
-		}, context_instance=RequestContext(request))
+			'address': address})
 
 
 def contest_year(request, year):
@@ -139,11 +137,10 @@ def contest_year(request, year):
 		}
 
 
-	return render_to_response('homebrewit_contest_year.html', {
+	return render(request, 'homebrewit_contest_year.html', {
 				'styles': styles, 
 				'year': int(year),
-				'contest_year': contest_year,
-			}, context_instance=RequestContext(request))
+				'contest_year': contest_year})
 
 
 class BJCPJudgingResultForm(ModelForm):
@@ -163,21 +160,18 @@ def entry(request, year, style_id, entry_id):
 	# after already having data.  basically, if it uses the new BJCP scoresheet, we show
 	# that template, otherwise the other (old) one
 	if entry.bjcp_judging_result:
-		return render_to_response('homebrewit_contest_bjcp_entry.html', {
+		return render(request, 'homebrewit_contest_bjcp_entry.html', {
 				'entry': entry,
-				'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result),
-			}, context_instance=RequestContext(request))
+				'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result)})
 	else:
-		return render_to_response('homebrewit_contest_entry.html', {
+		return render(request, 'homebrewit_contest_entry.html', {
 				'entry': entry,
-				'judging_results': JudgingResult.objects.filter(entry=entry)
-			}, context_instance=RequestContext(request))
+				'judging_results': JudgingResult.objects.filter(entry=entry)})
 
 
 
 @login_required
 def entry_judging_form(request):
-
 	if not BeerStyle.objects.filter(judge = request.user.id):
 		raise RuntimeError(request.user.username + " is not a judge.")
 
@@ -206,13 +200,15 @@ def entry_judging_form(request):
 
 			judge_form = JudgingForm()
 
-			return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 'judge_form': judge_form, 
-															'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'},
-															context_instance=RequestContext(request))
+			return render(request, 'judging_form.html', {
+                            'entry_selection_form': entry_selection_form, 
+                            'judge_form': judge_form, 
+                            'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'})
 	else:
 		entry_selection_form = JudgeEntrySelectionForm(user = request.user)
 		judge_form = JudgingForm()
 
-	return render_to_response('judging_form.html', {'entry_selection_form': entry_selection_form, 
-													'judge_form': judge_form, 'status_message': None}, 
-													context_instance=RequestContext(request))
+	return render(request, 'judging_form.html', {
+            'entry_selection_form': entry_selection_form, 
+            'judge_form': judge_form, 
+            'status_message': None})
