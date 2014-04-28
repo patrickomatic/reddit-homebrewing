@@ -10,61 +10,61 @@ from homebrewit.signup.tests import MockResponse
 
 
 class ExperienceViewsTest(TestCase):
-	fixtures = ['users', 'experiencelevels', 'userexperiencelevels', 'contestyears']
+    fixtures = ['users', 'experiencelevels', 'userexperiencelevels', 'contestyears']
 
-	def setUp(self):
-		self.user = User.objects.get(username='patrick')
-		self.client.login(username='patrick', password='password')
-		self.saved_urlopen = reddit.urllib2.urlopen
-		settings.MODERATOR_USERNAME = 'patrick'
-		settings.MODERATOR_PASSWORD = 'password'
+    def setUp(self):
+        self.user = User.objects.get(username='patrick')
+        self.client.login(username='patrick', password='password')
+        self.saved_urlopen = reddit.urllib2.urlopen
+        settings.MODERATOR_USERNAME = 'patrick'
+        settings.MODERATOR_PASSWORD = 'password'
 
-		self.urlopen_mock = lambda req: MockResponse(json.dumps({"json": {"errors": [], "data": {"modhash": "t0t0t0", "cookie": "1234567,..."}}}))
-
-
-	def tearDown(self):
-		reddit.urllib2.urlopen = self.saved_urlopen
+        self.urlopen_mock = lambda req: MockResponse(json.dumps({"json": {"errors": [], "data": {"modhash": "t0t0t0", "cookie": "1234567,..."}}}))
 
 
-	def test_change_level(self):
-		response = self.client.get('/experience/level')
+    def tearDown(self):
+        reddit.urllib2.urlopen = self.saved_urlopen
 
-		self.assertTemplateUsed(response, 'homebrewit_experience.html')
-		self.assert_(response.context['form'])
 
-	def test_change_level__post(self):
-		reddit.urllib2.urlopen = self.urlopen_mock
+    def test_change_level(self):
+        response = self.client.get('/experience/level')
 
-		response = self.client.post('/experience/level', {'experience_level': 4})
+        self.assertTemplateUsed(response, 'homebrewit_experience.html')
+        self.assert_(response.context['form'])
 
-		self.assertRedirects(response, '/profile/')
-		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
+    def test_change_level__post(self):
+        reddit.urllib2.urlopen = self.urlopen_mock
 
-	def test_change_level__json_post(self):
-		reddit.urllib2.urlopen = self.urlopen_mock
-		
-		response = self.client.post('/experience/level', {'experience_level': 4}, HTTP_ACCEPT='application/json')
-		self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
+        response = self.client.post('/experience/level', {'experience_level': 4})
 
-		assert response['Content-Type'] == 'application/json'
-		assert '"success": true' in response.content
-		assert '"message":' in response.content
+        self.assertRedirects(response, '/profile/')
+        self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
 
-	def test_change_level__reddit_api_down(self):
-		def urlopen_mock(request):
-			raise urllib2.HTTPError("foo", "bar", None, None, None)
+    def test_change_level__json_post(self):
+        reddit.urllib2.urlopen = self.urlopen_mock
+        
+        response = self.client.post('/experience/level', {'experience_level': 4}, HTTP_ACCEPT='application/json')
+        self.assert_(UserExperienceLevel.objects.get(experience_level__id=4, user__id=self.user.id))
 
-		reddit.urllib2.urlopen = urlopen_mock
+        assert response['Content-Type'] == 'application/json'
+        assert '"success": true' in response.content
+        assert '"message":' in response.content
 
-		response = self.client.post('/experience/level', {'experience_level': 4})
+    def test_change_level__reddit_api_down(self):
+        def urlopen_mock(request):
+            raise urllib2.HTTPError("foo", "bar", None, None, None)
 
-		self.assertTemplateUsed(response, 'homebrewit_experience.html')
+        reddit.urllib2.urlopen = urlopen_mock
 
-		saw_error = False
-		for message in response.context['messages']:
-			if u'Whoops!' in unicode(message):
-				saw_error = True
-				break
+        response = self.client.post('/experience/level', {'experience_level': 4})
 
-		self.assert_(saw_error)
-		self.assert_(response.context['form'])
+        self.assertTemplateUsed(response, 'homebrewit_experience.html')
+
+        saw_error = False
+        for message in response.context['messages']:
+            if u'Whoops!' in unicode(message):
+                saw_error = True
+                break
+
+        self.assert_(saw_error)
+        self.assert_(response.context['form'])

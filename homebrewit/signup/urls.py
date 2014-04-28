@@ -4,6 +4,7 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+    
 urlpatterns = patterns('homebrewit.signup.views',
     (r'^logout', 'logout'),
     (r'^signup', 'signup'),

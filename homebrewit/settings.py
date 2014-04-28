@@ -9,8 +9,8 @@ DEBUG = not PROD_DB_URL in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-	 ('Patrick Carroll', 'patrick@patrickomatic.com'),
-	 ('Charles Hamilton', 'musashi@nefaria.com'),
+     ('Patrick Carroll', 'patrick@patrickomatic.com'),
+     ('Charles Hamilton', 'musashi@nefaria.com'),
 )
 
 MANAGERS = ADMINS
@@ -70,21 +70,21 @@ OUR_APPS = (
 
 INSTALLED_APPS = (
         'south',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.sites',
-	'django.contrib.messages',
-	'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
         'django.contrib.staticfiles',
 ) + OUR_APPS
 
 # If someone wants to work on this locally, they shouldn't have
 # to deal with stupid memcached issues...
 if DEBUG:
-	CACHE_BACKEND = 'dummy:///'
+    CACHE_BACKEND = 'dummy:///'
 else:
-	CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+    CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 LOGIN_URL = '/'
 LOGOUT_URL = '/logout'
@@ -104,7 +104,7 @@ AUTHENTICATION_USER_AGENT = 'www.reddit.com/r/Homebrewing App (reddithomebrewing
 
 MODERATOR_USERNAME, MODERATOR_PASSWORD = None, None
 if 'HOMEBREWIT_MOD_CREDENTIALS' in os.environ:
-	MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
+    MODERATOR_USERNAME, MODERATOR_PASSWORD = os.environ['HOMEBREWIT_MOD_CREDENTIALS'].split(':')
 
 
 LOGGING = {
