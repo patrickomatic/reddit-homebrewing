@@ -29,11 +29,11 @@ class RedditAuthenticationForm(AuthenticationForm):
                 try:
                     if not can_reddit_login(username, password):
                         raise forms.ValidationError("This username and password don't seem to work on reddit")
-                    except RedditRateLimitingError:
-                        raise forms.ValidationError("Sorry, but Reddit's API is currently rate limiting requests.  Please try again in a couple hours!")
+                except RedditRateLimitingError:
+                    raise forms.ValidationError("Sorry, but Reddit's API is currently rate limiting requests.  Please try again in a couple hours!")
 
                     # ok they authenticate on reddit - create them
-                        User.objects.create_user(username, '', password)
+                    User.objects.create_user(username, '', password)
 
         super(RedditAuthenticationForm, self).clean()
 
@@ -56,27 +56,27 @@ def index(request):
     for style in BeerStyle.objects.all():
         year = style.contest_year.contest_year
 
-            top_entry = Entry.objects.get_top_n(style, 1)
-            if top_entry and top_entry[0].winner:
-                winner_data = {
-                        'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
-                        'id': top_entry[0].id,
-                        }
-            else:
-                winner_data = None
-
-            data = {
-                    'n_entries': Entry.objects.filter(style=style).count(),
-                    'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
-                    'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
-                    'winner': winner_data,
-                    'style': style,
+        top_entry = Entry.objects.get_top_n(style, 1)
+        if top_entry and top_entry[0].winner:
+            winner_data = {
+                    'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
+                    'id': top_entry[0].id,
                     }
+        else:
+            winner_data = None
 
-            if year in contest_data:
-                contest_data[year].append(data)
-            else:
-                contest_data[year] = [data]
+        data = {
+                'n_entries': Entry.objects.filter(style=style).count(),
+                'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
+                'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
+                'winner': winner_data,
+                'style': style,
+                }
+
+        if year in contest_data:
+            contest_data[year].append(data)
+        else:
+            contest_data[year] = [data]
 
 
     return render(request, 'homebrewit_index.html', {
@@ -101,7 +101,7 @@ class RedditCommentTokenUserCreationForm(UserCreationForm):
         # hasn't been changed)
         data = self.cleaned_data
         if data['signature'] != self.__sign(data['token']):
-        raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
+            raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
 
         # now verify they posted the given token as the correct user
         if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD_JSON,

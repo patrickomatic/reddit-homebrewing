@@ -59,8 +59,8 @@ def reddit_api_url(url, data=None, session=None):
         {'User-Agent': settings.AUTHENTICATION_USER_AGENT}))
 
 
-    def reddit_login(username, password):
-        """ Logs in a user and returns the modhash that can be used for the
+def reddit_login(username, password):
+    """ Logs in a user and returns the modhash that can be used for the
     next request.  Returns None if login was unsuccessful.  """
 
     assert username and password
@@ -71,7 +71,6 @@ def reddit_api_url(url, data=None, session=None):
         raise RedditRateLimitingError()
     else:
         reddit_login.rate_limit = None    
-
 
 
     session = RedditSession()
@@ -123,10 +122,12 @@ def verify_token_in_thread(thread_url, reddit_username, token):
 def set_flair(user_experience_level, reddit_session=None):
     if not reddit_session:
         reddit_session = reddit_login(settings.MODERATOR_USERNAME, settings.MODERATOR_PASSWORD)
+
     reddit_api_url("/flair", {'r': 'homebrewing', 'name': user_experience_level.user.username,
         'css_class': user_experience_level.experience_level.name.lower(), 'text': ''}, reddit_session)
 
-    def set_flair_csv(flair_csv, reddit_session=None):
-        if not reddit_session:
-            reddit_session = reddit_login(settings.MODERATOR_USERNAME, settings.MODERATOR_PASSWORD)
+def set_flair_csv(flair_csv, reddit_session=None):
+    if not reddit_session:
+        reddit_session = reddit_login(settings.MODERATOR_USERNAME, settings.MODERATOR_PASSWORD)
+
     reddit_api_url("/flaircsv.json", {'r': 'homebrewing', 'flair_csv': flair_csv}, reddit_session)
