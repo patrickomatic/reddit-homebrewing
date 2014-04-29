@@ -97,27 +97,6 @@ def can_reddit_login(username, password):
     return reddit_login(username, password) is not None
 
 
-def verify_token_in_thread(thread_url, reddit_username, token):
-    """ Given a reddit thread, username and token it will scrape the thread
-    and return True or False depending on if that user has posted the
-    given token to that thread.  This has been abandoned for production use
-    as it's got known issues with searching the thread once it has a "load 
-    more comments" link. """
-
-    reddit_username = unicode(reddit_username)
-
-    f = urllib.urlopen(thread_url)
-    thread = json.loads(f.read())
-    f.close()
-
-    for comment in thread[1]['data']['children']:
-        if comment['data'].get('author') == reddit_username:
-            if unicode(token) == comment['data']['body'].strip():
-                return True
-
-    return False
-
-
 @retry(3, urllib2.HTTPError)
 def set_flair(user_experience_level, reddit_session=None):
     if not reddit_session:
