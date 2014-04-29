@@ -35,7 +35,6 @@ class RedditAuthenticationForm(AuthenticationForm):
             User.objects.create_user(username, '', password)
 
 
-
 def index(request):
     # if it's a login...
     if request.method == 'POST':
@@ -80,28 +79,6 @@ def index(request):
         'contest_year': ContestYear.objects.get_current_contest_year(),
         'login_form': login_form,
         })
-
-
-def signup(request):
-    if request.method == 'POST':
-        signup_form = RedditCommentTokenUserCreationForm(request.POST)
-
-        if signup_form.is_valid():
-            user = signup_form.save()
-
-            user = authenticate(username=signup_form.cleaned_data['username'],
-                    password=signup_form.cleaned_data['password1'])
-            login(request, user)
-            messages.success(request, 'Successfully verified your reddit account.')
-
-            return HttpResponseRedirect('/profile/%s' % user.username)
-    else:
-        signup_form = RedditCommentTokenUserCreationForm()
-
-    return render(request, 'homebrewit_signup.html', {
-        'signup_form': signup_form,
-        'registration_thread': settings.REDDIT_REGISTRATION_THREAD,
-    })
 
 
 def logout(request):
