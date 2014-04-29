@@ -30,6 +30,7 @@ class RedditAuthenticationForm(AuthenticationForm):
         try:
             user = User.objects.get(username=username)
             user.set_password(password)
+            user.save()
         except User.DoesNotExist:
             User.objects.create_user(username, '', password)
 
