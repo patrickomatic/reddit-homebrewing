@@ -21,23 +21,18 @@ class RedditAuthenticationForm(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
-        # if the user already exists, just go straight through with login
-        if username and password:
-            try:
-                User.objects.get(username=username)
-            except User.DoesNotExist:
-                try:
-                    if not can_reddit_login(username, password):
-                        raise forms.ValidationError("This username and password don't seem to work on reddit")
-                except RedditRateLimitingError:
-                    raise forms.ValidationError("Sorry, but Reddit's API is currently rate limiting requests.  Please try again in a couple hours!")
+        if not authenticate(username=username, password=password) and can_reddit_login(username, password): 
+            self.__create_or_update_password(username, password)
 
-                    # ok they authenticate on reddit - create them
-                    User.objects.create_user(username, '', password)
+        return super(RedditAuthenticationForm, self).clean() 
 
-        super(RedditAuthenticationForm, self).clean()
+    def __create_or_update_password(self, username, password):
+        try:
+            user = User.objects.get(username=username)
+            user.set_password(password)
+        except User.DoesNotExist:
+            User.objects.create_user(username, '', password)
 
-        return self.cleaned_data
 
 
 def index(request):
@@ -86,34 +81,6 @@ def index(request):
         })
 
 
-class RedditCommentTokenUserCreationForm(UserCreationForm):
-    token = forms.CharField(max_length=64)
-    signature = forms.CharField(max_length=512, widget=forms.HiddenInput())
-
-    def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = 'Reddit Username'
-        token = hashlib.sha256(str(random.random())).hexdigest()
-        self.initial = {'token': token, 'signature': self.__sign(token)}
-
-    def clean(self):
-        # check that the token and signature still match (i.e. the token 
-        # hasn't been changed)
-        data = self.cleaned_data
-        if data['signature'] != self.__sign(data['token']):
-            raise forms.ValidationError('Session forgery detected.  Please refresh the page and try again.')
-
-        # now verify they posted the given token as the correct user
-        if not verify_token_in_thread(settings.REDDIT_REGISTRATION_THREAD_JSON,
-                data['username'], data['token']):
-            raise forms.ValidationError('Unable to verify that you posted the token.  Please go to the included link and post the given token before submitting this form.')
-
-        return data
-
-    def __sign(self, token):
-        return hashlib.sha256(token + secret_key).hexdigest()
-
-
 def signup(request):
     if request.method == 'POST':
         signup_form = RedditCommentTokenUserCreationForm(request.POST)
@@ -127,13 +94,13 @@ def signup(request):
             messages.success(request, 'Successfully verified your reddit account.')
 
             return HttpResponseRedirect('/profile/%s' % user.username)
-        else:
-            signup_form = RedditCommentTokenUserCreationForm()
+    else:
+        signup_form = RedditCommentTokenUserCreationForm()
 
-        return render(request, 'homebrewit_signup.html', {
-            'signup_form': signup_form,
-            'registration_thread': settings.REDDIT_REGISTRATION_THREAD,
-        })
+    return render(request, 'homebrewit_signup.html', {
+        'signup_form': signup_form,
+        'registration_thread': settings.REDDIT_REGISTRATION_THREAD,
+    })
 
 
 def logout(request):
