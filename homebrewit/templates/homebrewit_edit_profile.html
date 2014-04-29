@@ -1,34 +1,34 @@
 {% extends "homebrewit.html" %}
 
 {% block title %}
-	{{request.user.username}}'s Personal Information
+    {{request.user.username}}'s Personal Information
 {% endblock %}
 
 
 {% block contenttitle %}
-	Set Your Personal Information
+    Set Your Personal Information
 {% endblock %}
 
 
 {% block content %}
-	<div class="medium-title">
-		<a title="Change Password" href="{% url "homebrewit.profile.views.change_password" %}">Change Password</a>
-	</div>
+    <div class="medium-title">
+        <a title="Change Password" href="{% url "homebrewit.profile.views.change_password" %}">Change Password</a>
+    </div>
 
-	<div class="medium-title">
-		Email and Postal Address
-	</div>
-	<p>
-		In order for us to send prizes to the winners, we're going to need
-		you to give us your address before entering the contest.
-	</p>
+    <div class="medium-title">
+        Email and Postal Address
+    </div>
+    <p>
+        In order for us to send prizes to the winners, we're going to need
+        you to give us your address before entering the contest.
+    </p>
 
-	<form method="POST" action="{% url "homebrewit.profile.views.edit_profile" %}" class="setaddress">
-		{% csrf_token %}
+    <form method="POST" action="{% url "homebrewit.profile.views.edit_profile" %}" class="setaddress">
+        {% csrf_token %}
 
-		{{email_form.as_p}}
-		{{address_form.as_p}}
+        {{email_form.as_p}}
+        {{address_form.as_p}}
 
-		<input type="submit" value="Set Address" />
-	</form>
+        <input type="submit" value="Set Address" />
+    </form>
 {% endblock %}

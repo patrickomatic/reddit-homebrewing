@@ -2,99 +2,99 @@
 
 
 {% block title %}
-	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
+    {{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
 {% endblock %}
 
 
 {% block contenttitle %}
-	<a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile" entry.user.username %}">{{entry.user}}</a> 
-	-
-	{{entry.beer_name}}
+    <a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile" entry.user.username %}">{{entry.user}}</a> 
+    -
+    {{entry.beer_name}}
 {% endblock %}
 
 
 {% block content %}
-	{% if entry.special_ingredients %}
-		<div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
-	{% endif %}
+    {% if entry.special_ingredients %}
+        <div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
+    {% endif %}
 
-	<div class="small-header">
-		Style: {{entry.style.name}}
-		{% if entry.style_subcategory %}
-			({{entry.style_subcategory.name}})
-		{% endif %}
-	</div>
-	<div class="small-header">Year: {{entry.style.contest_year.contest_year}}</div>
+    <div class="small-header">
+        Style: {{entry.style.name}}
+        {% if entry.style_subcategory %}
+            ({{entry.style_subcategory.name}})
+        {% endif %}
+    </div>
+    <div class="small-header">Year: {{entry.style.contest_year.contest_year}}</div>
 
-	{% if judging_results %}
-		{% for result in judging_results %}
-			<div class="small-title">
-				Judge: {{result.judge.username}}
+    {% if judging_results %}
+        {% for result in judging_results %}
+            <div class="small-title">
+                Judge: {{result.judge.username}}
 
-				{% if result.bjcp_id %}
-					(BJCP ID#: {{result.bjcp_id}})
-				{% endif %}
-			</div>
+                {% if result.bjcp_id %}
+                    (BJCP ID#: {{result.bjcp_id}})
+                {% endif %}
+            </div>
 
-			<ul class="score-list">
-				<li>
-					<div class="small-title score">{{result.aroma_score}} / 12</div>
-					<div class="small-title">Aroma</div>
+            <ul class="score-list">
+                <li>
+                    <div class="small-title score">{{result.aroma_score}} / 12</div>
+                    <div class="small-title">Aroma</div>
 
-					<div class="clear" /> 
-					<p>{{result.aroma_description|linebreaksbr}}</p>
-				</li>
-				<li>
-					<div class="small-title score">{{result.appearance_score}} / 3</div>
-					<div class="small-title">Appearance</div>
+                    <div class="clear" /> 
+                    <p>{{result.aroma_description|linebreaksbr}}</p>
+                </li>
+                <li>
+                    <div class="small-title score">{{result.appearance_score}} / 3</div>
+                    <div class="small-title">Appearance</div>
 
-					<div class="clear" /> 
-					<p>{{result.appearance_description|linebreaksbr}}</p>
-				</li>
-				<li>
-					<div class="small-title score">{{result.flavor_score}} / 20</div>
-					<div class="small-title">Flavor</div>
+                    <div class="clear" /> 
+                    <p>{{result.appearance_description|linebreaksbr}}</p>
+                </li>
+                <li>
+                    <div class="small-title score">{{result.flavor_score}} / 20</div>
+                    <div class="small-title">Flavor</div>
 
-					<div class="clear" /> 
-					<p>{{result.flavor_description|linebreaksbr}}</p>
-				</li>
-				<li>
-					<div class="small-title score">{{result.mouthfeel_score}} / 5</div>
-					<div class="small-title">Mouthfeel</div>
+                    <div class="clear" /> 
+                    <p>{{result.flavor_description|linebreaksbr}}</p>
+                </li>
+                <li>
+                    <div class="small-title score">{{result.mouthfeel_score}} / 5</div>
+                    <div class="small-title">Mouthfeel</div>
 
-					<div class="clear" /> 
-					<p>{{result.mouthfeel_description|linebreaksbr}}</p>
-				</li>
-				<li>
-					<div class="small-title score">{{result.overall_impression_score}} / 10</div>
-					<div class="small-title">Overall Impression</div>
+                    <div class="clear" /> 
+                    <p>{{result.mouthfeel_description|linebreaksbr}}</p>
+                </li>
+                <li>
+                    <div class="small-title score">{{result.overall_impression_score}} / 10</div>
+                    <div class="small-title">Overall Impression</div>
 
-					<div class="clear" /> 
-					<p>{{result.overall_impression_description|linebreaksbr}}</p>
-				</li>
-				<li>
-					<div class="small-title score">{{result.stylistic_accuracy}} / 5</div>
-					<div class="small-title">Stylistic Accuracy</div>
-					<div class="clear" /> 
-				</li>
-				<li>
-					<div class="small-title score">{{result.technical_merit}} / 5</div>
-					<div class="small-title">Technical Merit</div>
-					<div class="clear" /> 
-				</li>
-				<li>
-					<div class="small-title score">{{result.intangibles}} / 5</div>
-					<div class="small-title">Intangibles</div>
-					<div class="clear" /> 
-				</li>
-				<li>
-					<div class="medium-title score">{{result.get_description}}</div>
-					<div class="medium-title">Overall Score</div>
-					<div class="clear" /> 
-				</li>
-			</ul>
-		{% endfor %}
-	{% else %}
-		<div class="small-title">Entry not yet judged</div>
-	{% endif %}
+                    <div class="clear" /> 
+                    <p>{{result.overall_impression_description|linebreaksbr}}</p>
+                </li>
+                <li>
+                    <div class="small-title score">{{result.stylistic_accuracy}} / 5</div>
+                    <div class="small-title">Stylistic Accuracy</div>
+                    <div class="clear" /> 
+                </li>
+                <li>
+                    <div class="small-title score">{{result.technical_merit}} / 5</div>
+                    <div class="small-title">Technical Merit</div>
+                    <div class="clear" /> 
+                </li>
+                <li>
+                    <div class="small-title score">{{result.intangibles}} / 5</div>
+                    <div class="small-title">Intangibles</div>
+                    <div class="clear" /> 
+                </li>
+                <li>
+                    <div class="medium-title score">{{result.get_description}}</div>
+                    <div class="medium-title">Overall Score</div>
+                    <div class="clear" /> 
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <div class="small-title">Entry not yet judged</div>
+    {% endif %}
 {% endblock %}

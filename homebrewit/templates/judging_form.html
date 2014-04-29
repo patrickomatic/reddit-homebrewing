@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
+    <link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
 {% endblock %}
 
 {% block contenttitle %}
-	Entry Judging Form
+    Entry Judging Form
 {% endblock %}
 
 {% block content %}
-	{# XXX use a url helper for this #}
+    {# XXX use a url helper for this #}
         <form action="/contest/judgeentry" method="POST">
             {% csrf_token %}
 

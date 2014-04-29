@@ -1,17 +1,17 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html id="home" lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="description" content="Reddit /r/homebrewing app" />
-		<meta name="keywords" content="reddit.com, reddit, homebrew, brew, beer, contest, competition, experience, level" />
-		<title>Annual Reddit Homebrew Contest - {% block title %}{% endblock %}</title>
-		{% block stylesheet %}
-		<link rel="stylesheet" href="{% static "css/reset.css" %}" type="text/css" />
-		<link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
-		{% endblock %}
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-		{% block include %}{% endblock %}
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Reddit /r/homebrewing app" />
+        <meta name="keywords" content="reddit.com, reddit, homebrew, brew, beer, contest, competition, experience, level" />
+        <title>Annual Reddit Homebrew Contest - {% block title %}{% endblock %}</title>
+        {% block stylesheet %}
+        <link rel="stylesheet" href="{% static "css/reset.css" %}" type="text/css" />
+        <link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
+        {% endblock %}
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        {% block include %}{% endblock %}
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-23829880-1']);
@@ -23,59 +23,59 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-	</head>
-	<body>
-		<header id="header">
-			{% if user.is_authenticated %}
-				<a title="{{user.username}}'s Profile" href="{% url "homebrewit.profile.views.logged_in_profile" %}">{{user.username}}</a> 
-				|
-				<a title="Logout" href="{% url "homebrewit.signup.views.logout" %}">Logout</a>
-			{% endif %}
+    </head>
+    <body>
+        <header id="header">
+            {% if user.is_authenticated %}
+                <a title="{{user.username}}'s Profile" href="{% url "homebrewit.profile.views.logged_in_profile" %}">{{user.username}}</a> 
+                |
+                <a title="Logout" href="{% url "homebrewit.signup.views.logout" %}">Logout</a>
+            {% endif %}
 
-			<a title="reddithomebrewing.com" href="/">
-				<img src="/static/images/logos/header-logo.png" class="header-logo" />
-			</a>
-		</header>
+            <a title="reddithomebrewing.com" href="/">
+                <img src="/static/images/logos/header-logo.png" class="header-logo" />
+            </a>
+        </header>
 
-		<div class="large-title">
-			{% block contenttitle %}
-			{% endblock %}
-		</div>
-		<hr class="generic-header">
-		<div class="clear"></div>
+        <div class="large-title">
+            {% block contenttitle %}
+            {% endblock %}
+        </div>
+        <hr class="generic-header">
+        <div class="clear"></div>
 
-		<div id="messages">
-			{% if messages %}
-				{% for message in messages %}
-					<ul>
-						<li class="messages">{{message}}</li>
-					</ul>
-				{% endfor %}
+        <div id="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <ul>
+                        <li class="messages">{{message}}</li>
+                    </ul>
+                {% endfor %}
 
-				{% block message %}
+                {% block message %}
 
-				{% endblock %}
-			{% endif %}
-		</div>
+                {% endblock %}
+            {% endif %}
+        </div>
 
-		<article>
-			{% block content %}{% endblock %}
-		</article>
+        <article>
+            {% block content %}{% endblock %}
+        </article>
 
-		<footer>
-			<p>
-				<a title="Contact Moderators" href="http://www.reddit.com/message/compose?to=%23Homebrewing">Contact the Moderators</a>
-				-
-				<a title="2014 Homebrew Competition Rules" href="http://www.reddit.com/r/Homebrewing/comments/22me5x/announcing_the_2014_reddit_homebrew_competition/">2014 Homebrew Contest Info</a>
-				-
-				<a title="Donating will help pay for contest prizes" href="http://pledgie.com/campaigns/14583">Donate</a>
-				-
-				<a title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
-				-
-				<a title="Related Reddits" href="/related">Related Reddits</a>
-				{% block footer %}
-				{% endblock %}
-			</p>
-		</footer>
-	</body>
+        <footer>
+            <p>
+                <a title="Contact Moderators" href="http://www.reddit.com/message/compose?to=%23Homebrewing">Contact the Moderators</a>
+                -
+                <a title="2014 Homebrew Competition Rules" href="http://www.reddit.com/r/Homebrewing/comments/22me5x/announcing_the_2014_reddit_homebrew_competition/">2014 Homebrew Contest Info</a>
+                -
+                <a title="Donating will help pay for contest prizes" href="http://pledgie.com/campaigns/14583">Donate</a>
+                -
+                <a title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
+                -
+                <a title="Related Reddits" href="/related">Related Reddits</a>
+                {% block footer %}
+                {% endblock %}
+            </p>
+        </footer>
+    </body>
 </html>

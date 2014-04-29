@@ -3,39 +3,39 @@
 {% load staticfiles %}
 
 {% block include %}
-	<link rel="stylesheet" href="{% static "css/experiencelevel.css" %}" type="text/css" />
-	<script type="text/javascript" src="{% static "js/experiencelevel.js" %}"></script>
+    <link rel="stylesheet" href="{% static "css/experiencelevel.css" %}" type="text/css" />
+    <script type="text/javascript" src="{% static "js/experiencelevel.js" %}"></script>
 {% endblock %}
 
 
 {% block title %}
-	Set your experience level
+    Set your experience level
 {% endblock %}
 
 
 {% block contenttitle %}
-	Set your homebrewing experience level
+    Set your homebrewing experience level
 {% endblock %}
 
 
 {% block content %}
-	<p>
-		By setting your experience level, whenever you post on /r/Homebrewing
-		a small icon will appear next to your name indicating your experience
-		level as a homebrewer.
-	</p>
+    <p>
+        By setting your experience level, whenever you post on /r/Homebrewing
+        a small icon will appear next to your name indicating your experience
+        level as a homebrewer.
+    </p>
 
-	<form action="{% url "homebrewit.experiencelevel.views.change_level" %}" method="POST">
-		{% csrf_token %}
+    <form action="{% url "homebrewit.experiencelevel.views.change_level" %}" method="POST">
+        {% csrf_token %}
 
-		<ul id="experience-level-picker" class="experience-level-picker">
-			{% for level in experience_levels %}
-				<li>
-					<a href="#" class="{{level.name|lower}} generic-border {% if current_level.experience_level == level %}selected{% endif %}" data-value="{{level.id}}"></a>
-				</li>
-			{% endfor %}
-		</ul>
+        <ul id="experience-level-picker" class="experience-level-picker">
+            {% for level in experience_levels %}
+                <li>
+                    <a href="#" class="{{level.name|lower}} generic-border {% if current_level.experience_level == level %}selected{% endif %}" data-value="{{level.id}}"></a>
+                </li>
+            {% endfor %}
+        </ul>
 
-		<div class="clear"></div>
-	</form>
+        <div class="clear"></div>
+    </form>
 {% endblock %}

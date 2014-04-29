@@ -4,62 +4,62 @@
 
 
 {% block title %}
-	{{style.contest_year}} Reddit Homebrewing Contest - {{style.name}}
+    {{style.contest_year}} Reddit Homebrewing Contest - {{style.name}}
 {% endblock %}
 
 
 {% block contenttitle %}
-	{{style.contest_year}} - {{style.name}}
+    {{style.contest_year}} - {{style.name}}
 {% endblock %}
 
 
 {% block content %}
-	{% if address and user.is_authenticated %}
-		<div class="large-title">Shipping Info</div>
-		<p>If you are competing in this category, please ship your samples to:</p>
-		<p>
-			{% if address.name %}
-				{{address.name}}<br/>
-			{% endif %}
-			{{address.address_1}}<br/>
-			{% if address.address_2 %}
-				{{address.address_2}}<br/>
-			{% endif %}
-			{{address.city}}, {{address.state}} {{address.zip_code}}<br/>
-		</p>
+    {% if address and user.is_authenticated %}
+        <div class="large-title">Shipping Info</div>
+        <p>If you are competing in this category, please ship your samples to:</p>
+        <p>
+            {% if address.name %}
+                {{address.name}}<br/>
+            {% endif %}
+            {{address.address_1}}<br/>
+            {% if address.address_2 %}
+                {{address.address_2}}<br/>
+            {% endif %}
+            {{address.city}}, {{address.state}} {{address.zip_code}}<br/>
+        </p>
 
-		<div class="large-title">Entries</div>
-	{% endif %}
+        <div class="large-title">Entries</div>
+    {% endif %}
 
-	{% if entries %}
-		<table class="contest-table">
-			<tr class="generic-tr">
-				<th class="generic-th text-td">Beer</th>
-				<th class="generic-th numeric-td" width="20%">Score</th>
-				<th class="generic-th" width="15%">Received Entry</th>
-			</tr>
+    {% if entries %}
+        <table class="contest-table">
+            <tr class="generic-tr">
+                <th class="generic-th text-td">Beer</th>
+                <th class="generic-th numeric-td" width="20%">Score</th>
+                <th class="generic-th" width="15%">Received Entry</th>
+            </tr>
 
-			{% for entry in entries %}
-				<tr class="generic-tr">
-					<td class="generic-td text-td">
-						<a title="{{entry}}" href="{% url "homebrewit.contest.views.entry" style.contest_year style.id entry.id %}">
-							{{entry.user}} 
-							{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
-						</a>
-					</td>
-					<td class="generic-td numeric-td">
-						{{entry.get_rating_description}}
-					</td>
-					<td class="generic-td centered">
-						{% if entry.received_entry %}
-							<img src="{% static "icons/tick.png" %}" />
-						{% endif %}
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	{% if not entries %}
-		<p>No entries received yet.</p>
-	{% endif %}
+            {% for entry in entries %}
+                <tr class="generic-tr">
+                    <td class="generic-td text-td">
+                        <a title="{{entry}}" href="{% url "homebrewit.contest.views.entry" style.contest_year style.id entry.id %}">
+                            {{entry.user}} 
+                            {% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
+                        </a>
+                    </td>
+                    <td class="generic-td numeric-td">
+                        {{entry.get_rating_description}}
+                    </td>
+                    <td class="generic-td centered">
+                        {% if entry.received_entry %}
+                            <img src="{% static "icons/tick.png" %}" />
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if not entries %}
+        <p>No entries received yet.</p>
+    {% endif %}
 {% endblock %}

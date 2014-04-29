@@ -2,98 +2,98 @@
 
 
 {% block title %}
-	Home
+    Home
 {% endblock %}
 
 
 {% block contenttitle %}
-	Welcome to the reddit Homebrewing app!
+    Welcome to the reddit Homebrewing app!
 {% endblock %}
 
 
 {% block content %}
-	<p>
-		{% if contest_year.allowing_entries %}
-			From here you can set your experience level icon as well as enter for the {{contest_year.contest_year}} homebrew contest.
-		{% else %}
-			From here you can set your experience level icon. 
-		{% endif %}
+    <p>
+        {% if contest_year.allowing_entries %}
+            From here you can set your experience level icon as well as enter for the {{contest_year.contest_year}} homebrew contest.
+        {% else %}
+            From here you can set your experience level icon. 
+        {% endif %}
 
-		{% if not user.is_authenticated %}
-			Just login below with the same credentials you use for reddit:
-		{% endif %}
-	</p>
+        {% if not user.is_authenticated %}
+            Just login below with the same credentials you use for reddit:
+        {% endif %}
+    </p>
 
-	{% if user.is_authenticated %}
-		<div class="large-title">
-			<a href="{% url "homebrewit.profile.views.logged_in_profile" %}" title="Your profile">
-				Edit your profile
-			</a>
-		</div>
-	{% else %}
-		<form class="login-form" method="POST" action="{% url "homebrewit.signup.views.index" %}">
-			{% csrf_token %} 
+    {% if user.is_authenticated %}
+        <div class="large-title">
+            <a href="{% url "homebrewit.profile.views.logged_in_profile" %}" title="Your profile">
+                Edit your profile
+            </a>
+        </div>
+    {% else %}
+        <form class="login-form" method="POST" action="{% url "homebrewit.signup.views.index" %}">
+            {% csrf_token %} 
 
-			{{login_form.as_p}}
+            {{login_form.as_p}}
 
-			<input type="submit" value="Login" /> 
-		</form>
-	{% endif %}
+            <input type="submit" value="Login" /> 
+        </form>
+    {% endif %}
 
-	{% if contest_data %}
-		<div id="contest-title" class="large-title">/r/Homebrewing Competition</div>
+    {% if contest_data %}
+        <div id="contest-title" class="large-title">/r/Homebrewing Competition</div>
 
-		{% if contest_year.prize_description and not contest_year.finished_judging %}
-			<div class="large-title">Prizes</div>
-			<p>{{contest_year.prize_description|safe}}</p>
-		{% endif %}
+        {% if contest_year.prize_description and not contest_year.finished_judging %}
+            <div class="large-title">Prizes</div>
+            <p>{{contest_year.prize_description|safe}}</p>
+        {% endif %}
 
-		<ul>
-			{% for year, style_data in contest_data %}
-				<a title="{{year}} Competition" href="{% url "homebrewit.contest.views.contest_year" year %}" class="large-title">
-					{{year}}
-				</a>
+        <ul>
+            {% for year, style_data in contest_data %}
+                <a title="{{year}} Competition" href="{% url "homebrewit.contest.views.contest_year" year %}" class="large-title">
+                    {{year}}
+                </a>
 
-				<table class="contest-table">
-					<tr class="generic-tr">
-						<th class="generic-th text-td">Style</th>
-						<th class="generic-th text-td" width="20%">Winner</th>
-						<th class="generic-th numeric-td" width="8%">Entries</th>
-						<th class="generic-th numeric-td" width="8%"># Received</th>
-						<th class="generic-th numeric-td" width="8%"># Judged</th>
-					</tr>
+                <table class="contest-table">
+                    <tr class="generic-tr">
+                        <th class="generic-th text-td">Style</th>
+                        <th class="generic-th text-td" width="20%">Winner</th>
+                        <th class="generic-th numeric-td" width="8%">Entries</th>
+                        <th class="generic-th numeric-td" width="8%"># Received</th>
+                        <th class="generic-th numeric-td" width="8%"># Judged</th>
+                    </tr>
 
-					{% for style in style_data %}
-						<tr class="generic-tr">
-							<td class="generic-td text-td">
-								<a href="{% url "homebrewit.contest.views.style" year style.style.id %}" title="{{year}} - {{style.style.name}}">
-									{{style.style.name}}
-								</a>
-							</td>
+                    {% for style in style_data %}
+                        <tr class="generic-tr">
+                            <td class="generic-td text-td">
+                                <a href="{% url "homebrewit.contest.views.style" year style.style.id %}" title="{{year}} - {{style.style.name}}">
+                                    {{style.style.name}}
+                                </a>
+                            </td>
 
-							<td class="generic-td text-td">
-								{% if style.winner %}
-									<a title="{{year}} {{style.style.name}} Winner" href="{% url "homebrewit.contest.views.entry" year style.style.id style.winner.id %}">
-										{{style.winner.winner}}
-									</a>
-								{% endif %}
-							</td>
+                            <td class="generic-td text-td">
+                                {% if style.winner %}
+                                    <a title="{{year}} {{style.style.name}} Winner" href="{% url "homebrewit.contest.views.entry" year style.style.id style.winner.id %}">
+                                        {{style.winner.winner}}
+                                    </a>
+                                {% endif %}
+                            </td>
 
-							<td class="generic-td numeric-td">
-								{{style.n_entries}}
-							</td>
+                            <td class="generic-td numeric-td">
+                                {{style.n_entries}}
+                            </td>
 
-							<td class="generic-td numeric-td">
-								{{style.n_received}}
-							</td>
+                            <td class="generic-td numeric-td">
+                                {{style.n_received}}
+                            </td>
 
-							<td class="generic-td numeric-td">
-								{{style.n_judged}}
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			{% endfor %}
-		</ul>
-	{% endif %}
+                            <td class="generic-td numeric-td">
+                                {{style.n_judged}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

@@ -1,20 +1,20 @@
 {% extends "homebrewit.html" %}
 
 {% block title %}
-	Related Reddits
+    Related Reddits
 {% endblock %}
 
 
 {% block contenttitle %}
-	Related Reddits
+    Related Reddits
 {% endblock %}
 
 
 {% block content %}
     <p class="small-title">Related Subreddits</p>
     <ul>
-	{% for related in related_subreddits %}
+    {% for related in related_subreddits %}
         <li><a href="{{ related.url }}" target="_blank" title="{{ related.display }}">{{ related.display }}</a></li>
-	{% endfor %}
+    {% endfor %}
     </ul>
 {% endblock %}

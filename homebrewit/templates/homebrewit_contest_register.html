@@ -1,72 +1,72 @@
 {% extends "homebrewit.html" %}
 
 {% block include %}
-	<script type="text/javascript">
+    <script type="text/javascript">
 var style_data = {{style_data_as_json|safe}};
 
 $(document).ready(function() {
-	var label_el = $('label[for="id_style_subcategory"]');
-	var subcategory_el = $('select[name="style_subcategory"]');
-	var style_el = $('select[name="style"]');
+    var label_el = $('label[for="id_style_subcategory"]');
+    var subcategory_el = $('select[name="style_subcategory"]');
+    var style_el = $('select[name="style"]');
 
-	function hide_subcategories() {
-		label_el.hide();
-		subcategory_el.hide();
-	}
+    function hide_subcategories() {
+        label_el.hide();
+        subcategory_el.hide();
+    }
 
-	function show_subcategories() {
-		label_el.show();
-		subcategory_el.show();
-	}
+    function show_subcategories() {
+        label_el.show();
+        subcategory_el.show();
+    }
 
-	function setup_categories(style_value, subcategory_value) {
-		if (!style_value || style_data[style_value].length == 0) {
-			hide_subcategories();
-			return true;
-		}
+    function setup_categories(style_value, subcategory_value) {
+        if (!style_value || style_data[style_value].length == 0) {
+            hide_subcategories();
+            return true;
+        }
 
-		var options = "";
-		for (var i = 0; i < style_data[style_value].length; i++) { 
-			var sub = style_data[style_value][i];
-			options += "<option " + (sub.id == subcategory_value ? "selected" : "") + " value=\"" + sub.id + "\">" + sub.name + "</option>";
-		}
+        var options = "";
+        for (var i = 0; i < style_data[style_value].length; i++) { 
+            var sub = style_data[style_value][i];
+            options += "<option " + (sub.id == subcategory_value ? "selected" : "") + " value=\"" + sub.id + "\">" + sub.name + "</option>";
+        }
 
-		subcategory_el.html(options);
-		show_subcategories();
+        subcategory_el.html(options);
+        show_subcategories();
 
-		return true;
-	}
+        return true;
+    }
 
 
-	style_el.change(function() {
-		setup_categories($(this).val(), "");
-	});
+    style_el.change(function() {
+        setup_categories($(this).val(), "");
+    });
 
-	// call it to set up an initial state
-	setup_categories(style_el.val(), subcategory_el.val());
+    // call it to set up an initial state
+    setup_categories(style_el.val(), subcategory_el.val());
 });
-	</script>
+    </script>
 {% endblock %}
 
 
 {% block title %}
-	Register
+    Register
 {% endblock %}
 
 
 {% block contenttitle %}
-	Want to enter in the competition?
+    Want to enter in the competition?
 {% endblock %}
 
 
 {% block content %}
-	<p>Just pick which style you'll be brewing:</p>
+    <p>Just pick which style you'll be brewing:</p>
 
-	<form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}">
-		{% csrf_token %}
+    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}">
+        {% csrf_token %}
 
-		{{form.as_p}}
+        {{form.as_p}}
 
-		<input type="submit" value="Register"/>
-	</form>
+        <input type="submit" value="Register"/>
+    </form>
 {% endblock %}

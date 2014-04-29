@@ -1,22 +1,22 @@
 {% extends "homebrewit.html" %}
 
 {% block title %}
-	Login
+    Login
 {% endblock %}
 
 
 {% block contenttitle %}
-	Login
+    Login
 {% endblock %}
 
 
 {% block content %}
-	<form class="login-form" method="POST" action="{% url "homebrewit.signup.views.login" %}">
-		{% csrf_token %}
+    <form class="login-form" method="POST" action="{% url "homebrewit.signup.views.login" %}">
+        {% csrf_token %}
 
-		{{form.as_p}}
-		<input type="submit" value="Login" />
-	</form>
+        {{form.as_p}}
+        <input type="submit" value="Login" />
+    </form>
 
-	<p>Haven't registered? <a title="Signup" href="{% url "homebrewit.signup.views.signup" %}">Sign up now!</a>
+    <p>Haven't registered? <a title="Signup" href="{% url "homebrewit.signup.views.signup" %}">Sign up now!</a>
 {% endblock %}

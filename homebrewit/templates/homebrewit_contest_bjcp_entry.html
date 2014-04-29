@@ -4,233 +4,233 @@
 
 
 {% block title %}
-	{{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
+    {{entry.style}} - {{entry.user.username}}{% if entry.beer_name %}'s {{entry.beer_name}}{% endif %}
 {% endblock %}
 
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="{% static "css/bjcpentry.css" %}" type="text/css" />
-	<link rel="stylesheet" href="{% static "css/bjcpentry-print.css" %}" type="text/css" media="print" />
+    <link rel="stylesheet" href="{% static "css/bjcpentry.css" %}" type="text/css" />
+    <link rel="stylesheet" href="{% static "css/bjcpentry-print.css" %}" type="text/css" media="print" />
 {% endblock %}
 
 
 {% block contenttitle %}
-	<a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile" entry.user.username %}">{{entry.user}}</a>
-	{{entry.beer_name}}
+    <a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile" entry.user.username %}">{{entry.user}}</a>
+    {{entry.beer_name}}
 {% endblock %}
 
 
 {% block include %}
 <script>
 $(document).ready(function() {
-	$('.hotcold_marker').hover(function(event) {
-		$('#img_hover')
-			.css({top: event.pageY + 'px', left: event.pageX + 'px'})
-			.append('<img src="' + $(this).attr('src') + '" />')
-			.show();
-	}, function() {
-		$('#img_hover')
-			.hide()
-			.children()
-			.remove();
-	});
+    $('.hotcold_marker').hover(function(event) {
+        $('#img_hover')
+            .css({top: event.pageY + 'px', left: event.pageX + 'px'})
+            .append('<img src="' + $(this).attr('src') + '" />')
+            .show();
+    }, function() {
+        $('#img_hover')
+            .hide()
+            .children()
+            .remove();
+    });
 });
 </script>
 {% endblock %}
 
 
 {% block content %}
-	{% if form %}
-		<div id="main_container">
-			<h1 class="scoresheet_title">
-				Beer Scoresheet
-				<a href="javascript:print()" class="print_button">
-					<img src="{% static "icons/printer.png" %}" />
-				</a>
-			</h1>
+    {% if form %}
+        <div id="main_container">
+            <h1 class="scoresheet_title">
+                Beer Scoresheet
+                <a href="javascript:print()" class="print_button">
+                    <img src="{% static "icons/printer.png" %}" />
+                </a>
+            </h1>
 
-			<hr /> 
+            <hr /> 
 
-			<div id="left">
-				<p><span class="bold underline">{{form.judge.label}}</span>: {{entry.bjcp_judging_result.judge}}</p>
+            <div id="left">
+                <p><span class="bold underline">{{form.judge.label}}</span>: {{entry.bjcp_judging_result.judge}}</p>
 
-				{% if entry.bjcp_judging_result.judge_bjcp_id %}
-					<p>
-						<span class="bold underline">Judge BJCP ID: </span>{{entry.bjcp_judging_result.judge_bjcp_id}}
-					</p>
-				{% endif %}
+                {% if entry.bjcp_judging_result.judge_bjcp_id %}
+                    <p>
+                        <span class="bold underline">Judge BJCP ID: </span>{{entry.bjcp_judging_result.judge_bjcp_id}}
+                    </p>
+                {% endif %}
 
-				<p>
-					<span class="bold underline">Descriptor Definitions (Mark all that apply):</span>
-					<ul>
-						<li {% if entry.bjcp_judging_result.acetaldehyde %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.acetaldehyde.label}}</span> - {{form.acetaldehyde.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.alcoholic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.alcoholic.label}}</span> - {{form.alcoholic.help_text}} </li>
-						<li {% if entry.bjcp_judging_result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.astringent.label}}</span> - {{form.astringent.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.diacetyl %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.diacetyl.label}}</span> - {{form.diacetyl.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.dms %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.dms.label}}</span> - {{form.dms.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.estery %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.estery.label}}</span> - {{form.estery.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.grassy %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.grassy.label}}</span> - {{form.grassy.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.light_struck %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.light_struck.label}}</span> - {{form.light_struck.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.metallic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.metallic.label}}</span> - {{form.metallic.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.musty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.musty.label}}</span> - {{form.musty.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.oxidized %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.oxidized.label}}</span> - {{form.oxidized.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.phenolic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.phenolic.label}}</span> - {{form.phenolic.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.solvent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.solvent.label}}</span> - {{form.solvent.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.sour_acidic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.sour_acidic.label}}</span> - {{form.sour_acidic.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.sulfur %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.sulfur.label}}</span> - {{form.sulfur.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.vegetal %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.vegetal.label}}</span> - {{form.vegetal.help_text}}
-						</li>
-						<li {% if entry.bjcp_judging_result.yeasty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
-							<span class="bold">{{form.yeasty.label}}</span> - {{form.yeasty.help_text}}
-						</li>
-					</ul>
-				</p>
+                <p>
+                    <span class="bold underline">Descriptor Definitions (Mark all that apply):</span>
+                    <ul>
+                        <li {% if entry.bjcp_judging_result.acetaldehyde %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.acetaldehyde.label}}</span> - {{form.acetaldehyde.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.alcoholic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.alcoholic.label}}</span> - {{form.alcoholic.help_text}} </li>
+                        <li {% if entry.bjcp_judging_result.astringent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.astringent.label}}</span> - {{form.astringent.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.diacetyl %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.diacetyl.label}}</span> - {{form.diacetyl.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.dms %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.dms.label}}</span> - {{form.dms.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.estery %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.estery.label}}</span> - {{form.estery.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.grassy %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.grassy.label}}</span> - {{form.grassy.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.light_struck %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.light_struck.label}}</span> - {{form.light_struck.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.metallic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.metallic.label}}</span> - {{form.metallic.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.musty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.musty.label}}</span> - {{form.musty.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.oxidized %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.oxidized.label}}</span> - {{form.oxidized.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.phenolic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.phenolic.label}}</span> - {{form.phenolic.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.solvent %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.solvent.label}}</span> - {{form.solvent.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.sour_acidic %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.sour_acidic.label}}</span> - {{form.sour_acidic.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.sulfur %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.sulfur.label}}</span> - {{form.sulfur.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.vegetal %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.vegetal.label}}</span> - {{form.vegetal.help_text}}
+                        </li>
+                        <li {% if entry.bjcp_judging_result.yeasty %}class="list_checkmark"{% else %}class="list_nocheckmark"{% endif %}>
+                            <span class="bold">{{form.yeasty.label}}</span> - {{form.yeasty.help_text}}
+                        </li>
+                    </ul>
+                </p>
 
-				<p>
-					<ul class="scoring_guide"><span class="bold underline">Scoring Guide</span>
-						<li>
-							<span class="bold">Outstanding (45 - 50):</span>
-							World-class example of style
-						</li>
-						<li>
-							<span class="bold">Excellent  (38 - 44):</span>
-							Exemplifies style well, requires minor fine-tuning
-						</li>
-						<li>
-							<span class="bold">Very Good (30 - 37):</span>
-							Generally within style parameters, some minor flaws
-						</li>
-						<li>
-							<span class="bold">Good (21 - 29):</span>
-							Misses the mark on style and/or minor flaws
-						</li>
-						<li>
-							<span class="bold">Fair (14 - 20):</span>
-							Off flavors, aromas or major style deficiencies
-						</li>
-						<li>
-							<span class="bold">Problematic (0 - 13):</span>
-							Major off flavors and aromas dominate
-						</li>
-					</ul>
-				</p>
-			</div>
-			<div id="right">
-				<p class="smalltext">
-					<span class="bold underline">{{ entry.style }}</span><br />
+                <p>
+                    <ul class="scoring_guide"><span class="bold underline">Scoring Guide</span>
+                        <li>
+                            <span class="bold">Outstanding (45 - 50):</span>
+                            World-class example of style
+                        </li>
+                        <li>
+                            <span class="bold">Excellent  (38 - 44):</span>
+                            Exemplifies style well, requires minor fine-tuning
+                        </li>
+                        <li>
+                            <span class="bold">Very Good (30 - 37):</span>
+                            Generally within style parameters, some minor flaws
+                        </li>
+                        <li>
+                            <span class="bold">Good (21 - 29):</span>
+                            Misses the mark on style and/or minor flaws
+                        </li>
+                        <li>
+                            <span class="bold">Fair (14 - 20):</span>
+                            Off flavors, aromas or major style deficiencies
+                        </li>
+                        <li>
+                            <span class="bold">Problematic (0 - 13):</span>
+                            Major off flavors and aromas dominate
+                        </li>
+                    </ul>
+                </p>
+            </div>
+            <div id="right">
+                <p class="smalltext">
+                    <span class="bold underline">{{ entry.style }}</span><br />
 
-					{% if entry.style_subcategory %}
-						<span class="bold underline">Subcategory:</span><span class="italic"> {{entry.style_subcategory}}</span><br />
-					{% endif %}
+                    {% if entry.style_subcategory %}
+                        <span class="bold underline">Subcategory:</span><span class="italic"> {{entry.style_subcategory}}</span><br />
+                    {% endif %}
 
-					{% if entry.special_ingredients %}
-						<span class="bold underline">Special Ingredients:</span><span class="italic"> {{entry.special_ingredients}}</span><br />
-					{% endif %}
-				</p>
+                    {% if entry.special_ingredients %}
+                        <span class="bold underline">Special Ingredients:</span><span class="italic"> {{entry.special_ingredients}}</span><br />
+                    {% endif %}
+                </p>
 
-				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Aroma</b> (as appropriate for style) Comment on malt, hops, esters and other aromatics: <span class="underline bold">{{entry.bjcp_judging_result.aroma_score}} / 12</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_result.aroma_description}}</p>
-				</p>
+                <p class="multi_line_text">
+                    <span class="multi_line_header"><b>Aroma</b> (as appropriate for style) Comment on malt, hops, esters and other aromatics: <span class="underline bold">{{entry.bjcp_judging_result.aroma_score}} / 12</span></span>
+                    <p class="multi_line_description">{{entry.bjcp_judging_result.aroma_description}}</p>
+                </p>
 
-				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Appearance</b> (as appropriate for style) Comment on color, clarity, and head (retention, color, and texture): <span class="underline bold">{{entry.bjcp_judging_result.appearance_score}} / 3</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_result.appearance_description}}</p>
-				</p>
+                <p class="multi_line_text">
+                    <span class="multi_line_header"><b>Appearance</b> (as appropriate for style) Comment on color, clarity, and head (retention, color, and texture): <span class="underline bold">{{entry.bjcp_judging_result.appearance_score}} / 3</span></span>
+                    <p class="multi_line_description">{{entry.bjcp_judging_result.appearance_description}}</p>
+                </p>
 
-				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Flavor</b> (as appropriate for style) Comment on malt, hops, fermentation characteristics, balance, finish/aftertaste, and other flavor characteristics: <span class="underline bold">{{entry.bjcp_judging_result.flavor_score}} / 20</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_result.flavor_description}}</p>
-				</p>
+                <p class="multi_line_text">
+                    <span class="multi_line_header"><b>Flavor</b> (as appropriate for style) Comment on malt, hops, fermentation characteristics, balance, finish/aftertaste, and other flavor characteristics: <span class="underline bold">{{entry.bjcp_judging_result.flavor_score}} / 20</span></span>
+                    <p class="multi_line_description">{{entry.bjcp_judging_result.flavor_description}}</p>
+                </p>
 
-				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Mouthfeel</b> (as appropriate for style) Comment on body, carbonation, warmth, creaminess, astringency, and other palate sensations: <span class="underline bold">{{entry.bjcp_judging_result.mouthfeel_score}} / 5</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_result.mouthfeel_description}}</p>
-				</p>
+                <p class="multi_line_text">
+                    <span class="multi_line_header"><b>Mouthfeel</b> (as appropriate for style) Comment on body, carbonation, warmth, creaminess, astringency, and other palate sensations: <span class="underline bold">{{entry.bjcp_judging_result.mouthfeel_score}} / 5</span></span>
+                    <p class="multi_line_description">{{entry.bjcp_judging_result.mouthfeel_description}}</p>
+                </p>
 
-				<p class="multi_line_text">
-					<span class="multi_line_header"><b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement: <span class="underline bold">{{entry.bjcp_judging_result.overall_impression_score}} / 10</span></span>
-					<p class="multi_line_description">{{entry.bjcp_judging_result.overall_impression_description}}</p>
-				</p>
+                <p class="multi_line_text">
+                    <span class="multi_line_header"><b>Overall Impression</b> (as appropriate for style) Comment on overall drinking pleasure associated with entry, give suggestions for improvement: <span class="underline bold">{{entry.bjcp_judging_result.overall_impression_score}} / 10</span></span>
+                    <p class="multi_line_description">{{entry.bjcp_judging_result.overall_impression_description}}</p>
+                </p>
 
-				<p class="bold underline">Total Score: {{entry.bjcp_judging_result.overall_rating}} / 50</p>
+                <p class="bold underline">Total Score: {{entry.bjcp_judging_result.overall_rating}} / 50</p>
 
-				<div class="hotcold_chart">
-					<table class="hotcold_chart">
-						<tr>
-							<th colspan="3">{{entry.bjcp_judging_result.stylistic_accuracy.label}}</th>
-						</tr>
-						<tr>
-							<td class="hotcold_label">Not To Style</td>
-							<td>
-								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
-								<span class="hotcold_marker_container">
-									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}} hotcold_marker" />
-								</span>
-							</td>
-							<td class="hotcold_label">Classic Example</td>
-						<tr>
-							<th colspan="3" class="hotcold_title">{{form.technical_merit.label}}</th>
-						</tr>
-						<tr>
-							<td class="hotcold_label">Significant Flaws</td>
-							<td>
-								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
-								<span class="hotcold_marker_container">
-									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.technical_merit}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.technical_merit}} hotcold_marker" />
-								</span>
-							</td>
-							<td class="hotcold_label">Flawless</td>
-						</tr>
-						<tr>
-							<th colspan="3">{{form.intangibles.label}}</th>
-						</tr>
-						<tr>
-							<td class="hotcold_label">Lifeless</td>
-							<td>
-								<img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
-								<span class="hotcold_marker_container">
-									<img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.intangibles}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.intangibles}} hotcold_marker" />
-								</span>
-							</td>
-							<td class="hotcold_label">Wonderful</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div id="img_hover"></div>
-	{% else %}
-		<div class="small-title">Entry not yet judged</div>
-	{% endif %}
+                <div class="hotcold_chart">
+                    <table class="hotcold_chart">
+                        <tr>
+                            <th colspan="3">{{entry.bjcp_judging_result.stylistic_accuracy.label}}</th>
+                        </tr>
+                        <tr>
+                            <td class="hotcold_label">Not To Style</td>
+                            <td>
+                                <img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
+                                <span class="hotcold_marker_container">
+                                    <img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.stylistic_accuracy}} hotcold_marker" />
+                                </span>
+                            </td>
+                            <td class="hotcold_label">Classic Example</td>
+                        <tr>
+                            <th colspan="3" class="hotcold_title">{{form.technical_merit.label}}</th>
+                        </tr>
+                        <tr>
+                            <td class="hotcold_label">Significant Flaws</td>
+                            <td>
+                                <img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
+                                <span class="hotcold_marker_container">
+                                    <img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.technical_merit}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.technical_merit}} hotcold_marker" />
+                                </span>
+                            </td>
+                            <td class="hotcold_label">Flawless</td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">{{form.intangibles.label}}</th>
+                        </tr>
+                        <tr>
+                            <td class="hotcold_label">Lifeless</td>
+                            <td>
+                                <img src="{% static "icons/hotcoldbar.png" %}" class="hotcoldbar" />
+                                <span class="hotcold_marker_container">
+                                    <img src="/static/images/markers/hotcold_marker_{{entry.bjcp_judging_result.intangibles}}.png" class="hotcold_marker_{{entry.bjcp_judging_result.intangibles}} hotcold_marker" />
+                                </span>
+                            </td>
+                            <td class="hotcold_label">Wonderful</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="img_hover"></div>
+    {% else %}
+        <div class="small-title">Entry not yet judged</div>
+    {% endif %}
 {% endblock %}

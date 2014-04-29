@@ -4,61 +4,61 @@
 
 
 {% block title %}
-	{{year}} /r/homebrewing Contest 
+    {{year}} /r/homebrewing Contest 
 {% endblock %}
 
 
 {% block contenttitle %}
-	{{year}}'s Contest Styles
+    {{year}}'s Contest Styles
 {% endblock %}
 
 
 {% block content %}
-	{% if contest_year.prize_description %}
-		<p>{{contest_year.prize_description|safe}}</p>
-	{% endif %}
+    {% if contest_year.prize_description %}
+        <p>{{contest_year.prize_description|safe}}</p>
+    {% endif %}
 
-	{% for style, data in styles.iteritems %}
-		<a class="medium-title" title="{{year}} - {{style.name}}" href="{% url "homebrewit.contest.views.style" year style.id %}">
-			{{style.name}}
-		</a>
+    {% for style, data in styles.iteritems %}
+        <a class="medium-title" title="{{year}} - {{style.name}}" href="{% url "homebrewit.contest.views.style" year style.id %}">
+            {{style.name}}
+        </a>
 
-		{% if data.entries %}
-			<table class="contest-table">
-				<tr class="generic-tr">
-					<th class="generic-th text-td">Beer</th>
-					<th class="generic-th numeric-td" width="20%">Score</th>
-					<th class="generic-th" width="15%">Received Entry</th>
-				</tr>
+        {% if data.entries %}
+            <table class="contest-table">
+                <tr class="generic-tr">
+                    <th class="generic-th text-td">Beer</th>
+                    <th class="generic-th numeric-td" width="20%">Score</th>
+                    <th class="generic-th" width="15%">Received Entry</th>
+                </tr>
 
-				{% for entry in data.entries %}
-					<tr class="generic-tr">
-						<td class="generic-td text-td">
-							<a title="{{entry}}" href="{% url "homebrewit.contest.views.entry" style.contest_year style.id entry.id %}">
-								{{entry.user}} 
-								{% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
-							</a>
-						</td>
-						<td class="generic-td numeric-td">
-							{{entry.get_rating_description}}
-						</td>
-						<td class="generic-td centered">
-							{% if entry.received_entry %}
-								<img src="{% static "icons/tick.png" %}" />
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
+                {% for entry in data.entries %}
+                    <tr class="generic-tr">
+                        <td class="generic-td text-td">
+                            <a title="{{entry}}" href="{% url "homebrewit.contest.views.entry" style.contest_year style.id entry.id %}">
+                                {{entry.user}} 
+                                {% if entry.beer_name %}- {{entry.beer_name}}{% endif %}
+                            </a>
+                        </td>
+                        <td class="generic-td numeric-td">
+                            {{entry.get_rating_description}}
+                        </td>
+                        <td class="generic-td centered">
+                            {% if entry.received_entry %}
+                                <img src="{% static "icons/tick.png" %}" />
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-			{% if data.has_more %}
-				<a title="More entries for {{style}}" href="{% url "homebrewit.contest.views.style" style.contest_year style.id %}">
-					More entries...
-				</a>
-			{% endif %}
-		{% endif %}
-		{% if not data.entries %}
-			<p>No entries yet.</p>
-		{% endif %}
-	{% endfor %}
+            {% if data.has_more %}
+                <a title="More entries for {{style}}" href="{% url "homebrewit.contest.views.style" style.contest_year style.id %}">
+                    More entries...
+                </a>
+            {% endif %}
+        {% endif %}
+        {% if not data.entries %}
+            <p>No entries yet.</p>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

@@ -2,64 +2,64 @@
 
 
 {% block include %}
-	<script type="text/javascript">
+    <script type="text/javascript">
 $(document).ready(function() {
-	$("#id_token").keypress(function() {
-		return false;
-	});
-	$("#id_token").select();
+    $("#id_token").keypress(function() {
+        return false;
+    });
+    $("#id_token").select();
 });
-	</script>
+    </script>
 {% endblock %}
 
 
 {% block title %}
-	Register your reddit.com username
+    Register your reddit.com username
 {% endblock %}
 
 
 {% block contenttitle %}
-	Register Your reddit.com Account
+    Register Your reddit.com Account
 {% endblock %}
 
 
 {% block message %}
-	<p>
-		If you are having trouble signing up, please try again.  There is no 
-		limit to the number of times you can try to post the token.  Also be 
-		sure not to refresh the page in between the time you post the token 
-		and fill out the form.
-	</p>
+    <p>
+        If you are having trouble signing up, please try again.  There is no 
+        limit to the number of times you can try to post the token.  Also be 
+        sure not to refresh the page in between the time you post the token 
+        and fill out the form.
+    </p>
 {% endblock %}
 
 
 {% block content %}
-	<p>
-		In order to verify your username on reddit, we need you to complete
-		the form below.  Before submitting the form, be sure to go to the
-		linked thread and post the given token using your reddit username.
-	</p>
+    <p>
+        In order to verify your username on reddit, we need you to complete
+        the form below.  Before submitting the form, be sure to go to the
+        linked thread and post the given token using your reddit username.
+    </p>
 
-	<p style="color: #FF0000;">
-		We've recently been experiencing a lot of problems with verifying reddit
-		accounts.  If signing up does not work for you, please be patient - we
-		are aware of the problem and working on a fix.
-	</p>
+    <p style="color: #FF0000;">
+        We've recently been experiencing a lot of problems with verifying reddit
+        accounts.  If signing up does not work for you, please be patient - we
+        are aware of the problem and working on a fix.
+    </p>
 
-	<form id="signup-form" class="signup-form" method="POST" action="{% url "homebrewit.signup.views.signup" %}">
-		{% csrf_token %}
+    <form id="signup-form" class="signup-form" method="POST" action="{% url "homebrewit.signup.views.signup" %}">
+        {% csrf_token %}
 
-		{{signup_form.as_p}}
+        {{signup_form.as_p}}
 
-		<p>
-			<label>First, post the token to:</label>
-			<tt class="small-title">
-				<a title="Post your token here" target="_new" href="{{registration_thread}}">{{registration_thread}}</a>
-			</tt>
+        <p>
+            <label>First, post the token to:</label>
+            <tt class="small-title">
+                <a title="Post your token here" target="_new" href="{{registration_thread}}">{{registration_thread}}</a>
+            </tt>
 
-			Post the above token to this thread before submitting the form.
-		</p>
+            Post the above token to this thread before submitting the form.
+        </p>
 
-		<input type="submit" value="Register" />
-	</form>
+        <input type="submit" value="Register" />
+    </form>
 {% endblock %}
