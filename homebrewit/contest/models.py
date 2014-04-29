@@ -1,4 +1,4 @@
-import datetime, smtplib
+import datetime, smtplib, typedmodels
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -27,11 +27,32 @@ class ContestYear(models.Model):
         return unicode(self.contest_year)
 
 
+class BeerDetail(typedmodels.TypedModel):
+    beer_style = models.ForeignKey('BeerStyle')
+    description = models.TextField()
+    must_specify = models.BooleanField()
+
+
+class BeerDetailChoice(models.Model):
+    name = models.TextField()
+    multiple_choice_beer_detail = models.ForeignKey('MultipleChoiceBeerDetail')
+
+class MultipleChoiceBeerDetail(BeerDetail):
+    pass
+
+class TextBeerDetail(BeerDetail):
+    pass
+
+
+class EntryBeerDetail(models.Model):
+    entry = models.ForeignKey('Entry')
+    beer_detail = models.ForeignKey('BeerDetail')
+
+
 class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
     contest_year = models.ForeignKey('ContestYear')
     judge = models.ForeignKey(User, null=True, blank=True)
-    # XXX make a style comment (for example, for single hop ipa: please put the type of hop in the description)
 
 
     def get_subcategories(self):
@@ -154,13 +175,12 @@ class Entry(models.Model):
             for k, v in email_vars.iteritems():
                 if v is None: email_vars[k] = ""
 
+            # XXX move this into a template
             send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
                 """ 
 Hey %(username)s,
 
-Thanks for entering the %(contest_year)s %(style)s category!  When
-sending your samples, we request two 12oz bottles including your
-reddit username and the style of the samples.  You can send them to:
+Thanks for entering the %(contest_year)s %(style)s category!  When sending your samples, we request two plain, 12oz bottles including your reddit username and the style of the samples. You can send them to:
 
 %(name)s
 %(address_1)s

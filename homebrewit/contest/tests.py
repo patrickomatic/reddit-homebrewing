@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
+
 from homebrewit.contest.management.commands.judgecontest import Command
 from homebrewit.contest.models import *
 from homebrewit.contest.views import *
