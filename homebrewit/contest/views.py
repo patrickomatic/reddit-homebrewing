@@ -52,14 +52,6 @@ def register(request):
             return subcategory
 
 
-        def clean(self):
-            try:
-                Entry.objects.get(style=self.cleaned_data['style'], user=self.request.user)
-                raise forms.ValidationError('You have already entered in this category')
-            except Entry.DoesNotExist:
-                return self.cleaned_data
-
-
     # they can't register for the contest unless their profile is complete
     try:
         request.user.get_profile()
