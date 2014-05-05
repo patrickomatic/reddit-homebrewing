@@ -43,11 +43,6 @@ class ContestViewsTests(TestCase):
         # should send the registration email
         self.assert_(len(mail.outbox) == 1)
 
-    def test_register__post_already_entered(self):
-        response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
-        self.assert_(not response.context['form'].is_valid())
-        self.assertRaises(Entry.DoesNotExist, Entry.objects.get, beer_name="Patrick's super skunky IPA")
-
     def test_register__not_allowing_entries(self):
         Entry.objects.filter(user=self.user).delete()
 
