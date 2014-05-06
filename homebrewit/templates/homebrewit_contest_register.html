@@ -1,6 +1,9 @@
 {% extends "homebrewit.html" %}
+{% load staticfiles %}
 
 {% block include %}
+    
+    {% comment %}
     <script type="text/javascript">
 var style_data = {{style_data_as_json|safe}};
 
@@ -46,6 +49,7 @@ $(document).ready(function() {
     setup_categories(style_el.val(), subcategory_el.val());
 });
     </script>
+    {% endcomment %}
 {% endblock %}
 
 
@@ -62,11 +66,16 @@ $(document).ready(function() {
 {% block content %}
     <p>Just pick which style you'll be brewing:</p>
 
-    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}">
-        {% csrf_token %}
-
-        {{form.as_p}}
+    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}" ng-app="contestApp" ng-controller="ContestSignupCtrl">
+{% verbatim %}
+        <select ng-model="beerStyle" ng-options="style.name for style in styles">
+            <option value="">--- choose style --</option>
+        </select>
 
         <input type="submit" value="Register"/>
+{% endverbatim %}
     </form>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}
