@@ -25,9 +25,15 @@ class BeerStyleViewSet(viewsets.ModelViewSet):
 
 @login_required
 def register(request, year):
-    contest_year = ContestYear.objects.get(contest_year=year)
     styles = contest_year.beer_styles
+    contest_year = ContestYear.objects.get_current_contest_year()
+
+    if not contest_year or contest_year.contest_year != year:
+        raise Http404
+
+    styles = BeerStyle.objects.filter(contest_year=contest_year)
     style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
+
 
     # this class definition is inside of this function because it needs
     # to access local variables
@@ -65,9 +71,6 @@ def register(request, year):
         messages.error(request, 'You must set your address before you can enter the homebrew contest.')
         return HttpResponseRedirect('/profile/edit?next=/contest/register')
 
-    contest_year = ContestYear.objects.get_current_contest_year()
-    if not contest_year.allowing_entries:
-        raise Http404
 
     if request.method == 'POST':
         form = EntryForm(request.POST, request=request)

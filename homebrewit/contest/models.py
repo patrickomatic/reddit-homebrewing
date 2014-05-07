@@ -9,7 +9,10 @@ from django.forms.models import model_to_dict
 
 class ContestYearManager(models.Manager):
     def get_current_contest_year(self):
-        return ContestYear.objects.all().order_by('-contest_year')[0]
+        try:
+            return ContestYear.objects.filter(allowing_entries=True)[0]
+        except IndexError:
+            return None
 
 
 class ContestYear(models.Model):
