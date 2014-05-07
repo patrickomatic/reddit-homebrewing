@@ -30,8 +30,9 @@ class ContestYear(models.Model):
         return unicode(self.contest_year)
 
 
+# XXX is this better named StyleDetail?
 class BeerDetail(typedmodels.TypedModel):
-    beer_style = models.ForeignKey('BeerStyle')
+    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
     description = models.TextField()
     must_specify = models.BooleanField()
 

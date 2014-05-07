@@ -95,15 +95,8 @@ def register(request, year):
     else:
         form = EntryForm()
 
-
-    # make some json-friendly style data
-#    style_data = dict([(style.id, []) for style in styles])
-#    for sub in style_subcategories:
-#        style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
-#
+    # XXX do we need form
     return render(request, 'homebrewit_contest_register.html', {'form': form})
-            # XXX 'form': form, 
-            #'style_data_as_json': json.dumps(style_data)})
 
 
 def style(request, year, style_id):
