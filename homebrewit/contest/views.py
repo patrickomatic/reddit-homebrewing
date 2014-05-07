@@ -114,7 +114,6 @@ def style(request, year, style_id):
         raise Http404
 
     scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
-
     scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
     
     address = None
@@ -134,7 +133,7 @@ def contest_year(request, year):
     contest_year = ContestYear.objects.get(contest_year=year)
 
     styles = {}
-    for style in BeerStyle.objects.filter(contest_year=contest_year):
+    for style in BeerStyle.objects.for_year(contest_year.contest_year):
         top_31 = Entry.objects.filter(style=style)[:31]
         styles[style] = {
             'entries': top_31[:30],
