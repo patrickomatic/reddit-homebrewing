@@ -1,55 +1,10 @@
 {% extends "homebrewit.html" %}
 {% load staticfiles %}
 
+
 {% block include %}
-    
-    {% comment %}
-    <script type="text/javascript">
-var style_data = {{style_data_as_json|safe}};
-
-$(document).ready(function() {
-    var label_el = $('label[for="id_style_subcategory"]');
-    var subcategory_el = $('select[name="style_subcategory"]');
-    var style_el = $('select[name="style"]');
-
-    function hide_subcategories() {
-        label_el.hide();
-        subcategory_el.hide();
-    }
-
-    function show_subcategories() {
-        label_el.show();
-        subcategory_el.show();
-    }
-
-    function setup_categories(style_value, subcategory_value) {
-        if (!style_value || style_data[style_value].length == 0) {
-            hide_subcategories();
-            return true;
-        }
-
-        var options = "";
-        for (var i = 0; i < style_data[style_value].length; i++) { 
-            var sub = style_data[style_value][i];
-            options += "<option " + (sub.id == subcategory_value ? "selected" : "") + " value=\"" + sub.id + "\">" + sub.name + "</option>";
-        }
-
-        subcategory_el.html(options);
-        show_subcategories();
-
-        return true;
-    }
-
-
-    style_el.change(function() {
-        setup_categories($(this).val(), "");
-    });
-
-    // call it to set up an initial state
-    setup_categories(style_el.val(), subcategory_el.val());
-});
-    </script>
-    {% endcomment %}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}
 
 
@@ -67,21 +22,14 @@ $(document).ready(function() {
     <p>Just pick which style you'll be brewing:</p>
 
     <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" 2013 %}" ng-app="contestApp" ng-controller="ContestSignupCtrl">
-{% verbatim %}
-        <select ng-model="style" ng-options="s.name for s in styles">
-            <option value="">--- Choose Style --</option>
-        </select>
+        {% verbatim %}
+            <select ng-model="style" ng-options="s.name for s in styles">
+            </select>
 
-        <select ng-model="subcategory" ng-options="subcategory.name for subcategory in styles">
-            <option value="">--- Choose Subcategory --</option>
-        </select>
+            <select ng-model="subcategory" ng-show="style.subcategories" ng-options="subcategory.name for subcategory in style.subcategories">
+            </select>
 
-        <input type="submit" value="Register"/>
-
-        {% form.as_p %}
-{% endverbatim %}
+            <input type="submit" value="Register"/>
+        {% endverbatim %}
     </form>
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-    <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}

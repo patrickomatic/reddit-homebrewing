@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from rest_framework import viewsets
+from rest_framework import generics
 
 from .forms import JudgeEntrySelectionForm, JudgingForm
 from .models import *
@@ -19,9 +19,13 @@ from homebrewit.signup.models import UserProfile
 
 
 
-class BeerStyleViewSet(viewsets.ModelViewSet):
-    queryset = BeerStyle.objects.all()
+class BeerStyleList(generics.ListAPIView):
     serializer_class = BeerStyleSerializer
+    model = BeerStyle
+
+    def get_queryset(self):
+        return BeerStyle.objects.for_year(self.kwargs['year'])
+
 
 @login_required
 def register(request, year):

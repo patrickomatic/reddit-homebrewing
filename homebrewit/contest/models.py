@@ -38,7 +38,7 @@ class BeerDetail(typedmodels.TypedModel):
 
 class BeerDetailChoice(models.Model):
     name = models.TextField()
-    multiple_choice_beer_detail = models.ForeignKey('MultipleChoiceBeerDetail')
+    multiple_choice_beer_detail = models.ForeignKey('MultipleChoiceBeerDetail', related_name='choices')
 
 class MultipleChoiceBeerDetail(BeerDetail):
     pass
@@ -52,11 +52,17 @@ class EntryBeerDetail(models.Model):
     beer_detail = models.ForeignKey('BeerDetail')
 
 
+class BeerStyleManager(models.Manager):
+    def for_year(self, year):
+        return BeerStyle.objects.filter(contest_year__contest_year=int(year))
+
+
 class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
     contest_year = models.ForeignKey('ContestYear', related_name='beer_styles')
     judge = models.ForeignKey(User, null=True, blank=True)
 
+    objects = BeerStyleManager()
 
     # XXX Refactor 
     def get_subcategories(self):
