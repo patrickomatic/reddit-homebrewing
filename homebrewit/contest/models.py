@@ -51,10 +51,11 @@ class EntryBeerDetail(models.Model):
 
 class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
-    contest_year = models.ForeignKey('ContestYear')
+    contest_year = models.ForeignKey('ContestYear', related_name='beer_styles')
     judge = models.ForeignKey(User, null=True, blank=True)
 
 
+    # XXX Refactor 
     def get_subcategories(self):
         try:
             return BeerStyleSubcategory.objects.filter(beer_style=self)
@@ -70,10 +71,13 @@ class BeerStyle(models.Model):
 
 class BeerStyleSubcategory(models.Model):
     name = models.CharField(max_length=255)
-    beer_style = models.ForeignKey('BeerStyle')
+    beer_style = models.ForeignKey('BeerStyle', related_name='subcategories')
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
  
 class EntryManager(models.Manager):

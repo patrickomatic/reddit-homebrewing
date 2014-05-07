@@ -66,13 +66,19 @@ $(document).ready(function() {
 {% block content %}
     <p>Just pick which style you'll be brewing:</p>
 
-    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}" ng-app="contestApp" ng-controller="ContestSignupCtrl">
+    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" 2013 %}" ng-app="contestApp" ng-controller="ContestSignupCtrl">
 {% verbatim %}
-        <select ng-model="beerStyle" ng-options="style.name for style in styles">
-            <option value="">--- choose style --</option>
+        <select ng-model="style" ng-options="s.name for s in styles">
+            <option value="">--- Choose Style --</option>
+        </select>
+
+        <select ng-model="subcategory" ng-options="subcategory.name for subcategory in styles">
+            <option value="">--- Choose Subcategory --</option>
         </select>
 
         <input type="submit" value="Register"/>
+
+        {% form.as_p %}
 {% endverbatim %}
     </form>
 

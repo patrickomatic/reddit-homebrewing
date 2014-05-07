@@ -1,10 +1,8 @@
 var contestApp = angular.module('contestApp', []);
 
 contestApp.controller('ContestSignupCtrl', function($scope, $http) {
-	$scope.styles = [
-		{'name': 'IPA', 'value': '1'},
-		{'name': 'Stout', 'value': '2'}
-	];
-	$scope.beerStyle = 'IPA';
+	$http.get('/contests/2013/beer_styles').success(function(data) {
+		$scope.styles = data;
+	});
 });
 

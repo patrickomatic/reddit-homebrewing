@@ -17,10 +17,10 @@ MANAGERS = ADMINS
 
 if DEBUG:
     DATABASES = {
-            'default': {
-                    'ENGINE': 'django.db.backends.sqlite3', 
-                    'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
-            }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', 
+            'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+        }
     }
 else:
     import dj_database_url
@@ -61,22 +61,23 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'homebrewit.urls'
 
 OUR_APPS = (
-        'homebrewit.contest',
-        'homebrewit.experiencelevel',
-        'homebrewit.signup',
-        'homebrewit.profile',
-        'homebrewit.related',
+    'homebrewit.contest',
+    'homebrewit.experiencelevel',
+    'homebrewit.signup',
+    'homebrewit.profile',
+    'homebrewit.related',
 )
 
 INSTALLED_APPS = (
-        'south',
+    'rest_framework',
+    'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-        'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
 ) + OUR_APPS
 
 # If someone wants to work on this locally, they shouldn't have

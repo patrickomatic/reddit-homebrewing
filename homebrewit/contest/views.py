@@ -10,17 +10,23 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from homebrewit.contest.models import *
+from rest_framework import viewsets
+
+from .forms import JudgeEntrySelectionForm, JudgingForm
+from .models import *
+from .serializers import *
 from homebrewit.signup.models import UserProfile
 
-from homebrewit.contest.forms import JudgeEntrySelectionForm, JudgingForm
 
 
+class BeerStyleViewSet(viewsets.ModelViewSet):
+    queryset = BeerStyle.objects.all()
+    serializer_class = BeerStyleSerializer
 
 @login_required
-def register(request):
-    contest_year = ContestYear.objects.get_current_contest_year()
-    styles = BeerStyle.objects.filter(contest_year=contest_year)
+def register(request, year):
+    contest_year = ContestYear.objects.get(contest_year=year)
+    styles = contest_year.beer_styles
     style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
 
     # this class definition is inside of this function because it needs
@@ -84,13 +90,13 @@ def register(request):
 
 
     # make some json-friendly style data
-    style_data = dict([(style.id, []) for style in styles])
-    for sub in style_subcategories:
-        style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
-
-    return render(request, 'homebrewit_contest_register.html', {
-            'form': form,
-            'style_data_as_json': json.dumps(style_data)})
+#    style_data = dict([(style.id, []) for style in styles])
+#    for sub in style_subcategories:
+#        style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
+#
+    return render(request, 'homebrewit_contest_register.html', {'form': form})
+            # XXX 'form': form, 
+            #'style_data_as_json': json.dumps(style_data)})
 
 
 def style(request, year, style_id):
