@@ -64,15 +64,8 @@ class BeerStyle(models.Model):
 
     objects = BeerStyleManager()
 
-    # XXX Refactor 
-    def get_subcategories(self):
-        try:
-            return BeerStyleSubcategory.objects.filter(beer_style=self)
-        except BeerStyleSubcategory.DoesNotExist:
-            return []
-
     def has_subcategories(self):
-        return len(self.get_subcategories()) != 0
+        return self.subcategories.exists()
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.contest_year)
