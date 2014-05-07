@@ -170,14 +170,21 @@ class EntryModelTests(TestCase):
 
 
 class ContestYearModelTests(TestCase):
-    fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
+    def setUp(self):
+        for y in range(2005, 2012):
+            ContestYear(contest_year=y).save()
+
+        self.subject = ContestYear.objects.get(contest_year=2011)
 
 
     def test_get_current_contest_year(self):
-        for y in range(2005, 2011):
-            ContestYear(contest_year=y).save()
+        self.subject.allowing_entries = True
+        self.subject.save()
 
-        self.assert_(ContestYear.objects.get_current_contest_year().contest_year == 2011)
+        self.assert_(ContestYear.objects.get_current_contest_year() == self.subject)
+
+    def test_get_current_contest_year__none(self):
+        self.assert_(ContestYear.objects.get_current_contest_year() is None)
 
 
 class BeerStyleModelTests(TestCase):
