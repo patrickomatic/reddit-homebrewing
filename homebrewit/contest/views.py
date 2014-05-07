@@ -25,13 +25,12 @@ class BeerStyleViewSet(viewsets.ModelViewSet):
 
 @login_required
 def register(request, year):
-    styles = contest_year.beer_styles
     contest_year = ContestYear.objects.get_current_contest_year()
 
-    if not contest_year or contest_year.contest_year != year:
+    if not contest_year or contest_year.contest_year != int(year):
         raise Http404
 
-    styles = BeerStyle.objects.filter(contest_year=contest_year)
+    styles = contest_year.beer_styles
     style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
 
 
@@ -69,7 +68,8 @@ def register(request, year):
         request.user.get_profile()
     except UserProfile.DoesNotExist:
         messages.error(request, 'You must set your address before you can enter the homebrew contest.')
-        return HttpResponseRedirect('/profile/edit?next=/contest/register')
+        # XXX can we use url helpers here
+        return HttpResponseRedirect('/profile/edit?next=/contests/%s/register' % contest_year.contest_year)
 
 
     if request.method == 'POST':

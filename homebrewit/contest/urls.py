@@ -9,10 +9,10 @@ router = routers.DefaultRouter()
 router.register(r'beer_styles', views.BeerStyleViewSet)
 
 urlpatterns = patterns('homebrewit.contest.views',
-        url(r'^(?P<year>\d+)/', include(router.urls)),
+        (r'^(?P<year>\d+)/$', 'contest_year'),
         (r'^(?P<year>\d+)/register$', 'register'),
         (r'^(?P<year>\d+)/styles/(?P<style_id>\d+)/entries/(?P<entry_id>\d+)$', 'entry'),
         (r'^(?P<year>\d+)/styles/(?P<style_id>\d+)$', 'style'),
-        (r'^(?P<year>\d+)/$', 'contest_year'),
+        url(r'^(?P<year>\d+)/', include(router.urls)),
         (r'^judgeentry$', 'entry_judging_form'),
 )

@@ -31,7 +31,6 @@ class ContestViewsTests(TestCase):
         response = self.client.post('/contests/2011/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1', 'special_ingredients': 'poop'})
 
         self.assert_(response.context['form'].is_valid())
-        self.assert_('"name": "English Stout"' in response.context['style_data_as_json'])
 
         # the entry now exists
         entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
