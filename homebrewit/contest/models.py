@@ -3,7 +3,6 @@ import datetime, smtplib, typedmodels
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import Max
 from django.forms.models import model_to_dict
 
 
@@ -32,7 +31,7 @@ class ContestYear(models.Model):
 
 # XXX is this better named StyleDetail?
 class BeerDetail(typedmodels.TypedModel):
-    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
+    beer_style = models.ForeignKey('BeerStyleSubcategory', related_name='beer_details')
     description = models.TextField()
     must_specify = models.BooleanField()
 
