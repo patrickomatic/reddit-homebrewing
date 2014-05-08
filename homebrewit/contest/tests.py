@@ -195,13 +195,6 @@ class BeerStyleModelTests(TestCase):
         self.ipa_style = BeerStyle.objects.get(name='IPA')
 
 
-    def test_get_subcategories(self):
-        self.assert_(len(self.stout_style.get_subcategories()) == 3)
-
-    def test_get_subcategories__none(self):
-        self.assert_(len(self.ipa_style.get_subcategories()) == 0)
-
-
     def test_has_subcategories(self):
         self.assert_(self.stout_style.has_subcategories())
 

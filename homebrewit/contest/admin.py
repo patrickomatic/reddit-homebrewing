@@ -28,7 +28,6 @@ class ContestYearAdmin(admin.ModelAdmin):
     form = ContestYearAdminForm
 
 admin.site.register(BeerStyle)
-admin.site.register(BeerStyleSubcategory)
 admin.site.register(Entry)
 admin.site.register(ContestYear, ContestYearAdmin)
 admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)

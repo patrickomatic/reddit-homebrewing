@@ -34,28 +34,15 @@ class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
     contest_year = models.ForeignKey('ContestYear')
     judge = models.ForeignKey(User, null=True, blank=True)
+    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True)
     # XXX make a style comment (for example, for single hop ipa: please put the type of hop in the description)
 
 
-    def get_subcategories(self):
-        try:
-            return BeerStyleSubcategory.objects.filter(beer_style=self)
-        except BeerStyleSubcategory.DoesNotExist:
-            return []
-
     def has_subcategories(self):
-        return len(self.get_subcategories()) != 0
+        return self.subcategories.objects.exists()
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.contest_year)
-
-
-class BeerStyleSubcategory(models.Model):
-    name = models.CharField(max_length=255)
-    beer_style = models.ForeignKey('BeerStyle')
-
-    def __unicode__(self):
-        return self.name
 
  
 class EntryManager(models.Manager):
@@ -112,7 +99,6 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
-    style_subcategory = models.ForeignKey('BeerStyleSubcategory', null=True, blank=True)
     bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
     beer_name = models.CharField(max_length=255, null=True, blank=True)
     special_ingredients = models.CharField(max_length=5000, blank=True, null=True)

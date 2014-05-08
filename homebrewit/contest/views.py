@@ -50,8 +50,9 @@ def register(request):
             
             if not cd.get('style_subcategory'):
                 raise forms.ValidationError("You must specify a subcategory.")
+
             subcategory = cd['style_subcategory']
-            if subcategory.beer_style != style:
+            if subcategory.parent_style != style:
                 raise forms.ValidationError("That subcategory doesn't belong to this style")
             
             return subcategory
