@@ -61,6 +61,7 @@ class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
     contest_year = models.ForeignKey('ContestYear', related_name='beer_styles')
     judge = models.ForeignKey(User, null=True, blank=True)
+    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True)
 
     objects = BeerStyleManager()
 
@@ -81,6 +82,8 @@ class BeerStyleSubcategory(models.Model):
     class Meta:
         ordering = ['name']
 
+=======
+>>>>>>> make-subcategories-categories
  
 class EntryManager(models.Manager):
     def get_top_n(self, style, n):
@@ -136,7 +139,6 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
-    style_subcategory = models.ForeignKey('BeerStyleSubcategory', null=True, blank=True)
     bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
     beer_name = models.CharField(max_length=255, null=True, blank=True)
     special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
