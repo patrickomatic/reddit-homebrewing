@@ -44,7 +44,6 @@ def register(request, year):
         style = forms.ModelChoiceField(queryset=styles)
         style_subcategory = forms.ModelChoiceField(queryset=style_subcategories, required=False)
         beer_name = forms.CharField(max_length=255, required=False)
-        special_ingredients = forms.CharField(max_length=1000, required=False)
 
         def __init__(self, *args, **kwargs):
             self.request = kwargs.pop('request', None)
@@ -95,8 +94,7 @@ def register(request, year):
     else:
         form = EntryForm()
 
-    # XXX do we need form
-    return render(request, 'homebrewit_contest_register.html', {'form': form})
+    return render(request, 'homebrewit_contest_register.html', {'contest_year': contest_year})
 
 
 def style(request, year, style_id):

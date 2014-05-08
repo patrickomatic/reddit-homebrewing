@@ -5,7 +5,7 @@ from rest_framework import serializers
 class BeerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = BeerDetail
-        fields = ('id', 'description', 'must_specify')
+        fields = ('id', 'type', 'description', 'must_specify')
 
 
 class BeerStyleSubcategorySerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class BeerStyleSubcategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BeerStyleSubcategory
-        fields = ('id', 'name', 'beer_details')
+        fields = ('id', 'name','beer_details')
 
 
 class BeerStyleSerializer(serializers.ModelSerializer):

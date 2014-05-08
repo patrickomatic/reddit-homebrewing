@@ -1,7 +1,9 @@
 - [ ] Make sure that email works
+- [ ] Make a way to edit entry names
 - [ ] Add support for BJCPs idea of some things that must be specified and some that may be specified
 - [ ] Fix the deprecated auth profile thing
 - [ ] I18n
+- [ ] Make CHAR(255) fields into TEXT fields
 
 - [X] Fix tests
 - [X] Embrace HTML5 more
