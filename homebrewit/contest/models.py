@@ -31,7 +31,7 @@ class ContestYear(models.Model):
 
 # XXX is this better named StyleDetail?
 class BeerDetail(typedmodels.TypedModel):
-    beer_style = models.ForeignKey('BeerStyleSubcategory', related_name='beer_details')
+    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
     description = models.TextField()
     must_specify = models.BooleanField()
 
@@ -68,22 +68,6 @@ class BeerStyle(models.Model):
     def has_subcategories(self):
         return self.subcategories.exists()
 
-    def __unicode__(self):
-        return "%s (%s)" % (self.name, self.contest_year)
-
-
-class BeerStyleSubcategory(models.Model):
-    name = models.CharField(max_length=255)
-    beer_style = models.ForeignKey('BeerStyle', related_name='subcategories')
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-=======
->>>>>>> make-subcategories-categories
  
 class EntryManager(models.Manager):
     def get_top_n(self, style, n):
