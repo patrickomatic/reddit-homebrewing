@@ -12,13 +12,14 @@ class BeerStyleSubcategorySerializer(serializers.ModelSerializer):
     beer_details = BeerDetailSerializer(many=True) 
 
     class Meta:
-        model = BeerStyleSubcategory
-        fields = ('id', 'name','beer_details')
+        model = BeerStyle
+        fields = ('id', 'name', 'subcategories', 'beer_details')
 
 
 class BeerStyleSerializer(serializers.ModelSerializer):
     subcategories = BeerStyleSubcategorySerializer(many=True)
+    beer_details = BeerDetailSerializer(many=True) 
 
     class Meta:
         model = BeerStyle
-        fields = ('id', 'name', 'subcategories')
+        fields = ('id', 'name', 'subcategories', 'beer_details')

@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 class ContestYearManager(models.Manager):
     def get_current_contest_year(self):
         try:
-            return ContestYear.objects.filter(allowing_entries=True)[0]
+            return self.filter(allowing_entries=True)[0]
         except IndexError:
             return None
 
@@ -53,8 +53,15 @@ class EntryBeerDetail(models.Model):
 
 
 class BeerStyleManager(models.Manager):
+    # TODO: apparently these are chainable in django 1.7
     def for_year(self, year):
-        return BeerStyle.objects.filter(contest_year__contest_year=int(year))
+        return self.filter(contest_year__contest_year=int(year))
+
+    def top_level_categories_for_year(self, year):
+        return self.filter(parent_style__isnull=True, contest_year__contest_year=int(year))
+
+    def top_level_categories(self):
+        return self.filter(parent_style__isnull=True)
 
 
 class BeerStyle(models.Model):
@@ -68,10 +75,16 @@ class BeerStyle(models.Model):
     def has_subcategories(self):
         return self.subcategories.exists()
 
+    def is_subcategory(self):
+        return parent_style is not None
+
+    def __unicode__(self):
+        return self.name
+
  
 class EntryManager(models.Manager):
     def get_top_n(self, style, n):
-        return Entry.objects.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
+        return self.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
 
     def get_top_3(self, style): 
         return self.get_top_n(style, 3)
@@ -89,7 +102,7 @@ class EntryManager(models.Manager):
     
     def judge_entries(self, year):
         # calculate the score of each entry for the year
-        for entry in Entry.objects.filter(style__contest_year__contest_year=year):
+        for entry in self.filter(style__contest_year__contest_year=year):
             total, num = 0, 0
 
             if entry.bjcp_judging_result:
@@ -201,8 +214,6 @@ As always, we appreciate your participation and look forward to a great competit
 
     def __unicode__(self):
         s = unicode(self.style)
-        if self.style_subcategory:
-            s = s + " (" + unicode(self.style_subcategory) + ")"
 
         if self.beer_name:
             s = s + " / " + self.beer_name 

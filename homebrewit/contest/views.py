@@ -27,6 +27,7 @@ class BeerStyleList(generics.ListAPIView):
         return BeerStyle.objects.for_year(self.kwargs['year'])
 
 
+# XXX POSTing to this isn't very RESTful
 @login_required
 def register(request, year):
     contest_year = ContestYear.objects.get_current_contest_year()
@@ -35,37 +36,37 @@ def register(request, year):
         raise Http404
 
     styles = contest_year.beer_styles
-    style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
+    #style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
 
 
     # this class definition is inside of this function because it needs
     # to access local variables
-    class EntryForm(forms.Form):
-        style = forms.ModelChoiceField(queryset=styles)
-        style_subcategory = forms.ModelChoiceField(queryset=style_subcategories, required=False)
-        beer_name = forms.CharField(max_length=255, required=False)
-
-        def __init__(self, *args, **kwargs):
-            self.request = kwargs.pop('request', None)
-            super(EntryForm, self).__init__(*args, **kwargs)
-
-
-        def clean_style_subcategory(self):
-            cd = self.cleaned_data
-            style = cd['style']
-
-            if not style.has_subcategories():
-                return None
-            
-            if not cd.get('style_subcategory'):
-                raise forms.ValidationError("You must specify a subcategory.")
-
-            subcategory = cd['style_subcategory']
-            if subcategory.parent_style != style:
-                raise forms.ValidationError("That subcategory doesn't belong to this style")
-            
-            return subcategory
-
+#    class EntryForm(forms.Form):
+#        style = forms.ModelChoiceField(queryset=styles)
+#        style_subcategory = forms.ModelChoiceField(queryset=style_subcategories, required=False)
+#        beer_name = forms.CharField(max_length=255, required=False)
+#
+#        def __init__(self, *args, **kwargs):
+#            self.request = kwargs.pop('request', None)
+#            super(EntryForm, self).__init__(*args, **kwargs)
+#
+#
+#        def clean_style_subcategory(self):
+#            cd = self.cleaned_data
+#            style = cd['style']
+#
+#            if not style.has_subcategories():
+#                return None
+#            
+#            if not cd.get('style_subcategory'):
+#                raise forms.ValidationError("You must specify a subcategory.")
+#
+#            subcategory = cd['style_subcategory']
+#            if subcategory.parent_style != style:
+#                raise forms.ValidationError("That subcategory doesn't belong to this style")
+#            
+#            return subcategory
+#
 
     # they can't register for the contest unless their profile is complete
     try:
@@ -76,24 +77,21 @@ def register(request, year):
         return HttpResponseRedirect('/profile/edit?next=/contests/%s/register' % contest_year.contest_year)
 
 
-    if request.method == 'POST':
-        form = EntryForm(request.POST, request=request)
-        if form.is_valid():
-            entry = Entry(style=form.cleaned_data['style'], 
-                    beer_name=form.cleaned_data['beer_name'], 
-                    special_ingredients=form.cleaned_data['special_ingredients'],
-                    user=request.user)
-
-            if 'style_subcategory' in form.cleaned_data:
-                entry.style_subcategory = form.cleaned_data['style_subcategory']
-
-            entry.save()
-
-            entry.send_shipping_email()
-
-            messages.success(request, 'You are now entered in the %s category' % entry.style)
-    else:
-        form = EntryForm()
+#    if request.method == 'POST':
+#        form = EntryForm(request.POST, request=request)
+#        if form.is_valid():
+#            entry = Entry(style=form.cleaned_data['style'], 
+#                    beer_name=form.cleaned_data['beer_name'], 
+#                    special_ingredients=form.cleaned_data['special_ingredients'],
+#                    user=request.user)
+#
+#            entry.save()
+#
+#            entry.send_shipping_email()
+#
+#            messages.success(request, 'You are now entered in the %s category' % entry.style)
+#    else:
+#        form = EntryForm()
 
     return render(request, 'homebrewit_contest_register.html', {'contest_year': contest_year})
 
@@ -105,6 +103,7 @@ def style(request, year, style_id):
     except BeerStyle.DoesNotExist:
         raise Http404
 
+    # XXX this sucks
     scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
     scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
     
