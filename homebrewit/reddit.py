@@ -55,7 +55,7 @@ def reddit_api_url(url, data=None, session=None):
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(session.cookie_jar))
     urllib2.install_opener(opener)
 
-    return urllib2.urlopen(urllib2.Request('http://www.reddit.com/api' + url, data,
+    return urllib2.urlopen(urllib2.Request('https://www.reddit.com/api' + url, data,
         {'User-Agent': settings.AUTHENTICATION_USER_AGENT}))
 
 
