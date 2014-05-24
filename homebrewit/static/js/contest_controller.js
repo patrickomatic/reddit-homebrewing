@@ -5,7 +5,19 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
         $scope.contestYear = contestYear;
     };
 
-    console.log($scope.contestYear);
+    $scope.status = {
+        isopen: false
+    };
+
+    $scope.toggled = function(open) {
+        console.log("it is ", open);
+    };
+
+    $scope.toggleDropdown = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.isopen = !$scope.status.isopen;
+    }
 
 	$http.get('/contests/2011/beer_styles').success(function(data) {
 		$scope.styles = data;

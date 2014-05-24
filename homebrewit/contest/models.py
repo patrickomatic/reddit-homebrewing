@@ -55,7 +55,26 @@ class EntryBeerDetail(models.Model):
 class BeerStyleManager(models.Manager):
     # TODO: apparently these are chainable in django 1.7
     def for_year(self, year):
-        return self.filter(contest_year__contest_year=int(year))
+        styles = self.raw("""
+            SELECT c1.* 
+            FROM contest_beerstyle c1 
+                 LEFT OUTER JOIN contest_beerstyle c2 ON c2.id = c1.parent_style_id 
+                 JOIN contest_contestyear cy ON cy.id = c1.contest_year_id
+            WHERE NOT EXISTS 
+                (SELECT 1 FROM contest_beerstyle WHERE parent_style_id = c1.id) 
+                AND cy.contest_year = %s
+            ORDER BY c2.parent_style_id;
+        """, [int(year)])
+
+        results, last_parent_style = [], None
+        for style in styles:
+            if style.parent_style and style.parent_style != last_parent_style:
+                results.append(style.parent_style)
+
+            last_parent_style = style.parent_style
+            results.append(style)
+            
+        return results
 
     def top_level_categories_for_year(self, year):
         return self.filter(parent_style__isnull=True, contest_year__contest_year=int(year))
@@ -71,6 +90,9 @@ class BeerStyle(models.Model):
     parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True)
 
     objects = BeerStyleManager()
+
+    def can_enter(self):
+        return not self.has_subcategories()
 
     def has_subcategories(self):
         return self.subcategories.exists()

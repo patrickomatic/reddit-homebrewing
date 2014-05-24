@@ -9,27 +9,18 @@
         <title>Annual Reddit Homebrew Contest - {% block title %}{% endblock %}</title>
 
         {% block stylesheet %}
-        <link rel="stylesheet" href="{% static "css/reset.css" %}" type="text/css" />
-        <link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" />
+            <link rel="stylesheet" href="{% static "css/reset.css" %}" type="text/css" />
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="{% static "css/styles.css" %}" type="text/css" /> 
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         {% endblock %}
 
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         {% block include %}{% endblock %}
-
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-23829880-1']);
-            _gaq.push(['_trackPageview']);
-
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
-            })();
-        </script>
     </head>
-    <body>
+    <body role="document">
         <header id="header">
             {% if user.is_authenticated %}
                 <a title="{{user.username}}'s Profile" href="{% url "homebrewit.profile.views.logged_in_profile" %}">{{user.username}}</a> 
@@ -38,7 +29,7 @@
             {% endif %}
 
             <a title="reddithomebrewing.com" href="/">
-                <img src="/static/images/logos/header-logo.png" class="header-logo" />
+                <img src="{% static "images/logos/header-logo.png" %}" class="header-logo" />
             </a>
         </header>
 
@@ -77,10 +68,22 @@
                 -
                 <a title="Open Source" href="https://github.com/patrickomatic/reddit-homebrewing">Open Source</a>
                 -
-                <a title="Related Reddits" href="/related">Related Reddits</a>
+                <a title="Related Reddits" href="{% url "homebrewit.related.views.view_related" %}">Related Reddits</a>
                 {% block footer %}
                 {% endblock %}
             </p>
         </footer>
+
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-23829880-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
+            })();
+        </script>
     </body>
 </html>

@@ -8,18 +8,11 @@ class BeerDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'type', 'description', 'must_specify')
 
 
-class BeerStyleSubcategorySerializer(serializers.ModelSerializer):
-    beer_details = BeerDetailSerializer(many=True) 
-
-    class Meta:
-        model = BeerStyle
-        fields = ('id', 'name', 'subcategories', 'beer_details')
-
-
 class BeerStyleSerializer(serializers.ModelSerializer):
-    subcategories = BeerStyleSubcategorySerializer(many=True)
     beer_details = BeerDetailSerializer(many=True) 
+    can_enter = serializers.BooleanField(source='can_enter', read_only=True)
+    has_subcategories = serializers.BooleanField(source='has_subcategories', read_only=True)
 
     class Meta:
         model = BeerStyle
-        fields = ('id', 'name', 'subcategories', 'beer_details')
+        fields = ('id', 'name', 'can_enter', 'has_subcategories', 'beer_details')

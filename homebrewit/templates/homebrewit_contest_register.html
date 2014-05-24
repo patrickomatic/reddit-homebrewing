@@ -3,7 +3,10 @@
 
 
 {% block include %}
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    {% comment %}XXX do I need this
+    <script type="text/javascript" src="{% static "js/ui-bootstrap-tpls-0.11.0.min.js" %}"></script>
+{% endcomment %}
     <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}
 
@@ -22,15 +25,20 @@
     <p>Just pick which style you'll be brewing:</p>
 
     <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" 2013 %}" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})" />
-
         {% verbatim %}
-            <select ng-model="style" ng-options="s.name for s in styles">
-            </select>
+        <div class="dropdown theme-dropdown clearfix">
+            <div id="style-menu-1" href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown" ng-disabled="disabled">
+                Choose Style <span class="caret"></span>
+            </div>
+            <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu-1">
+                <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
+                <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
+                    <a role="menuitem" href="#">{{style.name}}</a>
+                </li>
+            </ul>
+        </div>
 
-            <select ng-model="subcategory" ng-show="style.subcategories" ng-options="subcategory.name for subcategory in style.subcategories">
-            </select>
-
-            <input ng-submit="registerForContest" type="submit" value="Register!"/>
+        <button type="button" ng-submit="registerForContest" class="btn btn-primary">Register!</button>
         {% endverbatim %}
     </form>
 {% endblock %}
