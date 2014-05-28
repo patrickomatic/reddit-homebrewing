@@ -79,12 +79,28 @@ INSTALLED_APPS = (
         'django.contrib.staticfiles',
 ) + OUR_APPS
 
-# If someone wants to work on this locally, they shouldn't have
-# to deal with stupid memcached issues...
-if DEBUG:
-    CACHE_BACKEND = 'dummy:///'
-else:
-    CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+def get_cache():
+    import os
+    try:
+        os.environ['MEMCACHE_SERVERS'] = os.environ['MEMCACHEDCLOUD_SERVERS'].replace(',', ';')
+        os.environ['MEMCACHE_USERNAME'] = os.environ['MEMCACHEDCLOUD_USERNAME']
+        os.environ['MEMCACHE_PASSWORD'] = os.environ['MEMCACHEDCLOUD_PASSWORD']
+        return { 
+                'default': {
+                    'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+                    'TIMEOUT': 500,
+                    'BINARY': True,
+                    'OPTIONS': { 'tcp_nodelay': True }
+                    }
+                }
+    except:
+        return {
+              'default': {
+                  'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+                  }
+              }
+
+CACHES = get_cache()
 
 LOGIN_URL = '/'
 LOGOUT_URL = '/logout'
