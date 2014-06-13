@@ -41,9 +41,9 @@
             </div>
         </div>
 
-        <div class="form-group" ng-repeat="beer_details in styleChosen.beer_details">
-            <label for="question">{{beer_details.description}}</label>
-            <input id="question" type="text" ng-model="styleChosen[$index]" placeholder="Enter {{beer_details.description}}" />
+        <div class="form-group" ng-repeat="question in styleChosen.beer_details">
+            <label for="question_{{question.id}}">{{question.description}}</label>
+            <input id="question_{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" />
         </div>
 
         <hr/>

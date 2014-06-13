@@ -7,12 +7,14 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
         $http.get('/contests/' + $scope.contestYear + '/beer_styles').success(function(data) {
             $scope.styles = data;
             $scope.style = data[0];
-            console.log($scope.styles); // XXX
         });
     };
 
     $scope.chosen = function(style) {
-        $scope.styleChoice = style;
+        $scope.styleChosen = style;
+        angular.forEach($scope.styleChosen.beer_details, function(question) {
+            question.value = '';
+        });
     };
 
 
@@ -20,7 +22,7 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
         $http.post('/contests/' + $scope.contestYear + '/beer_styles/' + $scope.styleChosen.id, $scope.styleChosen).success(function(data) {
             console.log("did it success");
         }).error(function(data) {
-            consooe.log("it failed");   
+            console.log("it failed");   
         });
     };
 });
