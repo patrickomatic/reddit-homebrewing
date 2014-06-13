@@ -3,28 +3,24 @@ var contestApp = angular.module('contestApp', []);
 contestApp.controller('ContestSignupCtrl', function($scope, $http) {
     $scope.init = function(contestYear) {
         $scope.contestYear = contestYear;
+
+        $http.get('/contests/' + $scope.contestYear + '/beer_styles').success(function(data) {
+            $scope.styles = data;
+            $scope.style = data[0];
+            console.log($scope.styles); // XXX
+        });
     };
 
-    $scope.status = {
-        isopen: false
+    $scope.chosen = function(style) {
+        $scope.styleChoice = style;
     };
 
-    $scope.toggled = function(open) {
-        console.log("it is ", open);
-    };
 
-    $scope.toggleDropdown = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-    }
-
-    $http.get('/contests/2011/beer_styles').success(function(data) {
-        $scope.styles = data;
-        $scope.style = data[0];
-    });
-
-    $scope.registerForContest = function($http) {
-        $http.post('/contests/' + $scope.contestYear + '/beer_styles/' + $scope.style);
+    $scope.registerForContest = function() {
+        $http.post('/contests/' + $scope.contestYear + '/beer_styles/' + $scope.styleChosen.id, $scope.styleChosen).success(function(data) {
+            console.log("did it success");
+        }).error(function(data) {
+            consooe.log("it failed");   
+        });
     };
 });

@@ -21,22 +21,37 @@
 {% block content %}
     <p>Just pick which style you'll be brewing:</p>
 
-    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" 2013 %}" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})" />
+    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" contest_year.contest_year %}" role="form" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})" />
         {% verbatim %}
-        <div class="dropdown theme-dropdown clearfix">
-            <div id="style-menu-1" href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown" ng-disabled="disabled">
-                Choose Style <span class="caret"></span>
+        <div class="form-group">
+            <div class="dropdown theme-dropdown clearfix">
+                <div id="style-menu-1" href="#" role="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span>{{styleChosen.name || "Choose Style"}} <span class="caret"></span></span>
+                </div>
+
+                <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu-1">
+                    <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
+
+                    <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
+                        <a role="menuitem" href="#"  ng-click="chosen(style)" ng-if="!style.has_subcategories">{{style.name}}</a>
+                        <span role="menuitem" href="#" ng-if="style.has_subcategories">{{style.name}}</span>
+                    </li>
+                </ul>
+
             </div>
-            <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu-1">
-                <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
-                <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
-                    <a role="menuitem" href="#" ng-if="!style.has_subcategories">{{style.name}}</a>
-                    <span role="menuitem" href="#" ng-if="style.has_subcategories">{{style.name}}</span>
-                </li>
-            </ul>
         </div>
 
-        <button type="button" ng-submit="registerForContest" class="btn btn-primary">Register!</button>
+        <div class="form-group" ng-repeat="beer_details in styleChosen.beer_details">
+            <label for="question">{{beer_details.description}}</label>
+            <input id="question" type="text" ng-model="styleChosen[$index]" placeholder="Enter {{beer_details.description}}" />
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            <button type="button" ng-click="registerForContest()" class="btn btn-primary">Register!</button>
+        </div>
+
         {% endverbatim %}
     </form>
 {% endblock %}
