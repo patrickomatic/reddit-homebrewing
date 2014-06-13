@@ -21,7 +21,7 @@
 {% block content %}
     <p>Just pick which style you'll be brewing:</p>
 
-    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" contest_year.contest_year %}" role="form" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})" />
+    <form class="contest-entry-form" name="form" method="POST" action="{% url "homebrewit.contest.views.register" contest_year.contest_year %}" role="form" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})">
         {% verbatim %}
         <div class="form-group">
             <div class="dropdown theme-dropdown clearfix">
@@ -51,14 +51,14 @@
             </div>
 
             <div ng-switch-when="contest.textbeerdetail">
-                <input id="question-{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" />
+                <input name="question{{question.id}}" id="question-{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" ng-attr-required="{{question.must_specify}}" />
             </div>
         </div>
 
         <hr/>
 
         <div class="form-group">
-            <button type="button" ng-click="registerForContest()" class="btn btn-primary">Register!</button>
+            <button type="button" ng-click="registerForContest()" class="btn btn-primary" ng-disabled="form.$invalid">Register!</button>
         </div>
 
         {% endverbatim %}
