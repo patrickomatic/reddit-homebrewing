@@ -1,17 +1,25 @@
 from .models import *
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, BooleanField
 
 
-class BeerDetailSerializer(serializers.ModelSerializer):
+class BeerDetailChoiceSerializer(ModelSerializer):
+    class Meta:
+        model = BeerDetailChoice
+        fields = ('id', 'name')
+
+
+class BeerDetailSerializer(ModelSerializer):
+    choices = BeerDetailChoiceSerializer(many=True)
+
     class Meta:
         model = BeerDetail
-        fields = ('id', 'type', 'description', 'must_specify')
+        fields = ('id', 'type', 'description', 'must_specify', 'choices')
 
 
-class BeerStyleSerializer(serializers.ModelSerializer):
+class BeerStyleSerializer(ModelSerializer):
     beer_details = BeerDetailSerializer(many=True) 
-    can_enter = serializers.BooleanField(source='can_enter', read_only=True)
-    has_subcategories = serializers.BooleanField(source='has_subcategories', read_only=True)
+    can_enter = BooleanField(source='can_enter', read_only=True)
+    has_subcategories = BooleanField(source='has_subcategories', read_only=True)
 
     class Meta:
         model = BeerStyle

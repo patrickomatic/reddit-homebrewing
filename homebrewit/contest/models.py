@@ -38,7 +38,7 @@ class BeerDetail(typedmodels.TypedModel):
 
 class BeerDetailChoice(models.Model):
     name = models.TextField()
-    multiple_choice_beer_detail = models.ForeignKey('MultipleChoiceBeerDetail', related_name='choices')
+    multiple_choice_beer_detail = models.ForeignKey('BeerDetail', related_name='choices')
 
 class MultipleChoiceBeerDetail(BeerDetail):
     pass

@@ -25,11 +25,11 @@
         {% verbatim %}
         <div class="form-group">
             <div class="dropdown theme-dropdown clearfix">
-                <div id="style-menu-1" href="#" role="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <div id="style-menu" href="#" role="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                     <span>{{styleChosen.name || "Choose Style"}} <span class="caret"></span></span>
                 </div>
 
-                <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu-1">
+                <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu">
                     <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
 
                     <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
@@ -41,9 +41,18 @@
             </div>
         </div>
 
-        <div class="form-group" ng-repeat="question in styleChosen.beer_details">
-            <label for="question_{{question.id}}">{{question.description}}</label>
-            <input id="question_{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" />
+        <div class="form-group" ng-repeat="question in styleChosen.beer_details" ng-switch="question.type">
+            <label id= for="question-{{question.id}}">{{question.description}}</label>
+
+            <div ng-switch-when="contest.multiplechoicebeerdetail">
+                <select id="question-{{question.id}}" class="form-control" role="menu" aria-labeledby="question-{{question.id}}-label" ng-model="question.value">
+                    <option ng-repeat="choice in question.choices">{{choice.name}}</option>
+                </select>
+            </div>
+
+            <div ng-switch-when="contest.textbeerdetail">
+                <input id="question-{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" />
+            </div>
         </div>
 
         <hr/>
