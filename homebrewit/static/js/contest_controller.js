@@ -12,13 +12,11 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
 
     $scope.chosen = function(style) {
         $scope.styleChosen = style;
-        angular.forEach($scope.styleChosen.beer_details, function(question) {
-            question.value = '';
-        });
     };
 
 
     $scope.registerForContest = function() {
+        // XXX get this working and we're done!
         $http.post('/contests/' + $scope.contestYear + '/beer_styles/' + $scope.styleChosen.id, $scope.styleChosen).success(function(data) {
             console.log("did it success");
         }).error(function(data) {
