@@ -4,9 +4,6 @@
 
 {% block include %}
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-    {% comment %}XXX do I need this
-    <script type="text/javascript" src="{% static "js/ui-bootstrap-tpls-0.11.0.min.js" %}"></script>
-{% endcomment %}
     <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}
 
@@ -33,7 +30,8 @@
             <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu-1">
                 <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
                 <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
-                    <a role="menuitem" href="#">{{style.name}}</a>
+                    <a role="menuitem" href="#" ng-if="!style.has_subcategories">{{style.name}}</a>
+                    <span role="menuitem" href="#" ng-if="style.has_subcategories">{{style.name}}</span>
                 </li>
             </ul>
         </div>
