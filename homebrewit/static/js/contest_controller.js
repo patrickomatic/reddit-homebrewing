@@ -16,6 +16,8 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
 
 
     $scope.registerForContest = function() {
+        $scope.submitting = true;
+
         // XXX get this working and we're done!
         $http.post('/contests/' + $scope.contestYear + '/beer_styles/' + $scope.styleChosen.id, $scope.styleChosen).success(function(data) {
             console.log("did it success");
