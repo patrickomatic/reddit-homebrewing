@@ -45,7 +45,7 @@
             <label id= for="question-{{question.id}}">{{question.description}}</label>
 
             <div ng-switch-when="contest.multiplechoicebeerdetail">
-                <select id="question-{{question.id}}" class="form-control" role="menu" aria-labeledby="question-{{question.id}}-label" ng-model="question.value">
+                <select id="question-{{question.id}}" role="menu" aria-labeledby="question-{{question.id}}-label" ng-model="question.value">
                     <option ng-repeat="choice in question.choices">{{choice.name}}</option>
                 </select>
             </div>
