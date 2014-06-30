@@ -124,7 +124,6 @@ LOGGING = {
         }
     },
     'handlers': {
-        #heroku app logging requires 'console'
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
