@@ -144,7 +144,7 @@ LOGGING = {
         '': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propogage': True,
+            'propogate': True,
         }
     }
 }
