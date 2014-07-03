@@ -29,7 +29,6 @@ class ContestYear(models.Model):
         return unicode(self.contest_year)
 
 
-# XXX is this better named StyleDetail?
 class BeerDetail(typedmodels.TypedModel):
     beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
     description = models.TextField()
@@ -48,8 +47,9 @@ class TextBeerDetail(BeerDetail):
 
 
 class EntryBeerDetail(models.Model):
-    entry = models.ForeignKey('Entry')
+    entry = models.ForeignKey('Entry', related_name='entry_beer_details')
     beer_detail = models.ForeignKey('BeerDetail')
+    value = models.TextField()
 
 
 class BeerStyleManager(models.Manager):
@@ -76,6 +76,7 @@ class BeerStyleManager(models.Manager):
             
         return results
 
+    # XXX "categories" is a misnomer here... name this something else
     def top_level_categories_for_year(self, year):
         return self.filter(parent_style__isnull=True, contest_year__contest_year=int(year))
 

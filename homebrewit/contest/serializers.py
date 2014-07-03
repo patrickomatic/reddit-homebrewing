@@ -24,3 +24,21 @@ class BeerStyleSerializer(ModelSerializer):
     class Meta:
         model = BeerStyle
         fields = ('id', 'name', 'can_enter', 'has_subcategories', 'beer_details')
+
+
+class EntryBeerDetailSerializer(ModelSerializer):
+    beer_detail = BeerDetailSerializer
+
+    class Meta:
+        model = EntryBeerDetail
+        fields = ('id', 'beer_detail', 'value')
+
+
+class EntrySerializer(ModelSerializer):
+    style = BeerStyleSerializer
+    #entry_beer_details = EntryBeerDetailSerializer(many=True)
+
+    class Meta:
+        model = Entry
+        fields = ('style', 'beer_name', 'special_ingredients') # XXX , entry_beer_details
+        read_only_fields = ('id', 'user', 'winner', 'rank', 'score', 'received_entry')

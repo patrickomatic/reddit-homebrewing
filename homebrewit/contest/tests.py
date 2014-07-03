@@ -9,7 +9,7 @@ from homebrewit.contest.forms import *
 
 
 class ContestViewsTests(TestCase):
-    fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'bjcpjudgingresults', 'judgingresults']
+    fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'userprofiles', 'bjcpjudgingresults', 'judgingresults']
 
     def setUp(self):
         self.client.login(username='patrick', password='password')
@@ -188,7 +188,7 @@ class ContestYearModelTests(TestCase):
 
 
 class BeerStyleModelTests(TestCase):
-    fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
+    fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
     def setUp(self):
         self.stout_style = BeerStyle.objects.get(name='Stout')

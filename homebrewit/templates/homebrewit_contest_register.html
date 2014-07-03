@@ -26,7 +26,7 @@
 
             <div class="dropdown">
                 <div id="style-menu" href="#" role="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <span>{{styleChosen.name || "Choose Style"}} <span class="caret"></span></span>
+                    <span>{{entry.style.name || "Choose Style"}} <span class="caret"></span></span>
                 </div>
 
                 <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu">
@@ -40,15 +40,23 @@
             </div>
         </div>
 
-        <div class="form-group" ng-show="styleChosen">
-            <label for="beer_name">Beer Name:</label>
+        <div class="form-group" ng-show="entry.style">
+            <label for="beer-name">Beer Name:</label>
 
             <div>
-                <input name="beer_name" id="beer_name" type="text" ng-model="styleChosen.beer_name" />
+                <input name="beer_name" id="beer-name" type="text" ng-model="entry.beer_name" />
             </div>
         </div>
 
-        <div class="form-group" ng-repeat="question in styleChosen.beer_details" ng-switch="question.type">
+        <div class="form-group" ng-show="entry.style">
+            <label for="special-ingredients">Special Ingredients:</label>
+
+            <div>
+                <input name="special_ingredients" id="special-ingredients" type="text" ng-model="entry.special_ingredients" />
+            </div>
+        </div>
+
+        <div class="form-group" ng-repeat="question in entry.style.beer_details" ng-switch="question.type">
             <label id= for="question-{{question.id}}">{{question.description}}:</label>
 
             <div ng-switch-when="contest.multiplechoicebeerdetail">

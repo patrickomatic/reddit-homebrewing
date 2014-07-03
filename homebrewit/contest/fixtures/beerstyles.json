@@ -1,1 +1,101 @@
-[{"pk": 1, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": 2, "name": "IPA"}}, {"pk": 2, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Double IPA"}}, {"pk": 3, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Hefeweizen"}}, {"pk": 4, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Belgian Tripel"}}, {"pk": 5, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Belgian Dubbel"}}, {"pk": 6, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Stout"}}, {"pk": 7, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Imperial Stout"}}, {"pk": 8, "model": "contest.beerstyle", "fields": {"contest_year": 9, "judge": null, "name": "Porter"}}]
+[
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": 2,
+            "name": "IPA"
+        },
+        "model": "contest.beerstyle",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Double IPA"
+        },
+        "model": "contest.beerstyle",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Hefeweizen"
+        },
+        "model": "contest.beerstyle",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Belgian Tripel"
+        },
+        "model": "contest.beerstyle",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Belgian Dubbel"
+        },
+        "model": "contest.beerstyle",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Stout"
+        },
+        "model": "contest.beerstyle",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Imperial Stout"
+        },
+        "model": "contest.beerstyle",
+        "pk": 7
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "judge": null,
+            "name": "Porter"
+        },
+        "model": "contest.beerstyle",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "contest_year": 9,
+            "name": "Oatmeal Stout", 
+            "parent_style": 6
+        },
+        "pk": 10, 
+        "model": "contest.beerstyle"
+    }, 
+    {
+        "fields": {
+            "contest_year": 9,
+            "name": "Russian Imperial Stout", 
+            "parent_style": 6
+        },
+        "pk": 11, 
+        "model": "contest.beerstyle"
+    }, 
+    {
+        "fields": {
+            "contest_year": 9,
+            "name": "English Stout", 
+            "parent_style": 6
+        },
+        "pk": 12, 
+        "model": "contest.beerstyle"
+    }
+]
