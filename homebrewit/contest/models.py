@@ -101,6 +101,15 @@ class BeerStyle(models.Model):
     def is_subcategory(self):
         return parent_style is not None
 
+    def n_entries(self):
+        Entry.objects.filter(style=self).count() + Entry.objects.filter(style__parent_style=self).count()
+
+    def n_judged(self):
+        Entry.objects.filter(style=self, score__isnull=False).count() + Entry.objects.filter(style__parent_style=self, score__isnull=False).count()
+
+    def n_received(self):
+        Entry.objects.filter(style=self, received_entry=True).count() + Entry.objects.filter(style__parent_style=self, received_entry=True).count()
+
     def __unicode__(self):
         return self.name
 

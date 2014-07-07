@@ -62,9 +62,12 @@ def index(request):
 
         # XXX make sure this works with the new data model
         data = {
-                'n_entries': Entry.objects.filter(style=style).count(),
-                'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
-                'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
+                #'n_entries': Entry.objects.filter(style=style).count(),
+                #'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
+                #'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
+                'n_entries': style.n_entries()
+                'n_judged': style.n_judged()
+                'n_received': style.n_received(),
                 'winner': winner_data,
                 'style': style,
                 }
