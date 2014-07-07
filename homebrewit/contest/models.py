@@ -133,7 +133,7 @@ class EntryManager(models.Manager):
                                         style__contest_year=contest_year)])
 
     def for_beer_style(self, beer_style):
-        return Entry.objects.filter(Q(style=beer_style) | Q(parent_style=beer_style))
+        return Entry.objects.filter(Q(style=beer_style) | Q(style__parent_style=beer_style))
 
     
     def judge_entries(self, year):
