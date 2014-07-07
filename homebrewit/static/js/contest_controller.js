@@ -5,7 +5,7 @@ contestApp.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
 }]);
 
-contestApp.controller('ContestSignupCtrl', function($scope, $http) {
+contestApp.controller('ContestSignupCtrl', function($scope, $http, $location) {
     $scope.init = function(contestYear) {
         $scope.contestYear = contestYear;
 
@@ -30,9 +30,11 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
             special_ingredients: entry['special_ingredients'],
             entry_beer_details: entry['style']['beer_details'].map(function(e) { return {beer_detail: e.id, value: e.value}; })
         }).success(function(data) {
-            console.log("did it success");
+            // XXX set an alert 
+            window.location = "/profile/";
         }).error(function(data) {
-            console.log("it failed");
+            // XXX do something better
+            alert("There was an error regsitering, please contact the moderators if this persists");
         });
     };
 });

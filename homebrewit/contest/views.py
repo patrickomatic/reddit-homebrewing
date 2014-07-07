@@ -53,7 +53,6 @@ def register(request, year):
 
     styles = contest_year.beer_styles
 
-    # they can't register for the contest unless their profile is complete
     try:
         request.user.get_profile()
     except UserProfile.DoesNotExist:
