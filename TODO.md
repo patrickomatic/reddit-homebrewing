@@ -1,7 +1,11 @@
 - [ ] Make sure that email works
+- [ ] Make the style dropdown menu line up
+- [ ] Make a way to edit entry names
+- [ ] Use class-based views
 - [ ] Add support for BJCPs idea of some things that must be specified and some that may be specified
 - [ ] Fix the deprecated auth profile thing
 - [ ] I18n
+- [ ] Make CHAR(255) fields into TEXT fields
 
 - [X] Fix tests
 - [X] Embrace HTML5 more

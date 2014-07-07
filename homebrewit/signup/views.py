@@ -48,7 +48,7 @@ def index(request):
     # XXX this is a lot of stuff to have in a controller
     # get each years beer styles
     contest_data = {} 
-    for style in BeerStyle.objects.all():
+    for style in BeerStyle.objects.top_level_categories():
         year = style.contest_year.contest_year
 
         top_entry = Entry.objects.get_top_n(style, 1)
@@ -60,6 +60,7 @@ def index(request):
         else:
             winner_data = None
 
+        # XXX make sure this works with the new data model
         data = {
                 'n_entries': Entry.objects.filter(style=style).count(),
                 'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),

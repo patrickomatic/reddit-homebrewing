@@ -1,4 +1,4 @@
-import datetime, json
+import datetime, json, logging
 
 from django import forms
 from django.conf import settings
@@ -10,89 +10,58 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from homebrewit.contest.models import *
+from rest_framework import generics, status
+from rest_framework.response import Response
+
+from .forms import JudgeEntrySelectionForm, JudgingForm
+from .models import *
+from .serializers import *
 from homebrewit.signup.models import UserProfile
 
-from homebrewit.contest.forms import JudgeEntrySelectionForm, JudgingForm
 
+logger = logging.getLogger(__name__)
+
+
+class BeerStyleListView(generics.ListAPIView):
+    serializer_class = BeerStyleSerializer
+    model = BeerStyle
+
+    def get_queryset(self):
+        return BeerStyle.objects.for_year(self.kwargs['year'])
+
+
+class EntriesListView(generics.ListCreateAPIView):
+    serializer_class = EntrySerializer
+    model = Entry
+
+    def get_queryset(self):
+        Entry.objects.filter(contest_year__contest_year=self.kwargs['contest_year'])
+
+    def get_object(self):
+        Entry.get(pk=self.kwargs['entry_id'])
+
+    def pre_save(self, obj):
+        obj.user_id = self.request.user.id
 
 
 @login_required
-def register(request):
+def register(request, year):
     contest_year = ContestYear.objects.get_current_contest_year()
 
-    if not contest_year:
+    if not contest_year or contest_year.contest_year != int(year):
         raise Http404
 
-    styles = BeerStyle.objects.filter(contest_year=contest_year)
-    style_subcategories = BeerStyleSubcategory.objects.filter(beer_style__contest_year=contest_year).order_by('name')
+    styles = contest_year.beer_styles
 
-
-    # this class definition is inside of this function because it needs
-    # to access local variables
-    class EntryForm(forms.Form):
-        style = forms.ModelChoiceField(queryset=styles)
-        style_subcategory = forms.ModelChoiceField(queryset=style_subcategories, required=False)
-        beer_name = forms.CharField(max_length=255, required=False)
-        special_ingredients = forms.CharField(max_length=1000, required=False)
-
-        def __init__(self, *args, **kwargs):
-            self.request = kwargs.pop('request', None)
-            super(EntryForm, self).__init__(*args, **kwargs)
-
-
-        def clean_style_subcategory(self):
-            cd = self.cleaned_data
-            style = cd['style']
-
-            if not style.has_subcategories():
-                return None
-            
-            if not cd.get('style_subcategory'):
-                raise forms.ValidationError("You must specify a subcategory.")
-            subcategory = cd['style_subcategory']
-            if subcategory.beer_style != style:
-                raise forms.ValidationError("That subcategory doesn't belong to this style")
-            
-            return subcategory
-
-
-    # they can't register for the contest unless their profile is complete
     try:
         request.user.get_profile()
     except UserProfile.DoesNotExist:
         messages.error(request, 'You must set your address before you can enter the homebrew contest.')
-        return HttpResponseRedirect('/profile/edit?next=/contest/register')
+        # XXX can we use url helpers here
+        return HttpResponseRedirect('/profile/edit?next=/contests/%s/register' % contest_year.contest_year)
 
 
-    if request.method == 'POST':
-        form = EntryForm(request.POST, request=request)
-        if form.is_valid():
-            entry = Entry(style=form.cleaned_data['style'], 
-                    beer_name=form.cleaned_data['beer_name'], 
-                    special_ingredients=form.cleaned_data['special_ingredients'],
-                    user=request.user)
-
-            if 'style_subcategory' in form.cleaned_data:
-                entry.style_subcategory = form.cleaned_data['style_subcategory']
-
-            entry.save()
-
-            entry.send_shipping_email()
-
-            messages.success(request, 'You are now entered in the %s category' % entry.style)
-    else:
-        form = EntryForm()
-
-
-    # make some json-friendly style data
-    style_data = dict([(style.id, []) for style in styles])
-    for sub in style_subcategories:
-        style_data[sub.beer_style.id].append({'id': sub.id, 'name': sub.name})
-
-    return render(request, 'homebrewit_contest_register.html', {
-            'form': form,
-            'style_data_as_json': json.dumps(style_data)})
+    return render(request, 'homebrewit_contest_register.html', {'contest_year': contest_year})
 
 
 def style(request, year, style_id):
@@ -102,8 +71,8 @@ def style(request, year, style_id):
     except BeerStyle.DoesNotExist:
         raise Http404
 
+    # XXX this sucks
     scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
-
     scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
     
     address = None
@@ -114,16 +83,17 @@ def style(request, year, style_id):
             pass
 
     return render(request, 'homebrewit_contest_style.html', {
-            'style': style, 
-            'entries': scored_entries,
-            'address': address})
+        'style': style, 
+        'entries': scored_entries,
+        'address': address
+    })
 
 
 def contest_year(request, year):
     contest_year = ContestYear.objects.get(contest_year=year)
 
     styles = {}
-    for style in BeerStyle.objects.filter(contest_year=contest_year):
+    for style in BeerStyle.objects.top_level_categories_for_year(contest_year.contest_year):
         top_31 = Entry.objects.filter(style=style)[:31]
         styles[style] = {
             'entries': top_31[:30],

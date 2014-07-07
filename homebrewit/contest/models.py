@@ -1,16 +1,15 @@
-import datetime, smtplib
+import datetime, smtplib, typedmodels
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import Max
 from django.forms.models import model_to_dict
 
 
 class ContestYearManager(models.Manager):
     def get_current_contest_year(self):
         try:
-            return ContestYear.objects.filter(allowing_entries=True)[0]
+            return self.filter(allowing_entries=True)[0]
         except IndexError:
             return None
 
@@ -30,29 +29,77 @@ class ContestYear(models.Model):
         return unicode(self.contest_year)
 
 
+class BeerDetail(typedmodels.TypedModel):
+    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
+    description = models.TextField()
+    must_specify = models.BooleanField()
+
+
+class BeerDetailChoice(models.Model):
+    name = models.TextField()
+    multiple_choice_beer_detail = models.ForeignKey('BeerDetail', related_name='choices')
+
+class MultipleChoiceBeerDetail(BeerDetail):
+    pass
+
+class TextBeerDetail(BeerDetail):
+    pass
+
+
+class EntryBeerDetail(models.Model):
+    entry = models.ForeignKey('Entry', related_name='entry_beer_details')
+    beer_detail = models.ForeignKey('BeerDetail')
+    value = models.TextField()
+
+
+class BeerStyleManager(models.Manager):
+    # TODO: apparently these are chainable in django 1.7
+    def for_year(self, year):
+        styles = self.raw("""
+            SELECT c1.* 
+            FROM contest_beerstyle c1 
+                 LEFT OUTER JOIN contest_beerstyle c2 ON c2.id = c1.parent_style_id 
+                 JOIN contest_contestyear cy ON cy.id = c1.contest_year_id
+            WHERE NOT EXISTS 
+                (SELECT 1 FROM contest_beerstyle WHERE parent_style_id = c1.id) 
+                AND cy.contest_year = %s
+            ORDER BY c2.parent_style_id;
+        """, [int(year)])
+
+        results, last_parent_style = [], None
+        for style in styles:
+            if style.parent_style and style.parent_style != last_parent_style:
+                results.append(style.parent_style)
+
+            last_parent_style = style.parent_style
+            results.append(style)
+            
+        return results
+
+    # XXX "categories" is a misnomer here... name this something else
+    def top_level_categories_for_year(self, year):
+        return self.filter(parent_style__isnull=True, contest_year__contest_year=int(year))
+
+    def top_level_categories(self):
+        return self.filter(parent_style__isnull=True)
+
+
 class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
-    contest_year = models.ForeignKey('ContestYear')
+    contest_year = models.ForeignKey('ContestYear', related_name='beer_styles')
     judge = models.ForeignKey(User, null=True, blank=True)
-    # XXX make a style comment (for example, for single hop ipa: please put the type of hop in the description)
+    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True)
 
+    objects = BeerStyleManager()
 
-    def get_subcategories(self):
-        try:
-            return BeerStyleSubcategory.objects.filter(beer_style=self)
-        except BeerStyleSubcategory.DoesNotExist:
-            return []
+    def can_enter(self):
+        return not self.has_subcategories()
 
     def has_subcategories(self):
-        return len(self.get_subcategories()) != 0
+        return self.subcategories.exists()
 
-    def __unicode__(self):
-        return "%s (%s)" % (self.name, self.contest_year)
-
-
-class BeerStyleSubcategory(models.Model):
-    name = models.CharField(max_length=255)
-    beer_style = models.ForeignKey('BeerStyle')
+    def is_subcategory(self):
+        return parent_style is not None
 
     def __unicode__(self):
         return self.name
@@ -60,7 +107,7 @@ class BeerStyleSubcategory(models.Model):
  
 class EntryManager(models.Manager):
     def get_top_n(self, style, n):
-        return Entry.objects.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
+        return self.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
 
     def get_top_3(self, style): 
         return self.get_top_n(style, 3)
@@ -78,7 +125,7 @@ class EntryManager(models.Manager):
     
     def judge_entries(self, year):
         # calculate the score of each entry for the year
-        for entry in Entry.objects.filter(style__contest_year__contest_year=year):
+        for entry in self.filter(style__contest_year__contest_year=year):
             total, num = 0, 0
 
             if entry.bjcp_judging_result:
@@ -112,7 +159,6 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
-    style_subcategory = models.ForeignKey('BeerStyleSubcategory', null=True, blank=True)
     bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
     beer_name = models.CharField(max_length=255, null=True, blank=True)
     special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
@@ -157,13 +203,12 @@ class Entry(models.Model):
             for k, v in email_vars.iteritems():
                 if v is None: email_vars[k] = ""
 
+            # XXX move this into a template
             send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
                 """ 
 Hey %(username)s,
 
-Thanks for entering the %(contest_year)s %(style)s category!  When
-sending your samples, we request two 12oz bottles including your
-reddit username and the style of the samples.  You can send them to:
+Thanks for entering the %(contest_year)s %(style)s category!  When sending your samples, we request two plain, 12oz bottles including your reddit username and the style of the samples. You can send them to:
 
 %(name)s
 %(address_1)s
@@ -192,8 +237,6 @@ As always, we appreciate your participation and look forward to a great competit
 
     def __unicode__(self):
         s = unicode(self.style)
-        if self.style_subcategory:
-            s = s + " (" + unicode(self.style_subcategory) + ")"
 
         if self.beer_name:
             s = s + " / " + self.beer_name 

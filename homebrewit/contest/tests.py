@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
+
 from homebrewit.contest.management.commands.judgecontest import Command
 from homebrewit.contest.models import *
 from homebrewit.contest.views import *
@@ -8,7 +9,7 @@ from homebrewit.contest.forms import *
 
 
 class ContestViewsTests(TestCase):
-    fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'users', 'userprofiles', 'bjcpjudgingresults', 'judgingresults']
+    fixtures = ['beerstyles', 'contestyears', 'entries', 'users', 'userprofiles', 'bjcpjudgingresults', 'judgingresults']
 
     def setUp(self):
         self.client.login(username='patrick', password='password')
@@ -16,21 +17,20 @@ class ContestViewsTests(TestCase):
 
 
     def test_register(self):
-        response = self.client.get('/contest/register')
+        response = self.client.get('/contests/2011/register')
         self.assert_(response.context['form'])
 
     def test_register__profile_not_set(self):
         self.user.get_profile().delete()
-        response = self.client.get('/contest/register')
-        self.assertRedirects(response, '/profile/edit?next=/contest/register')
+        response = self.client.get('/contests/2011/register')
+        self.assertRedirects(response, '/profile/edit?next=/contests/2011/register')
 
     def test_register__post(self):
         Entry.objects.filter(user=self.user).delete()
 
-        response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1', 'special_ingredients': 'poop'})
+        response = self.client.post('/contests/2011/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1', 'special_ingredients': 'poop'})
 
         self.assert_(response.context['form'].is_valid())
-        self.assert_('"name": "English Stout"' in response.context['style_data_as_json'])
 
         # the entry now exists
         entry = Entry.objects.get(beer_name="Patrick's super skunky IPA")
@@ -50,27 +50,27 @@ class ContestViewsTests(TestCase):
         contest_year.allowing_entries = False
         contest_year.save()
 
-        response = self.client.post('/contest/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
+        response = self.client.post('/contests/2011/register', {'beer_name': "Patrick's super skunky IPA", 'style': '1'})
         self.assert_(response.status_code == 404)
 
     def test_register__style_subcategory(self):
         Entry.objects.filter(user=self.user).delete()
 
         name = 'Super dank Stout'
-        response = self.client.post('/contest/register', {'beer_name': name, 'style': 6, 'style_subcategory': 2})
+        response = self.client.post('/contests/2011/register', {'beer_name': name, 'style': 6, 'style_subcategory': 2})
 
         self.assert_(Entry.objects.get(beer_name=name).style_subcategory.id == 2)
 
     def test_register__style_subcategory_required(self):
         Entry.objects.filter(user=self.user).delete()
 
-        response = self.client.post('/contest/register', {'beer_name': 'Super dank Stout', 'style': 6})
+        response = self.client.post('/contests/2011/register', {'beer_name': 'Super dank Stout', 'style': 6})
         
         self.assert_(not response.context['form'].is_valid())
 
 
     def test_contest_year(self):
-        response = self.client.get('/contest/2011/')
+        response = self.client.get('/contests/2011/')
         self.assertTemplateUsed(response, 'homebrewit_contest_year.html')
         self.assert_(response.context['year'] == 2011)
         self.assert_(len(response.context['styles']) == 8)
@@ -81,14 +81,14 @@ class ContestViewsTests(TestCase):
 
 
     def test_entry(self):
-        response = self.client.get('/contest/2011/styles/1/entries/1')
+        response = self.client.get('/contests/2011/styles/1/entries/1')
 
         self.assertTemplateUsed(response, 'homebrewit_contest_entry.html')
         self.assert_(response.context['entry'].beer_name == 'Beer name')
         self.assert_(len(response.context['judging_results']) == 1)
 
     def test_entry__bjcp_judging_result(self):
-        response = self.client.get('/contest/2011/styles/1/entries/2')
+        response = self.client.get('/contests/2011/styles/1/entries/2')
 
         self.assertTemplateUsed(response, 'homebrewit_contest_bjcp_entry.html')
         self.assert_(response.context['entry'].beer_name == 'Beer name')
@@ -102,7 +102,7 @@ class ContestViewsTests(TestCase):
         winner.score = 50
         winner.save()
 
-        response = self.client.get('/contest/2011/styles/1')
+        response = self.client.get('/contests/2011/styles/1')
 
         self.assertTemplateUsed(response, 'homebrewit_contest_style.html')
         self.assert_(response.context['style'].name == 'IPA')
@@ -188,18 +188,11 @@ class ContestYearModelTests(TestCase):
 
 
 class BeerStyleModelTests(TestCase):
-    fixtures = ['beerstyles', 'beerstylesubcategories', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
+    fixtures = ['beerstyles', 'contestyears', 'entries', 'judgingresults', 'userprofiles', 'users' ]
 
     def setUp(self):
         self.stout_style = BeerStyle.objects.get(name='Stout')
         self.ipa_style = BeerStyle.objects.get(name='IPA')
-
-
-    def test_get_subcategories(self):
-        self.assert_(len(self.stout_style.get_subcategories()) == 3)
-
-    def test_get_subcategories__none(self):
-        self.assert_(len(self.ipa_style.get_subcategories()) == 0)
 
 
     def test_has_subcategories(self):
@@ -255,13 +248,13 @@ class EntryJudgingFormTests(TestCase):
         """
         judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
         self.assertEqual(judge_successful_login, True)
-        response = self.client.get('/contest/judgeentry')
+        response = self.client.get('/contests/judgeentry')
         self.assertEqual(response.status_code, 200)
 
     def test_judge_without_access(self):
         non_judge_successful_login = self.client.login(username = 'admin', password = 'admin')
         self.assertEqual(non_judge_successful_login, True)
-        self.assertRaises(RuntimeError, self.client.get, '/contest/judgeentry')
+        self.assertRaises(RuntimeError, self.client.get, '/contests/judgeentry')
 
 
     def test_entry_selection_filter(self):
@@ -271,7 +264,7 @@ class EntryJudgingFormTests(TestCase):
             logged-in judge.
         """
         judge_successful_login = self.client.login(username = 'patrickomatic', password = 'patrickomatic')
-        response = self.client.get('/contest/judgeentry')
+        response = self.client.get('/contests/judgeentry')
         user = User.objects.get(username = 'patrickomatic') 
         form = JudgeEntrySelectionForm(user = user)
         form_queryset = form.fields['entry'].queryset
@@ -280,12 +273,14 @@ class EntryJudgingFormTests(TestCase):
 
     def test_entry_selection_filter__multiple_entries(self):
         judge_successful_login = self.client.login(username = 'musashi', password = 'musashi')
-        response = self.client.get('/contest/judgeentry')
+        response = self.client.get('/contests/judgeentry')
+
         user = User.objects.get(username = 'musashi')
         form = JudgeEntrySelectionForm(user = user)
         form_queryset = form.fields['entry'].queryset
         self.assertEqual(len(form_queryset), 2) #There are two entries in the Pale Ale category
         self.assertEqual(form_queryset[0].beer_name, "Patrick's Pale Ale")
+
 
     def test_judging_form(self):
         #Style Category: Imperial Stout, judge: patrickomatic
@@ -299,7 +294,8 @@ class EntryJudgingFormTests(TestCase):
         #because even though he is a judge, he is not a judge for the Pale Ale category.
         self.form_data['entry'] = 2
         self.client.login(username = 'patrickomatic', password = 'patrickomatic')
-        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', self.form_data)
+
+        self.assertRaises(RuntimeError, self.client.post, '/contests/judgeentry', self.form_data)
 
     def test_judging_form__judge_judging_his_own_entry(self):
         #musashi should not be allowed to judge "Musashi's Pale Ale" (Entry #3)
@@ -307,13 +303,15 @@ class EntryJudgingFormTests(TestCase):
         #this would result in him judging his own entry.
         self.client.login(username = 'musashi', password = 'musashi')
         self.form_data['entry'] = 3 
-        self.assertRaises(RuntimeError, self.client.post, '/contest/judgeentry', self.form_data)
+        self.assertRaises(RuntimeError, self.client.post, '/contests/judgeentry', self.form_data)
 
     def test_judging_form__only_musashi_allowed(self):
         #Only musashi should be allowed to judge "Patrick's Pale Ale" (Entry #2)
         self.form_data['entry'] = 2
         self.client.login(username = 'musashi', password = 'musashi')
         self.assertEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)
-        response = self.client.post('/contest/judgeentry', self.form_data)
+
+        response = self.client.post('/contests/judgeentry', self.form_data)
+
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(Entry.objects.get(pk = 2).bjcp_judging_result, None)

@@ -1,51 +1,10 @@
 {% extends "homebrewit.html" %}
+{% load staticfiles %}
+
 
 {% block include %}
-    <script type="text/javascript">
-var style_data = {{style_data_as_json|safe}};
-
-$(document).ready(function() {
-    var label_el = $('label[for="id_style_subcategory"]');
-    var subcategory_el = $('select[name="style_subcategory"]');
-    var style_el = $('select[name="style"]');
-
-    function hide_subcategories() {
-        label_el.hide();
-        subcategory_el.hide();
-    }
-
-    function show_subcategories() {
-        label_el.show();
-        subcategory_el.show();
-    }
-
-    function setup_categories(style_value, subcategory_value) {
-        if (!style_value || style_data[style_value].length == 0) {
-            hide_subcategories();
-            return true;
-        }
-
-        var options = "";
-        for (var i = 0; i < style_data[style_value].length; i++) { 
-            var sub = style_data[style_value][i];
-            options += "<option " + (sub.id == subcategory_value ? "selected" : "") + " value=\"" + sub.id + "\">" + sub.name + "</option>";
-        }
-
-        subcategory_el.html(options);
-        show_subcategories();
-
-        return true;
-    }
-
-
-    style_el.change(function() {
-        setup_categories($(this).val(), "");
-    });
-
-    // call it to set up an initial state
-    setup_categories(style_el.val(), subcategory_el.val());
-});
-    </script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
 {% endblock %}
 
 
@@ -60,13 +19,63 @@ $(document).ready(function() {
 
 
 {% block content %}
-    <p>Just pick which style you'll be brewing:</p>
+    <form class="contest-entry-form" name="form" method="POST" action="{% url "homebrewit.contest.views.register" contest_year.contest_year %}" role="form" ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})">
+        {% verbatim %}
+        <div class="form-group">
+            <label for="style-menu">Style:</label>
 
-    <form class="contest-entry-form" method="POST" action="{% url "homebrewit.contest.views.register" %}">
-        {% csrf_token %}
+            <div class="dropdown">
+                <div id="style-menu" href="#" role="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span>{{entry.style.name || "Choose Style"}} <span class="caret"></span></span>
+                </div>
 
-        {{form.as_p}}
+                <ul class="dropdown-menu" role="menu" aria-labeledby="style-menu">
+                    <li role="presentation" class="divider" ng-if="style.has_subcategories" ng-repeat-start="style in styles"></li>
 
-        <input type="submit" value="Register"/>
+                    <li role="presentation" tab-index="-1" ng-attr-class="{{style.has_subcategories && 'dropdown-header'}}" ng-repeat-end>
+                        <a role="menuitem" href="#"  ng-click="chosen(style)" ng-if="!style.has_subcategories">{{style.name}}</a>
+                        <span role="menuitem" href="#" ng-if="style.has_subcategories">{{style.name}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="entry.style">
+            <label for="beer-name">Beer Name:</label>
+
+            <div>
+                <input name="beer_name" id="beer-name" type="text" ng-model="entry.beer_name" />
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="entry.style">
+            <label for="special-ingredients">Special Ingredients:</label>
+
+            <div>
+                <input name="special_ingredients" id="special-ingredients" type="text" ng-model="entry.special_ingredients" />
+            </div>
+        </div>
+
+        <div class="form-group" ng-repeat="question in entry.style.beer_details" ng-switch="question.type">
+            <label id= for="question-{{question.id}}">{{question.description}}:</label>
+
+            <div ng-switch-when="contest.multiplechoicebeerdetail">
+                <select id="question-{{question.id}}" role="menu" aria-labeledby="question-{{question.id}}-label" ng-model="question.value">
+                    <option ng-repeat="choice in question.choices">{{choice.name}}</option>
+                </select>
+            </div>
+
+            <div ng-switch-when="contest.textbeerdetail">
+                <input name="question{{question.id}}" id="question-{{question.id}}" type="text" ng-model="question.value" ng-attr-placeholder="{{question.must_specify && 'Required' || ''}}" ng-attr-required="{{question.must_specify}}" />
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            <button type="button" ng-click="registerForContest()" class="btn btn-primary" ng-disabled="form.$invalid || submitting">Register!</button>
+        </div>
+
+        {% endverbatim %}
     </form>
 {% endblock %}
