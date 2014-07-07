@@ -16,6 +16,8 @@ class Migration(DataMigration):
                     parent_style=parent_style).save()
 
             for entry in orm.Entry.objects.filter(style_subcategory=subcategory):
+                print "entry=", entry
+                print "new_style=", new_style
                 entry.style = new_style
                 entry.save()
 
