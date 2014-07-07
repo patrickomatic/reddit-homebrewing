@@ -28,7 +28,7 @@ contestApp.controller('ContestSignupCtrl', function($scope, $http) {
             style: entry['style']['id'],
             beer_name: entry['beer_name'],
             special_ingredients: entry['special_ingredients'],
-//            entry_beer_details: entry['style']['beer_details']
+            entry_beer_details: entry['style']['beer_details'].map(function(e) { return {beer_detail: e.id, value: e.value}; })
         }).success(function(data) {
             console.log("did it success");
         }).error(function(data) {
