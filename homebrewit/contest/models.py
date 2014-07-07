@@ -3,6 +3,7 @@ import datetime, smtplib, typedmodels
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models import Q
 from django.forms.models import model_to_dict
 
 
@@ -130,6 +131,9 @@ class EntryManager(models.Manager):
 
         return set([entry.user for entry in Entry.objects.filter(winner=True, 
                                         style__contest_year=contest_year)])
+
+    def for_beer_style(self, beer_style):
+        return Entry.objects.filter(Q(style=beer_style) | Q(parent_style=beer_style))
 
     
     def judge_entries(self, year):

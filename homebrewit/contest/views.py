@@ -72,8 +72,9 @@ def style(request, year, style_id):
         raise Http404
 
     # XXX this sucks
-    scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
-    scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
+    #scored_entries = list(Entry.objects.filter(style=style, score__isnull=False).order_by('-score'))
+    #scored_entries.extend(Entry.objects.filter(style=style, score__isnull=True))
+
     
     address = None
     if style.judge:
@@ -84,7 +85,7 @@ def style(request, year, style_id):
 
     return render(request, 'homebrewit_contest_style.html', {
         'style': style, 
-        'entries': scored_entries,
+        'entries': Entry.objects.for_beer_style(style),
         'address': address
     })
 
