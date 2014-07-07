@@ -13,7 +13,8 @@ class Migration(DataMigration):
             new_style = orm.BeerStyle(name=subcategory.name, 
                     contest_year=parent_style.contest_year, 
                     judge=parent_style.judge, 
-                    parent_style=parent_style).save()
+                    parent_style=parent_style)
+            new_style.save()
 
             for entry in orm.Entry.objects.filter(style_subcategory=subcategory):
                 print "entry=", entry
