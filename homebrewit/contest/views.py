@@ -114,7 +114,6 @@ class BJCPJudgingResultForm(ModelForm):
 def entry(request, year, style_id, entry_id):
     try:
         entry = Entry.objects.get(pk=entry_id)
-        assert entry.style.id == int(style_id)
         assert entry.style.contest_year.contest_year == int(year)
     except Entry.DoesNotExist:
         raise Http404
