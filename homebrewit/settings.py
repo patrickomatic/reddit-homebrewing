@@ -153,11 +153,11 @@ LOGGING = {
         }
     },
     'loggers': {
-#        'django.request': {
-#            'handlers': ['mail_admins'],
-#            'level': 'ERROR',
-#            'propagate': True,
-#       },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+       },
         '': {
             'handlers': ['console'],
             'level': 'DEBUG',

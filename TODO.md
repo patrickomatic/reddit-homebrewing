@@ -1,4 +1,5 @@
 - [ ] Make sure that email works
+- [ ] Get proper logging working
 - [ ] Make the style dropdown menu line up
 - [ ] Make a way to edit entry names
 - [ ] Use class-based views

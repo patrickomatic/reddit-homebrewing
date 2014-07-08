@@ -1,4 +1,4 @@
-import datetime, smtplib, typedmodels
+import datetime, smtplib, typedmodels, logging
 
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -7,6 +7,8 @@ from django.db import models
 from django.db.models import Q
 from django.forms.models import model_to_dict
 
+
+logger = logging.getLogger(__name__)
 
 class ContestYearManager(models.Manager):
     def expire_get_all_year_summary_cache(self):
@@ -235,8 +237,7 @@ class Entry(models.Model):
             return
 
         if not self.user.email:
-            # XXX logging.warn
-            print >>sys.stderr, "Email isn't set for ", self.user.username
+            logger.error("Email isn't set for %s" % self.user.username)
             return
 
         try:
@@ -279,8 +280,8 @@ As always, we appreciate your participation and look forward to a great competit
             self.mailed_entry = True
             self.save()
         except smtplib.SMTPException as e:
-            # XXX use logger
-            print >>sys.stderr, "Error sending shipping email: ", e
+            logger.error("Error sending shipping email: %s" % e)
+            raise e
 
 
     def get_rating_description(self):
