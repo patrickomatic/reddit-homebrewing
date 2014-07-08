@@ -1,6 +1,7 @@
 import datetime, smtplib, typedmodels
 
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models import Q
@@ -8,6 +9,48 @@ from django.forms.models import model_to_dict
 
 
 class ContestYearManager(models.Manager):
+    def expire_get_all_year_summary_cache(self):
+        cache.delete('get_all_year_summary_query')
+        
+    def get_all_year_summary(self):
+        data = cache.get('get_all_year_summary_query')
+        if not data: 
+            data = self.__uncached_get_all_year_summary()
+            cache.set('get_all_year_summary_query', data, 60 * 60 * 24 * 30)
+
+        return data
+
+    def __uncached_get_all_year_summary(self):
+        contest_data = {}
+
+        for style in BeerStyle.objects.top_level_categories():
+            year = style.contest_year.contest_year
+
+            top_entry = Entry.objects.get_top_n(style, 1)
+            if top_entry and top_entry[0].winner:
+                winner_data = {
+                    'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
+                    'id': top_entry[0].id,
+                }
+            else:
+                winner_data = None
+
+            data = {
+                'n_entries': style.n_entries(),
+                'n_judged': style.n_judged(),
+                'n_received': style.n_received(),
+                'winner': winner_data,
+                'style': style,
+            }
+
+            if year in contest_data:
+                contest_data[year].append(data)
+            else:
+                contest_data[year] = [data]
+
+        return [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)]
+
+
     def get_current_contest_year(self):
         try:
             return self.filter(allowing_entries=True)[0]

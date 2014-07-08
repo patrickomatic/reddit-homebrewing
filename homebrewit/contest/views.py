@@ -43,6 +43,10 @@ class EntriesListView(generics.ListCreateAPIView):
     def pre_save(self, obj):
         obj.user_id = self.request.user.id
 
+    def post_save(self, obj, created):
+        if created: ContestYear.objects.expire_get_all_year_summary_cache()
+
+
 
 @login_required
 def register(request, year):

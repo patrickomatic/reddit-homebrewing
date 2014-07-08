@@ -35,6 +35,7 @@ class RedditAuthenticationForm(AuthenticationForm):
             User.objects.create_user(username, '', password)
 
 
+# XXX This probably makes more sense in contest.views
 def index(request):
     # if it's a login...
     if request.method == 'POST':
@@ -45,44 +46,11 @@ def index(request):
     else:
         login_form = RedditAuthenticationForm()
 
-    # XXX this is a lot of stuff to have in a controller
-    # get each years beer styles
-    contest_data = {} 
-    for style in BeerStyle.objects.top_level_categories():
-        year = style.contest_year.contest_year
-
-        top_entry = Entry.objects.get_top_n(style, 1)
-        if top_entry and top_entry[0].winner:
-            winner_data = {
-                    'winner': top_entry[0].user.username + ": " + unicode(top_entry[0].score),
-                    'id': top_entry[0].id,
-                    }
-        else:
-            winner_data = None
-
-        # XXX make sure this works with the new data model
-        data = {
-                #'n_entries': Entry.objects.filter(style=style).count(),
-                #'n_judged': Entry.objects.filter(style=style, score__isnull=False).count(),
-                #'n_received': Entry.objects.filter(style=style, received_entry=True).count(),
-                'n_entries': style.n_entries(),
-                'n_judged': style.n_judged(),
-                'n_received': style.n_received(),
-                'winner': winner_data,
-                'style': style,
-                }
-
-        if year in contest_data:
-            contest_data[year].append(data)
-        else:
-            contest_data[year] = [data]
-
-
     return render(request, 'homebrewit_index.html', {
-        'contest_data': [(year, contest_data[year]) for year in sorted(contest_data.iterkeys(), reverse=True)], 
+        'contest_data': ContestYear.objects.get_all_year_summary(), 
         'contest_year': ContestYear.objects.get_current_contest_year(),
         'login_form': login_form,
-        })
+    })
 
 
 def logout(request):
