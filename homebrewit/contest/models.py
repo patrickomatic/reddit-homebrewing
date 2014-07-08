@@ -31,14 +31,14 @@ class ContestYear(models.Model):
 
 
 class BeerDetail(typedmodels.TypedModel):
-    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details')
+    beer_style = models.ForeignKey('BeerStyle', related_name='beer_details', db_index=True)
     description = models.TextField()
     must_specify = models.BooleanField()
 
 
 class BeerDetailChoice(models.Model):
     name = models.TextField()
-    multiple_choice_beer_detail = models.ForeignKey('BeerDetail', related_name='choices')
+    multiple_choice_beer_detail = models.ForeignKey('BeerDetail', related_name='choices', db_index=True)
 
 class MultipleChoiceBeerDetail(BeerDetail):
     pass
@@ -48,8 +48,8 @@ class TextBeerDetail(BeerDetail):
 
 
 class EntryBeerDetail(models.Model):
-    entry = models.ForeignKey('Entry', related_name='entry_beer_details')
-    beer_detail = models.ForeignKey('BeerDetail')
+    entry = models.ForeignKey('Entry', related_name='entry_beer_details', db_index=True)
+    beer_detail = models.ForeignKey('BeerDetail', db_index=True)
     value = models.TextField()
 
 
@@ -87,9 +87,9 @@ class BeerStyleManager(models.Manager):
 
 class BeerStyle(models.Model):
     name = models.CharField(max_length=255)
-    contest_year = models.ForeignKey('ContestYear', related_name='beer_styles')
-    judge = models.ForeignKey(User, null=True, blank=True)
-    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True)
+    contest_year = models.ForeignKey('ContestYear', related_name='beer_styles', db_index=True)
+    judge = models.ForeignKey(User, null=True, blank=True, db_index=True)
+    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True, db_index=True)
 
     objects = BeerStyleManager()
 
@@ -264,7 +264,7 @@ def integer_range(max_int):
 
 
 class BJCPJudgingResult(models.Model):
-    judge = models.ForeignKey(User)
+    judge = models.ForeignKey(User, db_index=True)
     judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
 
 
