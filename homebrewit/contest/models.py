@@ -23,7 +23,7 @@ class ContestYearManager(models.Manager):
     def __uncached_get_all_year_summary(self):
         contest_data = {}
 
-        for style in BeerStyle.objects.top_level_categories():
+        for style in BeerStyle.objects.top_level_styles():
             year = style.contest_year.contest_year
 
             top_entry = Entry.objects.get_top_n(style, 1)
@@ -120,11 +120,10 @@ class BeerStyleManager(models.Manager):
             
         return results
 
-    # XXX "categories" is a misnomer here... name this something else
-    def top_level_categories_for_year(self, year):
+    def top_level_styles_for_year(self, year):
         return self.filter(parent_style__isnull=True, contest_year__contest_year=int(year))
 
-    def top_level_categories(self):
+    def top_level_styles(self):
         return self.filter(parent_style__isnull=True)
 
 
