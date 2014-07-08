@@ -80,10 +80,16 @@ class BeerDetail(typedmodels.TypedModel):
     description = models.TextField()
     must_specify = models.BooleanField()
 
+    def __unicode__(self):
+        return "%s: %s" % (self.beer_style, self.description)
+
 
 class BeerDetailChoice(models.Model):
     name = models.TextField()
     multiple_choice_beer_detail = models.ForeignKey('BeerDetail', related_name='choices', db_index=True)
+
+    def __unicode__(self):
+        return self.name
 
 class MultipleChoiceBeerDetail(BeerDetail):
     pass
