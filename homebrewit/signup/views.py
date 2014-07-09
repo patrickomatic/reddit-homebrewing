@@ -38,7 +38,6 @@ class RedditAuthenticationForm(AuthenticationForm):
             User.objects.create_user(username, '', password)
 
 
-# XXX This probably makes more sense in contest.views
 def index(request):
     if request.method == 'POST':
         login_form = RedditAuthenticationForm(data=request.POST)

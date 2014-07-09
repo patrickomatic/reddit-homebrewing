@@ -33,6 +33,10 @@ else:
         'root': PROJECT_PATH,
     }
 
+    EMAIL_BACKEND = 'postmark.backends.PostmarkBackend'
+
+    POSTMARK_API_KEY = os.environ['POSTMARK_API_KEY']
+
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates')

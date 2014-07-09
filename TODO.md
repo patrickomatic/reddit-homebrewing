@@ -1,3 +1,4 @@
+- [ ] Fix tests
 - [ ] Make sure that email works
 - [ ] Make the style dropdown menu line up
 - [ ] Make a way to edit entry names
@@ -8,7 +9,6 @@
 
 - [X] Get proper logging working
 - [X] Add support for BJCPs idea of some things that must be specified and some that may be specified
-- [X] Fix tests
 - [X] Embrace HTML5 more
 - [X] Use South
 - [X] Remove SECRET_KEY from source control
