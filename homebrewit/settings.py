@@ -27,7 +27,7 @@ else:
     DATABASES = { 'default': dj_database_url.config(default=os.environ[PROD_DB_URL]) }
 
     ROLLBAR = {
-        'access_token': os.environs[ROLLBAR_ACCESS_TOKEN],
+        'access_token': os.environ[ROLLBAR_ACCESS_TOKEN],
         'environment': 'production',
         'branch': 'master',
         'root': PROJECT_PATH,
