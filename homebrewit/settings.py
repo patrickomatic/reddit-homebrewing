@@ -26,6 +26,13 @@ else:
     import dj_database_url
     DATABASES = { 'default': dj_database_url.config(default=os.environ[PROD_DB_URL]) }
 
+    ROLLBAR = {
+        'access_token': os.environs[ROLLBAR_ACCESS_TOKEN],
+        'environment': 'production',
+        'branch': 'master',
+        'root': PROJECT_PATH,
+    }
+
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates')
@@ -56,9 +63,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 )
 
 ROOT_URLCONF = 'homebrewit.urls'
+
 
 OUR_APPS = (
     'homebrewit.contest',
