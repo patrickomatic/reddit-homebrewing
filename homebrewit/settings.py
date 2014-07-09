@@ -1,4 +1,4 @@
-import os
+import os, sys, logging
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -110,10 +110,8 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 AUTH_PROFILE_MODULE = 'signup.UserProfile'
 
-
 # mail config
 DEFAULT_FROM_EMAIL = 'do.not.reply@reddithomebrewing.com'
-EMAIL_HOST = 'cmx.dyercpa.com'
 
 WINNER_ICON = '/media/winner.png'
 
@@ -129,39 +127,27 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
-                       'pathname=%(pathname)s lineno=%(lineno)s ' +
-                       'funcname=%(funcName)s %(message)s'),
+            'format': ('%(asctime)s [%(levelname)s] ' +
+                       '%(pathname)s:%(lineno)s ' +
+                       '%(funcName)s %(message)s'),
             'datefmt': '%Y-%m-%d %H:%M:%S'
-        }
-    },
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
         }
     },
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-       },
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
         '': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propogate': True,
         }
     }
 }

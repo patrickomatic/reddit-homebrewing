@@ -1,4 +1,4 @@
-import hashlib, random
+import hashlib, random, logging
 
 from django import forms
 from django.conf import settings
@@ -14,6 +14,9 @@ from django.template import RequestContext
 from homebrewit.contest.models import BeerStyle, ContestYear, Entry 
 from homebrewit.signup import secret_key
 from homebrewit.reddit import *
+
+
+logger = logging.getLogger(__name__)
 
 
 class RedditAuthenticationForm(AuthenticationForm):
@@ -37,7 +40,6 @@ class RedditAuthenticationForm(AuthenticationForm):
 
 # XXX This probably makes more sense in contest.views
 def index(request):
-    # if it's a login...
     if request.method == 'POST':
         login_form = RedditAuthenticationForm(data=request.POST)
         if login_form.is_valid():
