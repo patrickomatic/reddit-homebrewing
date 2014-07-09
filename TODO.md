@@ -1,4 +1,5 @@
 - [ ] Fix tests
+- [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
 - [ ] Make sure that email works
 - [ ] Make the style dropdown menu line up
 - [ ] Make a way to edit entry names

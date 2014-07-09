@@ -1,3 +1,11 @@
+body {
+    margin: 10px;
+    padding: 10px;
+    background-color: #EEE4C5;
+    font-family: Helvetica, Arial;
+    color: #422E13;
+}
+
 #main_container {
 	border: 1px solid #422E13;
 	border-radius: 10px;
