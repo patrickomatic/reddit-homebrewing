@@ -33,9 +33,11 @@ else:
         'root': PROJECT_PATH,
     }
 
-    EMAIL_BACKEND = 'postmark.backends.PostmarkBackend'
-
     POSTMARK_API_KEY = os.environ['POSTMARK_API_KEY']
+    POSTMARK_SENDER = 'do.not.reply@reddithomebrewing.com'
+    POSTMARK_TEST_MODE = False
+    POSTMARK_TRACK_OPENS = True
+    EMAIL_BACKEND = 'postmark.backends.PostmarkBackend'
 
 
 TEMPLATE_DIRS = (
@@ -122,9 +124,6 @@ LOGOUT_URL = '/logout'
 INTERNAL_IPS = ('127.0.0.1',)
 
 AUTH_PROFILE_MODULE = 'signup.UserProfile'
-
-# mail config
-DEFAULT_FROM_EMAIL = 'do.not.reply@reddithomebrewing.com'
 
 WINNER_ICON = '/media/winner.png'
 
