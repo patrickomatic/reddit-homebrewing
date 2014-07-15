@@ -74,7 +74,7 @@
 
                             <td class="generic-td text-td">
                                 {% if style.winner %}
-                                    <a title="{{year}} {{style.style.name}} Winner" href="{% url "homebrewit.contest.views.entry" year style.style.id style.winner.id %}">
+                                    <a title="{{year}} {{style.style.name}} Winner" href="{% url "entry" year style.style.id style.winner.id %}">
                                         {{style.winner.winner}}
                                     </a>
                                 {% endif %}

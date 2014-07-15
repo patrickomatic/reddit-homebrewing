@@ -37,12 +37,16 @@
             <ul>
                 {% for entry in contest_entries %}
                     <li>
-                        <a href="{% url "homebrewit.contest.views.entry" entry.style.contest_year.contest_year entry.style.id entry.id %}">
+                        <a href="{% url "entry" entry.style.contest_year.contest_year entry.style.id entry.id %}">
                             {% if entry.beer_name %}
                                 {{entry.beer_name}}:
                             {% endif %}
                             {{entry.style}}
                         </a>
+
+                        {% if is_profile_owner %}
+
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>

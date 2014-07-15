@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
+from django.views.generic.base import TemplateView
 
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -111,26 +112,24 @@ class BJCPJudgingResultForm(ModelForm):
     class Meta:
         model = BJCPJudgingResult
 
-def entry(request, year, style_id, entry_id):
-    try:
-        entry = Entry.objects.get(pk=entry_id)
-        assert entry.style.contest_year.contest_year == int(year)
-    except Entry.DoesNotExist:
-        raise Http404
+class EntryView(TemplateView):
+    def get_object(self):
+        return Entry.objects.get(pk=self.kwargs['entry_id'])
 
+    def get_template_names(self):
+        # this split is an unfortunate artifact of switching the way that we judge the contest
+        # after already having data.  basically, if it uses the new BJCP scoresheet, we show
+        # that template, otherwise the other (old) one
+        return ['contest/bjcp_entry.html' if self.get_object().bjcp_judging_result else 'contest/entry.html']
 
-    # this split is an unfortunate artifact of switching the way that we judge the contest
-    # after already having data.  basically, if it uses the new BJCP scoresheet, we show
-    # that template, otherwise the other (old) one
-    if entry.bjcp_judging_result:
-        return render(request, 'contest/bjcp_entry.html', {
-                'entry': entry,
-                'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result)})
-    else:
-        return render(request, 'contest/entry.html', {
-                'entry': entry,
-                'judging_results': JudgingResult.objects.filter(entry=entry)})
+    def get_context_data(self, **kwargs):
+        entry = self.get_object()
 
+        return {
+            'entry': entry,
+            'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result),  # XXX turn this view into a FormView
+            'judging_results': JudgingResult.objects.filter(entry=entry), # XXX make this a method on entry
+        }
 
 
 @login_required

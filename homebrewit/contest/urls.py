@@ -11,7 +11,7 @@ router.register(r'beer_styles', views.BeerStyleListView)
 urlpatterns = patterns('homebrewit.contest.views',
         (r'^(?P<year>\d+)/$', 'contest_year'),
         (r'^(?P<year>\d+)/register$', 'register'),
-        (r'^(?P<year>\d+)/styles/(?P<style_id>\d+)/entries/(?P<entry_id>\d+)$', 'entry'),
+        url(r'^(?P<year>\d+)/styles/(?P<style_id>\d+)/entries/(?P<entry_id>\d+)$', views.EntryView.as_view(), name='entry'),
         url(r'^(?P<year>\d+)/styles/(?P<style_id>\d+)/entries$', views.EntriesListView.as_view(), name="contest_entries"),
         (r'^(?P<year>\d+)/styles/(?P<style_id>\d+)$', 'style'),
         url(r'^(?P<year>\d+)/beer_styles', views.BeerStyleListView.as_view()),
