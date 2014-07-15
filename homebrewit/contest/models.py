@@ -167,7 +167,7 @@ class BeerStyle(models.Model):
  
 class EntryManager(models.Manager):
     def get_top_n(self, style, n):
-        return self.filter(style=style).filter(score__isnull=False).order_by('-score')[:n]
+        return self.filter(Q(style=style) | Q(style__parent_style=style)).filter(score__isnull=False).order_by('-score')[:n]
 
     def get_top_3(self, style): 
         return self.get_top_n(style, 3)
