@@ -1,15 +1,15 @@
-- [ ] Fix winners not showing up for subcategories
-- [ ] Fix tests
-- [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
 - [ ] Make sure that email works
-- [ ] Make the style dropdown menu line up
 - [ ] Make a way to edit entry names
-- [ ] Use class-based views
-- [ ] Fix the deprecated auth profile thing
-- [ ] I18n
 - [ ] Make CHAR(255) fields into TEXT fields
+- [ ] Fix tests
 - [ ] Move template files into subdirectories per app
+- [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
+- [ ] Fix the deprecated auth profile thing
+- [ ] Make the style dropdown menu line up
+- [ ] Use class-based views
+- [ ] I18n
 
+- [X] Fix winners not showing up for subcategories
 - [X] Get proper logging working
 - [X] Add support for BJCPs idea of some things that must be specified and some that may be specified
 - [X] Embrace HTML5 more

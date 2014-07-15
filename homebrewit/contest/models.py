@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.db.models import Q
 from django.forms.models import model_to_dict
+from django.template.loader import render_to_string
 
 
 logger = logging.getLogger(__name__)
@@ -265,22 +266,8 @@ class Entry(models.Model):
             for k, v in email_vars.iteritems():
                 if v is None: email_vars[k] = ""
 
-            # XXX move this into a template
             send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
-                """ 
-Hey %(username)s,
-
-Thanks for entering the %(contest_year)s %(style)s category!  When sending your samples, we request two plain, 12oz bottles including your reddit username and the style of the samples. You can send them to:
-
-%(name)s
-%(address_1)s
-%(address_2)s
-%(city)s, %(state)s %(zip_code)s
-
-For tips on how to package your shipment, check out <a href="http://www.reddit.com/r/beertrade/comments/atztu/trading_and_packaging_tips/" title="this /r/beertrade thread">this /r/beertrade thread</a>.  If you have any questions or problems, please <a href="http://www.reddit.com/message/compose?to=%%23Homebrewing" title="contact the moderators">contact the moderators</a>.
-
-As always, we appreciate your participation and look forward to a great competition.  May be the best brew win!
-                """ % email_vars, 'do.not.reply@reddithomebrewing.com', 
+                    render_to_string('emails/shipping_info.txt', email_vars), 'do.not.reply@reddithomebrewing.com', 
                     [self.user.email], fail_silently=False)
 
             self.mailed_entry = True
