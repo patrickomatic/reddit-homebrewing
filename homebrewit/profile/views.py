@@ -53,7 +53,16 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('user',)
-
+        widgets = {
+            'name': forms.TextInput,
+            'address_1': forms.TextInput,
+            'address_2': forms.TextInput,
+            'city': forms.TextInput,
+            'state': forms.TextInput,
+            'zip_code': forms.TextInput,
+            'country': forms.TextInput,
+        }
+ 
 class EmailForm(forms.Form):
     email = forms.EmailField()
 
