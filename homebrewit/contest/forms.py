@@ -13,12 +13,12 @@ class JudgingForm(ModelForm):
         model = BJCPJudgingResult
         exclude = ('judge',)
         widgets = {
-                    'aroma_description': Textarea,
-                    'appearance_description': Textarea,
-                    'flavor_description': Textarea,
-                    'mouthfeel_description': Textarea,
-                    'overall_impression_description': Textarea,
-                    }
+            'aroma_description': Textarea,
+            'appearance_description': Textarea,
+            'flavor_description': Textarea,
+            'mouthfeel_description': Textarea,
+            'overall_impression_description': Textarea,
+        }
         
         
 class JudgeEntrySelectionForm(Form):
