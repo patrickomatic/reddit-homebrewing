@@ -41,7 +41,12 @@ else:
 
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'templates')
+    os.path.join(PROJECT_PATH, 'templates'),
+    os.path.join(PROJECT_PATH, 'templates/contest'),
+    os.path.join(PROJECT_PATH, 'templates/experiencelevel'),
+    os.path.join(PROJECT_PATH, 'templates/profile'),
+    os.path.join(PROJECT_PATH, 'templates/related'),
+    os.path.join(PROJECT_PATH, 'templates/signup'),
 )
 
 TIME_ZONE = 'America/New_York'

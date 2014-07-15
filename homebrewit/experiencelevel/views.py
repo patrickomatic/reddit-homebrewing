@@ -60,7 +60,7 @@ def change_level(request):
     else:
         form = ExperienceForm(initial=initial)
         
-    return render(request, 'homebrewit_experience.html', {
+    return render(request, 'experiencelevel/edit.html', {
                 'current_level': level,
                 'experience_levels': ExperienceLevel.objects.all(),
                 'form': form,

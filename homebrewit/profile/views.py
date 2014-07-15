@@ -25,7 +25,7 @@ def profile(request, user):
 
     is_profile_owner = request.user.is_authenticated() and user.username == request.user.username
 
-    return render(request, 'homebrewit_profile.html', {
+    return render(request, 'profile/profile.html', {
                 'user': user,
                 'level': level, 
                 'contest_entries': contest_entries, 
@@ -98,7 +98,7 @@ def edit_profile(request):
         email_form = EmailForm(initial={'email': request.user.email})
 
 
-    return render(request, 'homebrewit_edit_profile.html', {
+    return render(request, 'profile/edit.html', {
                 'address_form': address_form, 
                 'email_form': email_form,
             })
@@ -115,4 +115,4 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
 
-    return render(request, 'homebrewit_change_password.html', {'form': form})
+    return render(request, 'profile/change_password.html', {'form': form})

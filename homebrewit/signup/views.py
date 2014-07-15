@@ -47,7 +47,7 @@ def index(request):
     else:
         login_form = RedditAuthenticationForm()
 
-    return render(request, 'homebrewit_index.html', {
+    return render(request, 'index.html', {
         'contest_data': ContestYear.objects.get_all_year_summary(), 
         'contest_year': ContestYear.objects.get_current_contest_year(),
         'login_form': login_form,

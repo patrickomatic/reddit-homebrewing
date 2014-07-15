@@ -64,8 +64,7 @@ def register(request, year):
         # XXX can we use url helpers here
         return HttpResponseRedirect('/profile/edit?next=/contests/%s/register' % contest_year.contest_year)
 
-
-    return render(request, 'homebrewit_contest_register.html', {'contest_year': contest_year})
+    return render(request, 'contest/register.html', {'contest_year': contest_year})
 
 
 def style(request, year, style_id):
@@ -82,7 +81,7 @@ def style(request, year, style_id):
         except UserProfile.DoesNotExist:
             pass
 
-    return render(request, 'homebrewit_contest_style.html', {
+    return render(request, 'contest/style.html', {
         'style': style, 
         'entries': Entry.objects.for_beer_style(style),
         'address': address
@@ -101,7 +100,7 @@ def contest_year(request, year):
         }
 
 
-    return render(request, 'homebrewit_contest_year.html', {
+    return render(request, 'contest/contest_year.html', {
                 'styles': styles, 
                 'year': int(year),
                 'contest_year': contest_year})
@@ -123,11 +122,11 @@ def entry(request, year, style_id, entry_id):
     # after already having data.  basically, if it uses the new BJCP scoresheet, we show
     # that template, otherwise the other (old) one
     if entry.bjcp_judging_result:
-        return render(request, 'homebrewit_contest_bjcp_entry.html', {
+        return render(request, 'contest/bjcp_entry.html', {
                 'entry': entry,
                 'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result)})
     else:
-        return render(request, 'homebrewit_contest_entry.html', {
+        return render(request, 'contest/entry.html', {
                 'entry': entry,
                 'judging_results': JudgingResult.objects.filter(entry=entry)})
 
@@ -163,7 +162,7 @@ def entry_judging_form(request):
 
             judge_form = JudgingForm()
 
-            return render(request, 'judging_form.html', {
+            return render(request, 'contest/judging_form.html', {
                             'entry_selection_form': entry_selection_form, 
                             'judge_form': judge_form, 
                             'status_message': 'Judging for: ' + this_entry.beer_name + ' complete!'})
@@ -171,7 +170,7 @@ def entry_judging_form(request):
         entry_selection_form = JudgeEntrySelectionForm(user = request.user)
         judge_form = JudgingForm()
 
-    return render(request, 'judging_form.html', {
+    return render(request, 'contest/judging_form.html', {
             'entry_selection_form': entry_selection_form, 
             'judge_form': judge_form, 
             'status_message': None})
