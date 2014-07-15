@@ -1,3 +1,4 @@
+- [ ] Fix winners not showing up for subcategories
 - [ ] Fix tests
 - [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
 - [ ] Make sure that email works
@@ -7,6 +8,7 @@
 - [ ] Fix the deprecated auth profile thing
 - [ ] I18n
 - [ ] Make CHAR(255) fields into TEXT fields
+- [ ] Move template files into subdirectories per app
 
 - [X] Get proper logging working
 - [X] Add support for BJCPs idea of some things that must be specified and some that may be specified
