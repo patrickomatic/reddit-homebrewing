@@ -7,7 +7,10 @@
 
 
 {% block contenttitle %}
-    <a title="{{entry.user.username}}" href="{% url "homebrewit.profile.views.anonymous_profile" entry.user.username %}">{{entry.user}}</a> 
+    {% comment %}
+    <a title="{{entry.user.username}}" href="{% url "profile" entry.user.username %}">{{entry.user}}</a> 
+    {% endcomment %}
+    <a title="{{entry.user.username}}" href="/profile/{{entry.user.username}}">{{entry.user}}</a> 
     -
     {{entry.beer_name}}
 {% endblock %}
