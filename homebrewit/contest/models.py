@@ -65,7 +65,7 @@ class ContestYear(models.Model):
     contest_year = models.PositiveSmallIntegerField(unique=True, db_index=True, default=datetime.datetime.now().year)
     allowing_entries = models.BooleanField(default=False)
     finished_judging = models.BooleanField(default=False)
-    prize_description = models.CharField(max_length=5000, null=True, blank=True)
+    prize_description = models.TextField(null=True, blank=True)
 
     objects = ContestYearManager()
 
@@ -137,7 +137,7 @@ class BeerStyleManager(models.Manager):
 
 
 class BeerStyle(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.TextField()
     contest_year = models.ForeignKey('ContestYear', related_name='beer_styles', db_index=True)
     judge = models.ForeignKey(User, null=True, blank=True, db_index=True)
     parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True, db_index=True)
@@ -224,8 +224,8 @@ class EntryManager(models.Manager):
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
     bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
-    beer_name = models.CharField(max_length=255, null=True, blank=True)
-    special_ingredients = models.CharField(max_length=5000, blank=True, null=True)
+    beer_name = models.TextField( null=True, blank=True)
+    special_ingredients = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
     winner = models.BooleanField(default=False)
     rank = models.PositiveSmallIntegerField(db_index=True, null=True, blank=True)
@@ -301,7 +301,7 @@ def integer_range(max_int):
 
 class BJCPJudgingResult(models.Model):
     judge = models.ForeignKey(User, db_index=True)
-    judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
+    judge_bjcp_id = models.TextField(null=True, blank=True)
 
 
     # descriptor definitions
@@ -325,19 +325,19 @@ class BJCPJudgingResult(models.Model):
 
 
     # actual scoring areas and points
-    aroma_description = models.CharField(max_length=5000)
+    aroma_description = models.TextField()
     aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
 
-    appearance_description = models.CharField(max_length=5000)
+    appearance_description = models.TextField()
     appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
 
-    flavor_description = models.CharField(max_length=5000)
+    flavor_description = models.TextField()
     flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
 
-    mouthfeel_description = models.CharField(max_length=5000)
+    mouthfeel_description = models.TextField()
     mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
 
-    overall_impression_description = models.CharField(max_length=5000)
+    overall_impression_description = models.TextField()
     overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
 
     stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
@@ -379,23 +379,23 @@ class BJCPJudgingResult(models.Model):
 
 class JudgingResult(models.Model):
     judge = models.ForeignKey(User)
-    judge_bjcp_id = models.CharField(max_length=255, null=True, blank=True)
+    judge_bjcp_id = models.TextField(null=True, blank=True)
 
     entry = models.ForeignKey(Entry)
 
-    aroma_description = models.CharField(max_length=5000)
+    aroma_description = models.TextField()
     aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
 
-    appearance_description = models.CharField(max_length=5000)
+    appearance_description = models.TextField()
     appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
 
-    flavor_description = models.CharField(max_length=5000)
+    flavor_description = models.TextField()
     flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
 
-    mouthfeel_description = models.CharField(max_length=5000)
+    mouthfeel_description = models.TextField()
     mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
 
-    overall_impression_description = models.CharField(max_length=5000)
+    overall_impression_description = models.TextField()
     overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
 
     stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')

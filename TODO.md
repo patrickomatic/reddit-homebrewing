@@ -1,6 +1,5 @@
 - [ ] Make sure that email works
 - [ ] Make a way to edit entry names
-- [ ] Make CHAR(255) fields into TEXT fields
 - [ ] Fix tests
 - [ ] Move template files into subdirectories per app
 - [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
@@ -9,6 +8,7 @@
 - [ ] Use class-based views
 - [ ] I18n
 
+- [X] Make CHAR(255) fields into TEXT fields
 - [X] Fix winners not showing up for subcategories
 - [X] Get proper logging working
 - [X] Add support for BJCPs idea of some things that must be specified and some that may be specified
