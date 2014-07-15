@@ -25,7 +25,7 @@
     <body role="document">
         <header id="header">
             {% if user.is_authenticated %}
-                <a title="{{user.username}}'s Profile" href="{% url "homebrewit.profile.views.logged_in_profile" %}">{{user.username}}</a> 
+                <a title="{{user.username}}'s Profile" href="{% url "profile" %}">{{user.username}}</a> 
                 |
                 <a title="Logout" href="{% url "homebrewit.signup.views.logout" %}">Logout</a>
             {% endif %}

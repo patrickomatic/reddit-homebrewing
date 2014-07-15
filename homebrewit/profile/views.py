@@ -1,3 +1,5 @@
+import logging
+
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -6,45 +8,44 @@ from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
+from django.views.generic.base import *
 
 from homebrewit.contest.models import *
 from homebrewit.experiencelevel.models import *
 from homebrewit.signup.models import UserProfile
 
-
-def profile(request, user):
-    level_image = None
-
-    try:
-        level = UserExperienceLevel.objects.get(user__id=request.user.id)
-        level_image = level.experience_level.img_url
-    except UserExperienceLevel.DoesNotExist:
-        level = None
-
-    contest_entries = Entry.objects.filter(user=user)
-
-    is_profile_owner = request.user.is_authenticated() and user.username == request.user.username
-
-    return render(request, 'profile/profile.html', {
-                'user': user,
-                'level': level, 
-                'contest_entries': contest_entries, 
-                'is_profile_owner': is_profile_owner, 
-                'level_image': level_image,
-                'contest_year': ContestYear.objects.get_current_contest_year(),
-            })
+logger = logging.getLogger(__name__)
 
 
-def anonymous_profile(request, username):
-    try:
-        return profile(request, User.objects.get(username=username))
-    except User.DoesNotExist:
-        raise Http404
+class ProfileView(TemplateView):
+    template_name = "profile/profile.html"
 
+    def get_context_data(self, **kwargs):
+        level_image = None
 
-@login_required
-def logged_in_profile(request):
-    return profile(request, request.user)
+        if kwargs.get('username'):
+            user = User.objects.get(username=kwargs['username'])
+        else:
+            user = self.request.user
+
+        try:
+            level = UserExperienceLevel.objects.get(user__id=self.request.user.id)
+            level_image = level.experience_level.img_url
+        except UserExperienceLevel.DoesNotExist:
+            level = None
+
+        contest_entries = Entry.objects.filter(user=user)
+
+        is_profile_owner = self.request.user.is_authenticated() and user.username == self.request.user.username
+
+        return {
+            'profile_user': user,
+            'level': level, 
+            'contest_entries': contest_entries, 
+            'is_profile_owner': is_profile_owner, 
+            'level_image': level_image,
+            'contest_year': ContestYear.objects.get_current_contest_year(),
+        }
 
 
 class AddressForm(forms.ModelForm):
