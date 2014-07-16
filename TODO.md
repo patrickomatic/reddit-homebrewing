@@ -1,5 +1,4 @@
 - [ ] Add a success message when saving works
-- [ ] Make sure that email works
 - [ ] Make a way to edit entry names
 - [ ] Fix tests
 - [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
@@ -8,6 +7,7 @@
 - [ ] Use class-based views
 - [ ] I18n
 
+- [X] Make sure that email works
 - [X] Move template files into subdirectories per app
 - [X] Make CHAR(255) fields into TEXT fields
 - [X] Fix winners not showing up for subcategories
