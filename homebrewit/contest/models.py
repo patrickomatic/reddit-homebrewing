@@ -1,5 +1,6 @@
 import datetime, smtplib, typedmodels, logging
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.mail import send_mail
@@ -269,7 +270,7 @@ class Entry(models.Model):
                 if v is None: email_vars[k] = ""
 
             send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
-                    render_to_string('emails/shipping_info.txt', email_vars), 'do.not.reply@reddithomebrewing.com', 
+                    render_to_string('emails/shipping_info.txt', email_vars), settings.POSTMARK_SENDER, 
                     [self.user.email], fail_silently=False)
 
             self.mailed_entry = True
