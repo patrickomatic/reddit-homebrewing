@@ -3,7 +3,7 @@ import datetime, smtplib, typedmodels, logging
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.db.models import Q
 from django.forms.models import model_to_dict
@@ -269,11 +269,12 @@ class Entry(models.Model):
             for k, v in email_vars.iteritems():
                 if v is None: email_vars[k] = ""
 
-            send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
-                    render_to_string('emails/shipping_info.txt', email_vars), 
-                    settings.POSTMARK_SENDER, [self.user.email], fail_silently=False,
-                    html_message=render_to_string('emails/shipping_info.html', email_vars))
 
+            msg = EmailMultiAlternatives("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
+                    render_to_string('emails/shipping_info.txt', email_vars), settings.POSTMARK_SENDER, [self.user.email])
+            msg.attach_alternative(render_to_string('emails/shipping_info.html', email_vars), "text/html")
+            msg.send()
+                
             self.mailed_entry = True
             self.save()
         except smtplib.SMTPException as e:
