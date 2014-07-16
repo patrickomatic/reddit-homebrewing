@@ -270,8 +270,9 @@ class Entry(models.Model):
                 if v is None: email_vars[k] = ""
 
             send_mail("Shipping info for the %d Reddit Homebrew Contest" % contest_year, 
-                    render_to_string('emails/shipping_info.txt', email_vars), settings.POSTMARK_SENDER, 
-                    [self.user.email], fail_silently=False)
+                    render_to_string('emails/shipping_info.txt', email_vars), 
+                    settings.POSTMARK_SENDER, [self.user.email], fail_silently=False,
+                    html_message=render_to_string('emails/shipping_info.html', email_vars))
 
             self.mailed_entry = True
             self.save()

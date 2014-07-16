@@ -4,9 +4,17 @@ Thanks for entering the {{contest_year}} {{style}} category!  When sending your 
 
 {{name}}
 {{address_1}}
-{{address_2}}
+{% if address_2 %}
+    {{address_2}}<br/>
+{% endif %}
 {{city}}, {{state}} {{zip_code}}
 
-For tips on how to package your shipment, check out <a href="http://www.reddit.com/r/beertrade/comments/atztu/trading_and_packaging_tips/" title="this /r/beertrade thread">this /r/beertrade thread</a>.  If you have any questions or problems, please <a href="http://www.reddit.com/message/compose?to=%%23Homebrewing" title="contact the moderators">contact the moderators</a>.
+For tips on how to package your shipment, check out this /r/beertrade thread: 
+
+http://www.reddit.com/r/beertrade/comments/atztu/trading_and_packaging_tips 
+
+If you have any questions or problems, please contact the moderators at: 
+
+http://www.reddit.com/message/compose?to=%%23Homebrewing
 
 As always, we appreciate your participation and look forward to a great competition.  May be the best brew win!
