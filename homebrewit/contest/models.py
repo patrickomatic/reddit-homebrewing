@@ -140,7 +140,7 @@ class BeerStyle(models.Model):
     name = models.TextField()
     contest_year = models.ForeignKey('ContestYear', related_name='beer_styles', db_index=True)
     judge = models.ForeignKey(User, null=True, blank=True, db_index=True)
-    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True, db_index=True)
+    parent_style = models.ForeignKey('BeerStyle', related_name='subcategories', null=True, blank=True, db_index=True)
 
     objects = BeerStyleManager()
 

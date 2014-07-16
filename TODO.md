@@ -1,3 +1,4 @@
+- [ ] Add a success message when saving works
 - [ ] Make sure that email works
 - [ ] Make a way to edit entry names
 - [ ] Fix tests
