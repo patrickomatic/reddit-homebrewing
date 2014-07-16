@@ -1,6 +1,6 @@
 Hey {{username}},
 
-Thanks for entering the {{contest_year}} {{style}} category!  When sending your samples, we request two plain, 12oz bottles including your reddit username and the style of the samples. You can send them to:
+Thanks for entering the {{contest_year}} {{style}} category!  When sending your samples we request two plain, 12oz bottles including your reddit username and the style of the samples. You can send them to:
 
 {{name}}
 {{address_1}}
