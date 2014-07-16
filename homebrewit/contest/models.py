@@ -241,6 +241,7 @@ class Entry(models.Model):
 
     def send_shipping_email(self):
         if not self.style.judge:
+            logger.error("Attempted to send email for style without judge: entry.id=%s" % self.id)
             return
 
         if not self.user.email:
@@ -250,6 +251,7 @@ class Entry(models.Model):
         try:
             judge_profile = self.style.judge.get_profile()
         except UserProfile.DoesNotExist:
+            logger.error("Attempted to send email for style without judge's address set: entry.id=%s" % self.id)
             return
 
         try:
