@@ -34,7 +34,7 @@ else:
     }
 
     POSTMARK_API_KEY = os.environ['POSTMARK_API_KEY']
-    POSTMARK_SENDER = 'do.not.reply@reddithomebrewing.com'
+    POSTMARK_SENDER = 'info@reddithomebrewing.com'
     POSTMARK_TEST_MODE = False
     POSTMARK_TRACK_OPENS = True
     EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
