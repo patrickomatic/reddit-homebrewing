@@ -40,11 +40,13 @@ class EntriesListView(generics.ListCreateAPIView):
     def get_object(self):
         Entry.get(pk=self.kwargs['entry_id'])
 
-    def pre_save(self, obj):
-        obj.user_id = self.request.user.id
+    def pre_save(self, entry):
+        entry.user_id = self.request.user.id
 
-    def post_save(self, obj, created):
-        if created: ContestYear.objects.expire_get_all_year_summary_cache()
+    def post_save(self, entry, created):
+        if created: 
+            ContestYear.objects.expire_get_all_year_summary_cache()
+            entry.send_shipping_email()
 
 
 

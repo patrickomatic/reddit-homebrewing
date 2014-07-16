@@ -1,3 +1,4 @@
+- [ ] List beer details when showing an entry
 - [ ] Add a success message when saving works
 - [ ] Make a way to edit entry names
 - [ ] Fix tests
