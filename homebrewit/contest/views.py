@@ -172,7 +172,7 @@ def entry_judging_form(request):
         entry_selection_form = JudgeEntrySelectionForm(user = request.user)
         judge_form = JudgingForm()
 
-    return render(request, 'contest/judging_form.html', {
+    return render(request, 'contests/judging_form.html', {
             'entry_selection_form': entry_selection_form, 
             'judge_form': judge_form, 
             'status_message': None})
