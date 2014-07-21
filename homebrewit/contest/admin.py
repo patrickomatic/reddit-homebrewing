@@ -17,6 +17,7 @@ class BJCPJudgingResultAdminForm(forms.ModelForm):
         }
 
 class BJCPJudgingResultAdmin(admin.ModelAdmin):
+    search_fields = ['judge__username', 'judge_bjcp_id']
     form = BJCPJudgingResultAdminForm
 
 class ContestYearAdminForm(forms.ModelForm):
@@ -27,12 +28,19 @@ class ContestYearAdminForm(forms.ModelForm):
 class ContestYearAdmin(admin.ModelAdmin):
     form = ContestYearAdminForm
 
+
+class EntryAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'beer_name']
+
+class BeerStyleAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'judge__username']
+
 admin.site.register(BeerDetail)
 admin.site.register(BeerDetailChoice)
-admin.site.register(BeerStyle)
+admin.site.register(BeerStyle, BeerStyleAdmin)
 admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)
 admin.site.register(ContestYear, ContestYearAdmin)
-admin.site.register(Entry)
+admin.site.register(Entry, EntryAdmin)
 admin.site.register(EntryBeerDetail)
 admin.site.register(MultipleChoiceBeerDetail)
 admin.site.register(TextBeerDetail)
