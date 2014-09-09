@@ -11,9 +11,11 @@
 
 
 {% block content %}
-    <div class="medium-title">
-        <a title="Change Password" href="{% url "homebrewit.profile.views.change_password" %}">Change Password</a>
-    </div>
+    {% if not address_form.next %}
+        <div class="medium-title">
+            <a title="Change Password" href="{% url "homebrewit.profile.views.change_password" %}">Change Password</a>
+        </div>
+    {% endif %}
 
     <div class="medium-title">
         Email and Postal Address

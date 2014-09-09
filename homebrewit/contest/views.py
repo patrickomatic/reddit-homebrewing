@@ -62,7 +62,6 @@ def register(request, year):
     try:
         request.user.get_profile()
     except UserProfile.DoesNotExist:
-        messages.error(request, 'You must set your address before you can enter the homebrew contest.')
         # XXX can we use url helpers here
         return HttpResponseRedirect('/profile/edit?next=/contests/%s/register' % contest_year.contest_year)
 

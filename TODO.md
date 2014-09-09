@@ -6,6 +6,7 @@
 - [ ] Fix the deprecated auth profile thing
 - [ ] Make the style dropdown menu line up
 - [ ] Use class-based views
+- [ ] Use PRAW rather than direct API calls
 - [ ] I18n
 
 - [X] Make sure that email works

@@ -94,8 +94,7 @@ def edit_profile(request):
                 return HttpResponseRedirect(address_form.cleaned_data['next'])
     else:
         # pass GET because it might have a next
-        address_form = AddressForm(initial={'next': request.GET.get('next')},
-                instance=profile)
+        address_form = AddressForm(initial={'next': request.GET.get('next')}, instance=profile)
         email_form = EmailForm(initial={'email': request.user.email})
 
 
