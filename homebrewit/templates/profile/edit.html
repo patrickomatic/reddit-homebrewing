@@ -25,7 +25,7 @@
         you to give us your address before entering the contest.
     </p>
 
-    <form method="POST" action="{% url "homebrewit.profile.views.edit_profile" %}" class="setaddress">
+    <form method="POST" action="{% url "edit_profile" %}" class="setaddress">
         {% csrf_token %}
 
         {{email_form.as_p}}

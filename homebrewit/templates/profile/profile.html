@@ -17,7 +17,7 @@
                 <li><a href="{% url "homebrewit.contest.views.register" contest_year.contest_year %}">Sign up for the {{contest_year.contest_year}} homebrewing contest</a></li>
             {% endif %}
             <li><a href="{% url "homebrewit.experiencelevel.views.change_level" %}">Set your experience level</a></li>
-            <li><a href="{% url "homebrewit.profile.views.edit_profile" %}">Edit your profile and address</a></li>
+            <li><a href="{% url "edit_profile" %}">Edit your profile and address</a></li>
         </ul>
     {% endif %}
 
