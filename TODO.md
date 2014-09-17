@@ -4,6 +4,7 @@
 - [ ] Fix tests
 - [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
 - [ ] Fix the deprecated auth profile thing
+- [ ] Names for all the urls
 - [ ] Make the style dropdown menu line up
 - [ ] Use class-based views
 - [ ] Use PRAW rather than direct API calls

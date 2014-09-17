@@ -6,7 +6,7 @@ from homebrewit.profile import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'edit$', 'edit_profile', name='edit_profile'),
-    (r'password$', 'change_password', name='change_password'),
+    url(r'edit$', views.edit_profile, name='edit_profile'),
+    url(r'password$', views.change_password, name='change_password'),
     url(r'^(?P<username>[\w_-]+)|$', views.ProfileView.as_view(), name='profile'),
 )
