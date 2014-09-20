@@ -1,9 +1,15 @@
 {% extends "homebrewit.html" %}
+{% load staticfiles %}
+
 
 {% block title %}
     {{profile_user.username}}
 {% endblock %}
 
+{% block include %}
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script type="text/javascript" src="{% static "js/contest_controller.js" %}"></script>
+{% endblock %}
 
 {% block contenttitle %}
     {{profile_user.username}}'s /r/Homebrewing Profile
@@ -34,7 +40,7 @@
     {% if contest_entries %}
         <div class="medium-title">Contest Entries</div>
         <p>
-            <ul>
+            <ul id="contest-entries" {% if is_profile_owner %}ng-app="contestApp" ng-controller="ContestSignupCtrl" ng-init="init({{contest_year.contest_year}})" {% endif %}>
                 {% for entry in contest_entries %}
                     <li>
                         <a href="{% url "entry" entry.style.contest_year.contest_year entry.style.id entry.id %}">
@@ -45,7 +51,9 @@
                         </a>
 
                         {% if is_profile_owner %}
-
+                            <a href="#" id="delete-entry" ng-confirm-click="Are you sure you want to withdraw the entry?" ng-confirmed-click="deleteEntry({{entry.id}}, {{entry.style.id}}, {{entry.style.contest_year.contest_year}})">
+                                <img src="/static/icons/cross.png" />
+                            </a>
                         {% endif %}
                     </li>
                 {% endfor %}

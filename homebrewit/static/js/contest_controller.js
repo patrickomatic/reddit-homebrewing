@@ -5,20 +5,42 @@ contestApp.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
 }]);
 
+contestApp.directive("ngConfirmClick", [
+    function() {
+        return {
+            link: function(scope, element, attr) {
+                element.bind('click', function(event) {
+                    if (window.confirm(attr.ngConfirmClick || "Are you sure?"))
+                        scope.$eval(attr.ngConfirmedClick);
+                });
+            }
+        };
+    }
+]);
+
 contestApp.controller('ContestSignupCtrl', function($scope, $http, $location) {
     $scope.init = function(contestYear) {
-        $scope.contestYear = contestYear;
+        if (contestYear) { 
+            $scope.contestYear = contestYear;
 
-        $http.get('/contests/' + $scope.contestYear + '/beer_styles').success(function(data) {
-            $scope.styles = data;
-            $scope.entry = {};
-        });
+            $http.get('/contests/' + $scope.contestYear + '/beer_styles').success(function(data) {
+                $scope.styles = data;
+                $scope.entry = {};
+            });
+        }
     };
 
     $scope.chosen = function(style) {
         $scope.entry.style = style;
     };
 
+
+    $scope.deleteEntry = function(id, styleId, contestYear) {
+        $http.delete('/contests/' + contestYear + '/styles/' + styleId + '/entries/' + id).success(function(data) { 
+            // XXX better experience here, no need to reload
+            window.location = "/profile/";
+        });
+    };
 
     $scope.registerForContest = function() {
         $scope.submitting = true;

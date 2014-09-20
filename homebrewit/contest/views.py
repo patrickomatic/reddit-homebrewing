@@ -36,10 +36,10 @@ class EntriesListView(generics.ListCreateAPIView):
     model = Entry
 
     def get_queryset(self):
-        Entry.objects.filter(contest_year__contest_year=self.kwargs['contest_year'])
+        return Entry.objects.filter(contest_year__contest_year=self.kwargs['contest_year'])
 
     def get_object(self):
-        Entry.get(pk=self.kwargs['entry_id'])
+        return Entry.get(pk=self.kwargs['entry_id'])
 
     def pre_save(self, entry):
         entry.user_id = self.request.user.id
@@ -112,8 +112,12 @@ class BJCPJudgingResultForm(ModelForm):
     class Meta:
         model = BJCPJudgingResult
 
-class EntryView(TemplateView):
+class EntryView(TemplateView, generics.DestroyAPIView):
+    serializer_class = EntrySerializer
+    model = Entry
+
     def get_object(self):
+        # XXX validate contest_year and owner
         return Entry.objects.get(pk=self.kwargs['entry_id'])
 
     def get_template_names(self):
@@ -130,6 +134,11 @@ class EntryView(TemplateView):
             'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result),  # XXX turn this view into a FormView
             'judging_results': JudgingResult.objects.filter(entry=entry), # XXX make this a method on entry
         }
+
+    def pre_delete(self, obj):
+        if obj.user != self.request.user:
+            raise RuntimeError(request.user.username + " does not own this")
+
 
 
 @login_required

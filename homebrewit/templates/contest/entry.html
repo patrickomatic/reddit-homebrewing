@@ -8,6 +8,7 @@
 
 {% block contenttitle %}
     {% comment %}
+    TODO why don't work?
     <a title="{{entry.user.username}}" href="{% url "profile" entry.user.username %}">{{entry.user}}</a> 
     {% endcomment %}
     <a title="{{entry.user.username}}" href="/profile/{{entry.user.username}}">{{entry.user}}</a> 
@@ -17,14 +18,14 @@
 
 
 {% block content %}
-    {% if entry.special_ingredients %}
-        <div class="small-title">Special Ingredients: {{entry.special_ingredients}}</div><br />
-    {% endif %}
-
-    <div class="small-header">
-        Style: {{entry.style.name}}
-    </div>
     <div class="small-header">Year: {{entry.style.contest_year.contest_year}}</div>
+    <div class="small-header">Style: {{entry.style.name}}</div>
+    {% if entry.special_ingredients %}
+        <div class="small-header">Special Ingredients: {{entry.special_ingredients}}</div>
+    {% endif %}
+    {% for beer_detail in entry.entry_beer_details.all %}
+        <div class="small-header">{{beer_detail.beer_detail.description}}: {{beer_detail.value}}</div>
+    {% endfor %}
 
     {% if judging_results %}
         {% for result in judging_results %}
