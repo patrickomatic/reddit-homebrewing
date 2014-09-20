@@ -139,6 +139,8 @@ class EntryView(TemplateView, generics.DestroyAPIView):
         if obj.user != self.request.user:
             raise RuntimeError(request.user.username + " does not own this")
 
+        if not obj.contest_year.allowing_entries:
+            raise RuntimeError("not allowed to delete")
 
 
 @login_required

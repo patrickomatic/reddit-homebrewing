@@ -50,7 +50,7 @@
                             {{entry.style}}
                         </a>
 
-                        {% if is_profile_owner %}
+                        {% if is_profile_owner and entry.contest_year.allowing_entries %}
                             <a href="#" id="delete-entry" ng-confirm-click="Are you sure you want to withdraw the entry?" ng-confirmed-click="deleteEntry({{entry.id}}, {{entry.style.id}}, {{entry.style.contest_year.contest_year}})">
                                 <img src="/static/icons/cross.png" />
                             </a>
