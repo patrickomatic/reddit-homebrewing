@@ -1,5 +1,7 @@
+- [ ] A printable sheet to include when shipping (and putting the appropriate instructions in place)
+- [ ] Link to change password
 - [ ] List beer details when showing an entry
-- [ ] Add a success message when saving works
+- [ ] Add a success message when creating a new entry
 - [ ] Make a way to edit entry names
 - [ ] Fix tests
 - [ ] Why is the footer on a score page different (http://reddithomebrewing.com/contests/2013/styles/20/entries/475)
