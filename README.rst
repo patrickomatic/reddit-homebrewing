@@ -5,3 +5,28 @@
 
 reddit Homebrewing app.  Handles the registration and contest results
 from the annual homebrewing contest.  
+
+Installation
+------------
+
+1. Install libmemcached.
+
+.. code:: bash
+
+   # OS X
+   $ brew install libmemcached
+
+2. Create a virtual environment and start it up.
+
+.. code:: bash
+
+   $ virtualenv .
+   New python executable in ./bin/python
+   Installing setuptools, pip...done.
+   $ . bin/activate
+
+3. Install dependencies!
+
+.. code:: bash
+
+   (reddit-homebrewing) $ pip install -r requirements.txt
