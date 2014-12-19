@@ -18,8 +18,12 @@ MANAGERS = ADMINS
 if DEBUG:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3', 
-            'NAME': os.path.expanduser(os.path.join('~', '.homebrewit-db')),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'homebrewit',
+            'USER': 'homebrewit',
+            'PASSWORD': 'h0m3br3w1t',
+            'HOST': 'localhost',
+            'PORT': '',   
         }
     }
 else:

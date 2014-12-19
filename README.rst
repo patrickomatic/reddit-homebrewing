@@ -14,7 +14,8 @@ Installation
 .. code:: bash
 
    # OS X
-   $ brew install libmemcached
+   $ brew install libmemcached 
+   $ brew install postgresql
 
 2. Create a virtual environment and start it up.
 
@@ -30,3 +31,16 @@ Installation
 .. code:: bash
 
    (reddit-homebrewing) $ pip install -r requirements.txt
+
+4. Setup PostgreSQL
+
+.. code:: bash
+
+   (reddit-homebrewing) $ createdb homebrewit
+   (reddit-homebrewing) $ createuser -P homebrewit
+
+5. Run it!
+
+.. code:: bash
+
+   (reddit-homebrewing) $ foreman s
