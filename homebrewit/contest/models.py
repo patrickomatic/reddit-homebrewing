@@ -308,54 +308,9 @@ class BJCPJudgingResult(models.Model):
     judge = models.ForeignKey(User, db_index=True)
     judge_bjcp_id = models.TextField(null=True, blank=True)
 
-
-    # descriptor definitions
-    acetaldehyde = models.BooleanField(default=False, help_text='Green apple-like aroma and flavor.')
-    alcoholic = models.BooleanField(default=False, help_text='The aroma, flavor, and warming effect of ethanol and higher alcohols.  Sometimes described as "hot."')
-    astringent = models.BooleanField(default=False, help_text='Puckering, lingering, harshness and/or dryness in the finish/aftertaste.')
-    diacetyl = models.BooleanField(default=False, help_text='Artifical butter, butterscotch or coffee aroma and flavor.  Sometimes perceived as a slickness on the tongue.')
-    dms = models.BooleanField(default=False, help_text='At low levels a sweet, cooked or canned corn-like aroma and flavor.', verbose_name='DMS (dimethyl sulfide)')
-    estery = models.BooleanField(default=False, help_text='Aroma and/or flavor of any ester (fruits, fruit flavorings or roses)')
-    grassy = models.BooleanField(default=False, help_text='Aroma/flavor of fresh-cut grass or green leaves.')
-    light_struck = models.BooleanField(default=False, help_text='Similar to the aroma of a skunk.')
-    metallic = models.BooleanField(default=False, help_text='Tinny, coiny, copper, iron or blood-like flavor.')
-    musty = models.BooleanField(default=False, help_text='Stale, musty or moldy aromas/flavors.')
-    oxidized = models.BooleanField(default=False, help_text='Any one or combinations of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
-    phenolic = models.BooleanField(default=False, help_text='Spicy (clove, pepper), smokey, plastic adhesive strip and/or medicinal (chlorophenolic.)')
-    solvent = models.BooleanField(default=False, help_text='Aromas and flavors of higher alcohols (fusel alcohols.)  Similar to acetone or lacquer thinner aromas.')
-    sour_acidic = models.BooleanField(default=False, help_text='Tartness in aroma and flavor.  Can be sharp and clean (lactic acid) or vinegar-like (acetic acid.)', verbose_name='Sour/Acidic')
-    sulfur = models.BooleanField(default=False, help_text='The aroma of rotten eggs or burning matches.')
-    vegetal = models.BooleanField(default=False, help_text='Cooked, canned or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)')
-    yeasty = models.BooleanField(default=False, help_text='A bready, sulfury or yeast-like aroma or flavor.')
-
-
-    # actual scoring areas and points
-    aroma_description = models.TextField()
-    aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
-
-    appearance_description = models.TextField()
-    appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
-
-    flavor_description = models.TextField()
-    flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
-
-    mouthfeel_description = models.TextField()
-    mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
-
-    overall_impression_description = models.TextField()
-    overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
-
     stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
-
     technical_merit = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = significant flaws, 5 = flawless')
-
     intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
-
-
-    def overall_rating(self):
-        return self.aroma_score + self.appearance_score \
-                + self.flavor_score + self.mouthfeel_score \
-                + self.overall_impression_score
 
 
     def get_description(self):
@@ -374,12 +329,92 @@ class BJCPJudgingResult(models.Model):
         else:
             return "Problematic (%d / 50)" % rating
 
-
     def __unicode__(self):
         if self.judge:
             return self.get_description() + " (" + self.judge.username + ")"
         else:
             return self.get_description()
+
+
+class BJCPBeerJudgingResult(BJCPJudgingResult):
+    acetaldehyde = models.BooleanField(default=False, help_text='Green apple-like aroma and flavor.')
+    alcoholic = models.BooleanField(default=False, help_text='The aroma, flavor, and warming effect of ethanol and higher alcohols.  Sometimes described as "hot."')
+    astringent = models.BooleanField(default=False, help_text='Puckering, lingering, harshness and/or dryness in the finish/aftertaste.')
+    diacetyl = models.BooleanField(default=False, help_text='Artifical butter, butterscotch or coffee aroma and flavor.  Sometimes perceived as a slickness on the tongue.')
+    dms = models.BooleanField(default=False, help_text='At low levels a sweet, cooked or canned corn-like aroma and flavor.', verbose_name='DMS (dimethyl sulfide)')
+    estery = models.BooleanField(default=False, help_text='Aroma and/or flavor of any ester (fruits, fruit flavorings or roses)')
+    grassy = models.BooleanField(default=False, help_text='Aroma/flavor of fresh-cut grass or green leaves.')
+    light_struck = models.BooleanField(default=False, help_text='Similar to the aroma of a skunk.')
+    metallic = models.BooleanField(default=False, help_text='Tinny, coiny, copper, iron or blood-like flavor.')
+    musty = models.BooleanField(default=False, help_text='Stale, musty or moldy aromas/flavors.')
+    oxidized = models.BooleanField(default=False, help_text='Any one or combinations of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
+    phenolic = models.BooleanField(default=False, help_text='Spicy (clove, pepper), smokey, plastic adhesive strip and/or medicinal (chlorophenolic.)')
+    solvent = models.BooleanField(default=False, help_text='Aromas and flavors of higher alcohols (fusel alcohols.)  Similar to acetone or lacquer thinner aromas.')
+    sour_acidic = models.BooleanField(default=False, help_text='Tartness in aroma and flavor.  Can be sharp and clean (lactic acid) or vinegar-like (acetic acid.)', verbose_name='Sour/Acidic')
+    sulfur = models.BooleanField(default=False, help_text='The aroma of rotten eggs or burning matches.')
+    vegetal = models.BooleanField(default=False, help_text='Cooked, canned or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)')
+    yeasty = models.BooleanField(default=False, help_text='A bready, sulfury or yeast-like aroma or flavor.')
+
+    aroma_description = models.TextField()
+    aroma_score = models.PositiveSmallIntegerField(choices=integer_range(12))
+
+    appearance_description = models.TextField()
+    appearance_score = models.PositiveSmallIntegerField(choices=integer_range(3))
+
+    flavor_description = models.TextField()
+    flavor_score = models.PositiveSmallIntegerField(choices=integer_range(20))
+
+    mouthfeel_description = models.TextField()
+    mouthfeel_score = models.PositiveSmallIntegerField(choices=integer_range(5))
+
+    overall_impression_description = models.TextField()
+    overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
+
+
+    def overall_rating(self):
+        return self.aroma_score + self.appearance_score \
+                + self.flavor_score + self.mouthfeel_score \
+                + self.overall_impression_score
+
+
+class BJCPCiderJudgingResult(BJCPJudgingResult):
+    acetaldehyde = models.BooleanField(default=False, help_text='Green apple candy aroma/flavor')
+    acetified = models.BooleanField(default=False, help_text='(Volatile Acidity, VA) Ethyl acetate (solvent, nail polish) or acetic acid (vinegar, harsh in back of throat).')
+    acidic = models.BooleanField(default=False, help_text='Sour-tart flavor.  Typically from one of several acids: malic, lactic, or citric. Must be in balance.')
+    alcoholic = models.BooleanField(default=False, help_text='The warm effect of ethanol/higher alcohols.')
+    astringent = models.BooleanField(default=False, help_text='A drying sensation in the mouth similar to chewing on a teabag. Must be in balance if present.')
+    bitter = models.BooleanField(default=False, help_text='A sharp taste that is unpleasant at high levels.')
+    diacetyl = models.BooleanField(default=False, help_text='Butter of butterscotch aroma or flavor.')
+    farmyard = models.BooleanField(default=False, help_text='Manure-like (cow or pig) or barnyard (horse stall on a warm day).')
+    fruity = models.BooleanField(default=False, help_text='The aroma and flavor of fresh fruits that may be appropriate in some styles and not others.')
+    metallic = models.BooleanField(default=False, help_text='Tinny, coiny, copper, iron or blood-like flavor.')
+    mousy = models.BooleanField(default=False, help_text='Taste evocative of the smell of a rodent\'s den/cage.')
+    oaky = models.BooleanField(default=False, help_text='A taste or aroma due to an extend length of time in a barrel or on wood chips. "Barrel character."')
+    oily_ropy = models.BooleanField(default=False, help_text='A sheen in visual appearance, as an unpleasant viscous character proceeding in a ropy character.', verbose_name='Oily/Ropy')
+    oxidized = models.BooleanField(default=False, help_text='Any one or combinations of winy/vinous, cardboard, papery, or sherry-like aromas and flavors.')
+    phenolic = models.BooleanField(default=False, help_text='Plastic, band-aid and/or medicinal')
+    spicy_smoky = models.BooleanField(default=False, help_text='Spice, cloves, smoky, ham.', verbose_name='Spicy/Smoky')
+    sulfite = models.BooleanField(default=False, help_text='Rotten eggs, from fermentation problems')
+    sweet = models.BooleanField(default=False, help_text='BAsic taste of sugar.  Must be in balance if present.')
+    thin = models.BooleanField(default=False, help_text='Watery, lacking body or "stuffing."')
+    vegetal = models.BooleanField(default=False, help_text='Cooked, canned or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)')
+
+    aroma_description = models.TextField()
+    aroma_score = models.PositiveSmallIntegerField(choices=integer_range(10))
+
+    appearance_description = models.TextField()
+    appearance_score = models.PositiveSmallIntegerField(choices=integer_range(6))
+
+    flavor_description = models.TextField()
+    flavor_score = models.PositiveSmallIntegerField(choices=integer_range(24))
+
+    overall_impression_description = models.TextField()
+    overall_impression_score = models.PositiveSmallIntegerField(choices=integer_range(10))
+
+
+    def overall_rating(self):
+        return self.aroma_score + self.appearance_score \
+                + self.flavor_score + self.overall_impression_score
 
 
 class JudgingResult(models.Model):

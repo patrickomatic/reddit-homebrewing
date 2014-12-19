@@ -1,110 +1,51 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Changing field 'ContestYear.prize_description'
-        db.alter_column(u'contest_contestyear', 'prize_description', self.gf('django.db.models.fields.TextField')(null=True))
-
-        # Changing field 'JudgingResult.mouthfeel_description'
-        db.alter_column(u'contest_judgingresult', 'mouthfeel_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'JudgingResult.overall_impression_description'
-        db.alter_column(u'contest_judgingresult', 'overall_impression_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'JudgingResult.flavor_description'
-        db.alter_column(u'contest_judgingresult', 'flavor_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'JudgingResult.judge_bjcp_id'
-        db.alter_column(u'contest_judgingresult', 'judge_bjcp_id', self.gf('django.db.models.fields.TextField')(null=True))
-
-        # Changing field 'JudgingResult.aroma_description'
-        db.alter_column(u'contest_judgingresult', 'aroma_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'JudgingResult.appearance_description'
-        db.alter_column(u'contest_judgingresult', 'appearance_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BeerStyle.name'
-        db.alter_column(u'contest_beerstyle', 'name', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BJCPJudgingResult.flavor_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'flavor_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BJCPJudgingResult.aroma_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'aroma_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BJCPJudgingResult.judge_bjcp_id'
-        db.alter_column(u'contest_bjcpjudgingresult', 'judge_bjcp_id', self.gf('django.db.models.fields.TextField')(null=True))
-
-        # Changing field 'BJCPJudgingResult.mouthfeel_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'mouthfeel_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BJCPJudgingResult.overall_impression_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'overall_impression_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'BJCPJudgingResult.appearance_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'appearance_description', self.gf('django.db.models.fields.TextField')())
-
-        # Changing field 'Entry.special_ingredients'
-        db.alter_column(u'contest_entry', 'special_ingredients', self.gf('django.db.models.fields.TextField')(null=True))
-
-        # Changing field 'Entry.beer_name'
-        db.alter_column(u'contest_entry', 'beer_name', self.gf('django.db.models.fields.TextField')(null=True))
+        for jr in orm.BJCPJudgingResult.objects.all():
+            new_judging_result = orm.BJCPBeerJudgingResult(
+                    acetaldehyde=jr.old_acetaldehyde,
+                    alcoholic=jr.old_alcoholic,
+                    astringent=jr.old_astringent,
+                    diacetyl=jr.old_diacetyl,
+                    dms=jr.old_dms,
+                    estery=jr.old_estery,
+                    grassy=jr.old_grassy,
+                    light_struck=jr.old_light_struck,
+                    metallic=jr.old_metallic,
+                    musty=jr.old_musty,
+                    oxidized=jr.old_oxidized,
+                    phenolic=jr.old_phenolic,
+                    solvent=jr.old_solvent,
+                    sour_acidic=jr.old_sour_acidic,
+                    sulfur=jr.old_sulfur,
+                    vegetal=jr.old_vegetal,
+                    yeasty=jr.old_yeasty,
+                    aroma_description=jr.old_aroma_description,
+                    aroma_score=jr.old_aroma_score,
+                    appearance_description=jr.old_appearance_description,
+                    appearance_score=jr.old_appearance_score,
+                    flavor_description=jr.old_flavor_description,
+                    flavor_score=jr.old_flavor_score,
+                    mouthfeel_description=jr.old_mouthfeel_description,
+                    mouthfeel_score=jr.old_mouthfeel_score,
+                    overall_impression_description=jr.old_overall_impression_description,
+                    overall_impression_score=jr.old_overall_impression_score,
+                    judge=jr.judge,
+                    judge_bjcp_id=jr.judge_bjcp_id,
+                    stylistic_accuracy=jr.stylistic_accuracy,
+                    technical_merit=jr.technical_merit,
+                    intangibles=jr.intangibles)
+ 
+            new_judging_result.save()
 
     def backwards(self, orm):
-
-        # Changing field 'ContestYear.prize_description'
-        db.alter_column(u'contest_contestyear', 'prize_description', self.gf('django.db.models.fields.CharField')(max_length=5000, null=True))
-
-        # Changing field 'JudgingResult.mouthfeel_description'
-        db.alter_column(u'contest_judgingresult', 'mouthfeel_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'JudgingResult.overall_impression_description'
-        db.alter_column(u'contest_judgingresult', 'overall_impression_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'JudgingResult.flavor_description'
-        db.alter_column(u'contest_judgingresult', 'flavor_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'JudgingResult.judge_bjcp_id'
-        db.alter_column(u'contest_judgingresult', 'judge_bjcp_id', self.gf('django.db.models.fields.CharField')(max_length=255, null=True))
-
-        # Changing field 'JudgingResult.aroma_description'
-        db.alter_column(u'contest_judgingresult', 'aroma_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'JudgingResult.appearance_description'
-        db.alter_column(u'contest_judgingresult', 'appearance_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'BeerStyle.name'
-        db.alter_column(u'contest_beerstyle', 'name', self.gf('django.db.models.fields.CharField')(max_length=255))
-
-        # Changing field 'BJCPJudgingResult.flavor_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'flavor_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'BJCPJudgingResult.aroma_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'aroma_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'BJCPJudgingResult.judge_bjcp_id'
-        db.alter_column(u'contest_bjcpjudgingresult', 'judge_bjcp_id', self.gf('django.db.models.fields.CharField')(max_length=255, null=True))
-
-        # Changing field 'BJCPJudgingResult.mouthfeel_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'mouthfeel_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'BJCPJudgingResult.overall_impression_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'overall_impression_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'BJCPJudgingResult.appearance_description'
-        db.alter_column(u'contest_bjcpjudgingresult', 'appearance_description', self.gf('django.db.models.fields.CharField')(max_length=5000))
-
-        # Changing field 'Entry.special_ingredients'
-        db.alter_column(u'contest_entry', 'special_ingredients', self.gf('django.db.models.fields.CharField')(max_length=5000, null=True))
-
-        # Changing field 'Entry.beer_name'
-        db.alter_column(u'contest_entry', 'beer_name', self.gf('django.db.models.fields.CharField')(max_length=255, null=True))
+        "Write your backwards methods here."
 
     models = {
         u'auth.group': {
@@ -163,10 +104,10 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'judge': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.TextField', [], {}),
-            'parent_style': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'subcategories'", 'null': 'True', 'to': u"orm['contest.BeerStyle']"})
+            'parent_style': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'subcategories'", 'null': 'True', 'to': u"orm['contest.BeerStyle']"})
         },
-        u'contest.bjcpjudgingresult': {
-            'Meta': {'object_name': 'BJCPJudgingResult'},
+        u'contest.bjcpbeerjudgingresult': {
+            'Meta': {'object_name': 'BJCPBeerJudgingResult', '_ormbases': [u'contest.BJCPJudgingResult']},
             'acetaldehyde': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'alcoholic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'appearance_description': ('django.db.models.fields.TextField', [], {}),
@@ -174,16 +115,13 @@ class Migration(SchemaMigration):
             'aroma_description': ('django.db.models.fields.TextField', [], {}),
             'aroma_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'astringent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'bjcpjudgingresult_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['contest.BJCPJudgingResult']", 'unique': 'True', 'primary_key': 'True'}),
             'diacetyl': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'dms': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'estery': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'flavor_description': ('django.db.models.fields.TextField', [], {}),
             'flavor_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'grassy': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'intangibles': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
-            'judge': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'judge_bjcp_id': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'light_struck': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'metallic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'mouthfeel_description': ('django.db.models.fields.TextField', [], {}),
@@ -195,11 +133,77 @@ class Migration(SchemaMigration):
             'phenolic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'solvent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'sour_acidic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'stylistic_accuracy': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'sulfur': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'technical_merit': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'vegetal': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'yeasty': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
+        u'contest.bjcpciderjudgingresult': {
+            'Meta': {'object_name': 'BJCPCiderJudgingResult', '_ormbases': [u'contest.BJCPJudgingResult']},
+            'acetaldehyde': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'acetified': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'acidic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'alcoholic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'appearance_description': ('django.db.models.fields.TextField', [], {}),
+            'appearance_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'aroma_description': ('django.db.models.fields.TextField', [], {}),
+            'aroma_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'astringent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'bitter': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'bjcpjudgingresult_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['contest.BJCPJudgingResult']", 'unique': 'True', 'primary_key': 'True'}),
+            'diacetyl': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'farmyard': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'flavor_description': ('django.db.models.fields.TextField', [], {}),
+            'flavor_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'fruity': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'metallic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'mousy': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'oaky': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'oily_ropy': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'overall_impression_description': ('django.db.models.fields.TextField', [], {}),
+            'overall_impression_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'oxidized': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'phenolic': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'spicy_smoky': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sulfite': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sweet': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'thin': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'vegetal': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
+        u'contest.bjcpjudgingresult': {
+            'Meta': {'object_name': 'BJCPJudgingResult'},
+            'old_acetaldehyde': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_alcoholic': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_appearance_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'old_appearance_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_aroma_description': ('django.db.models.fields.TextField', [], {'null': 'True'}),
+            'old_aroma_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_astringent': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_diacetyl': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_dms': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_estery': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_flavor_description': ('django.db.models.fields.TextField', [], {'null': 'True'}),
+            'old_flavor_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_grassy': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'intangibles': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'judge': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'judge_bjcp_id': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'old_light_struck': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_metallic': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_mouthfeel_description': ('django.db.models.fields.TextField', [], {'null': 'True'}),
+            'old_mouthfeel_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_musty': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_overall_impression_description': ('django.db.models.fields.TextField', [], {'null': 'True'}),
+            'old_overall_impression_score': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_oxidized': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_phenolic': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_solvent': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_sour_acidic': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'stylistic_accuracy': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
+            'old_sulfur': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'technical_merit': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
+            'old_vegetal': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'}),
+            'old_yeasty': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'null': 'True'})
         },
         u'contest.contestyear': {
             'Meta': {'ordering': "('-contest_year',)", 'object_name': 'ContestYear'},
@@ -253,3 +257,4 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['contest']
+    symmetrical = True
