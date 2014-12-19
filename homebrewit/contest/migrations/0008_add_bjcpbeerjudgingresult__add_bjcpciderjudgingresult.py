@@ -35,7 +35,7 @@ class Migration(SchemaMigration):
         db.rename_column(u'contest_bjcpjudgingresult', 'solvent', 'old_solvent')
         db.alter_column(u'contest_bjcpjudgingresult', 'old_solvent', self.gf('django.db.models.fields.BooleanField')(null=True))
         db.rename_column(u'contest_bjcpjudgingresult', 'sour_acidic', 'old_sour_acidic')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_acidic', self.gf('django.db.models.fields.BooleanField')(null=True))
+        db.alter_column(u'contest_bjcpjudgingresult', 'old_sour_acidic', self.gf('django.db.models.fields.BooleanField')(null=True))
         db.rename_column(u'contest_bjcpjudgingresult', 'sulfur', 'old_sulfur')
         db.alter_column(u'contest_bjcpjudgingresult', 'old_sulfur', self.gf('django.db.models.fields.BooleanField')(null=True))
         db.rename_column(u'contest_bjcpjudgingresult', 'vegetal', 'old_vegetal')
