@@ -6,62 +6,21 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
-        db.rename_column(u'contest_bjcpjudgingresult', 'acetaldehyde', 'old_acetaldehyde')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_acetaldehyde', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'alcoholic', 'old_alcoholic')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_alcoholic', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'astringent', 'old_astringent')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_astringent', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'diacetyl', 'old_diacetyl')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_diacetyl', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'dms', 'old_dms')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_dms', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'estery', 'old_estery')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_estery', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'grassy', 'old_grassy')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_grassy', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'light_struck', 'old_light_struck')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_light_struck', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'metallic', 'old_metallic')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_metallic', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'musty', 'old_musty')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_musty', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'oxidized', 'old_oxidized') 
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_oxidized', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'phenolic', 'old_phenolic')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_phenolic', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'solvent', 'old_solvent')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_solvent', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'sour_acidic', 'old_sour_acidic')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_sour_acidic', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'sulfur', 'old_sulfur')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_sulfur', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'vegetal', 'old_vegetal')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_vegetal', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'yeasty', 'old_yeasty')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_yeasty', self.gf('django.db.models.fields.BooleanField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'aroma_description', 'old_aroma_description')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_aroma_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'aroma_score', 'old_aroma_score')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_aroma_score', self.gf('django.db.models.fields.IntegerField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'appearance_description', 'old_appearance_description')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_appearance_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'appearance_score', 'old_appearance_score')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_appearance_score', self.gf('django.db.models.fields.IntegerField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'flavor_description', 'old_flavor_description')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_flavor_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'flavor_score', 'old_flavor_score')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_flavor_score', self.gf('django.db.models.fields.IntegerField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'mouthfeel_description', 'old_mouthfeel_description')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_mouthfeel_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'mouthfeel_score', 'old_mouthfeel_score')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_mouthfeel_score', self.gf('django.db.models.fields.IntegerField')(null=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'overall_impression_description', 'old_overall_impression_description')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_overall_impression_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True))
-        db.rename_column(u'contest_bjcpjudgingresult', 'overall_impression_score', 'old_overall_impression_score')
-        db.alter_column(u'contest_bjcpjudgingresult', 'old_overall_impression_score', self.gf('django.db.models.fields.IntegerField')(null=True))
+        for column in ['acetaldehyde', 'alcoholic', 'astringent', 'diacetyl', 'dms', 'estery', 'grassy', \
+                        'light_struck', 'metallic', 'musty', 'oxidized', 'phenolic', 'solvent', 'sour_acidic', \
+                        'sulfur', 'vegetal', 'yeasty']:
+            db.rename_column(u'contest_bjcpjudgingresult', column, "old_%s" % column)
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.BooleanField')(null=True))
+
+        for column in ['aroma_score', 'appearance_score', 'flavor_score', 'mouthfeel_score', 'overall_impression_score']:
+            db.rename_column(u'contest_bjcpjudgingresult', column, "old_%s" % column)
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.IntegerField')(null=True))
+
+        for column in ['aroma_description', 'appearance_description', 'flavor_description', 'mouthfeel_description', 'overall_impression_description']:
+            db.rename_column(u'contest_bjcpjudgingresult', column, "old_%s" % column)
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.TextField')(null=True))
+
 
         # Adding model 'BJCPBeerJudgingResult'
         db.create_table(u'contest_bjcpbeerjudgingresult', (
@@ -137,33 +96,19 @@ class Migration(SchemaMigration):
         # Deleting model 'BJCPCiderJudgingResult'
         db.delete_table(u'contest_bjcpciderjudgingresult')
 
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_acetaldehyde', 'acetaldehyde')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_alcoholic', 'alcoholic')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_astringent', 'astringent')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_diacetyl', 'diacetyl')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_dms', 'dms')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_estery', 'estery')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_grassy', 'grassy')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_light_struck', 'light_struck')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_metallic', 'metallic')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_musty', 'musty')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_oxidized', 'oxidized') 
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_phenolic', 'phenolic')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_solvent', 'solvent')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_sour_acidic', 'sour_acidic')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_sulfur', 'sulfur')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_vegetal', 'vegetal')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_yeasty', 'yeasty')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_aroma_description', 'aroma_description')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_aroma_score', 'aroma_score')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_appearance_description', 'appearance_description')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_appearance_score', 'appearance_score')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_flavor_description', 'flavor_description')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_flavor_score', 'flavor_score')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_mouthfeel_description', 'mouthfeel_description')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_mouthfeel_score', 'mouthfeel_score')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_overall_impression_description', 'overall_impression_description')
-        db.rename_column(u'contest_bjcpjudgingresult', 'old_overall_impression_score', 'overall_impression_score')
+        for column in ['acetaldehyde', 'alcoholic', 'astringent', 'diacetyl', 'dms', 'estery', 'grassy', \
+                        'light_struck', 'metallic', 'musty', 'oxidized', 'phenolic', 'solvent', 'sour_acidic', \
+                        'sulfur', 'vegetal', 'yeasty']:
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.BooleanField')(null=False))
+            db.rename_column(u'contest_bjcpjudgingresult', "old_%s" % column, column)
+
+        for column in ['aroma_score', 'appearance_score', 'flavor_score', 'mouthfeel_score', 'overall_impression_score']:
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.IntegerField')(null=False))
+            db.rename_column(u'contest_bjcpjudgingresult', "old_%s" % column, column)
+
+        for column in ['aroma_description', 'appearance_description', 'flavor_description', 'mouthfeel_description', 'overall_impression_description']:
+            db.alter_column(u'contest_bjcpjudgingresult', "old_%s" % column, self.gf('django.db.models.fields.TextField')(null=False))
+            db.rename_column(u'contest_bjcpjudgingresult', "old_%s" % column, column)
 
 
     models = {
