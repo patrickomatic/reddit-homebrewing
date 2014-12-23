@@ -7,7 +7,14 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        for jr in orm.BJCPJudgingResult.objects.all():
+        for entry in orm.Entry.objects.all():
+            try:
+                jr = entry.bjcp_judging_result
+            except:
+                continue
+
+            if not jr: continue
+
             new_judging_result = orm.BJCPBeerJudgingResult(
                     acetaldehyde=jr.old_acetaldehyde,
                     alcoholic=jr.old_alcoholic,
@@ -43,6 +50,11 @@ class Migration(DataMigration):
                     intangibles=jr.intangibles)
  
             new_judging_result.save()
+            entry.bjcp_judging_result = new_judging_result
+            entry.save()
+
+            jr.delete()
+
 
     def backwards(self, orm):
         "Write your backwards methods here."

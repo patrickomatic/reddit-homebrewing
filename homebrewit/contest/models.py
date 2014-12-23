@@ -224,8 +224,8 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
-    bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True)
-    beer_name = models.TextField( null=True, blank=True)
+    bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True, related_name='entries')
+    beer_name = models.TextField(null=True, blank=True)
     special_ingredients = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
     winner = models.BooleanField(default=False)
@@ -313,8 +313,16 @@ class BJCPJudgingResult(models.Model):
     intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
 
 
+    def overall_rating(self):
+        if hasattr(self, 'bjcpbeerjudgingresult'):
+            return self.bjcpbeerjudgingresult.overall_rating()
+        elif hasattr(self, 'bjcpciderjudgingresult'):
+            return self.bjcpciderjudgingresult.overall_rating()
+
     def get_description(self):
         rating = self.overall_rating()
+
+        if not rating: return ""
 
         if rating > 44:
             return "Outstanding (%d / 50)" % rating

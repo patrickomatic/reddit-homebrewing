@@ -1,4 +1,4 @@
-import datetime, json, logging
+import datetime, json
 
 from django import forms
 from django.conf import settings
@@ -18,9 +18,6 @@ from .forms import JudgeEntrySelectionForm, JudgingForm
 from .models import *
 from .serializers import *
 from homebrewit.signup.models import UserProfile
-
-
-logger = logging.getLogger(__name__)
 
 
 class BeerStyleListView(generics.ListAPIView):
@@ -108,9 +105,13 @@ def contest_year(request, year):
                 'contest_year': contest_year})
 
 
-class BJCPJudgingResultForm(ModelForm):
+class BJCPBeerJudgingResultForm(ModelForm):
     class Meta:
-        model = BJCPJudgingResult
+        model = BJCPBeerJudgingResult
+
+class BJCPCiderJudgingResultForm(ModelForm):
+    class Meta:
+        model = BJCPCiderJudgingResult
 
 class EntryView(TemplateView, generics.DestroyAPIView):
     serializer_class = EntrySerializer
@@ -124,14 +125,28 @@ class EntryView(TemplateView, generics.DestroyAPIView):
         # this split is an unfortunate artifact of switching the way that we judge the contest
         # after already having data.  basically, if it uses the new BJCP scoresheet, we show
         # that template, otherwise the other (old) one
-        return ['contest/bjcp_entry.html' if self.get_object().bjcp_judging_result else 'contest/entry.html']
+        entry = self.get_object()
+        if entry.bjcp_judging_result:
+            if hasattr(entry.bjcp_judging_result, 'bjcpciderjudgingresult'):
+                return 'contest/bjcp_cider_entry.html'
+            else:
+                return 'contest/bjcp_beer_entry.html'
+        else:
+            return 'contest/entry.html'
 
     def get_context_data(self, **kwargs):
         entry = self.get_object()
 
+        if hasattr(entry.bjcp_judging_result, 'bjcpciderjudgingresult'):
+            form = BJCPCiderJudgingResultForm(instance=entry.bjcp_judging_result.bjcpciderjudgingresult)
+        elif hasattr(entry.bjcp_judging_result, 'bjcpbeerjudgingresult'):
+            form = BJCPBeerJudgingResultForm(instance=entry.bjcp_judging_result.bjcpbeerjudgingresult)
+        else:
+            form = None
+
         return {
             'entry': entry,
-            'form': BJCPJudgingResultForm(instance=entry.bjcp_judging_result),  # XXX turn this view into a FormView
+            'form': form,  # XXX turn this view into a FormView
             'judging_results': JudgingResult.objects.filter(entry=entry), # XXX make this a method on entry
         }
 
