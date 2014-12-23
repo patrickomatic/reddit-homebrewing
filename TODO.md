@@ -1,4 +1,5 @@
 - [ ] A printable sheet to include when shipping (and putting the appropriate instructions in place)
+- [ ] Reverse the relationship of entries and judging results so that you can associate multiple score sheets
 - [ ] Link to change password
 - [ ] List beer details when showing an entry
 - [ ] Add a success message when creating a new entry
