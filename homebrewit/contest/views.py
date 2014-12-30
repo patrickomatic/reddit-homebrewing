@@ -126,8 +126,8 @@ class EntryView(TemplateView, generics.DestroyAPIView):
         # after already having data.  basically, if it uses the new BJCP scoresheet, we show
         # that template, otherwise the other (old) one
         entry = self.get_object()
-        if entry.bjcp_judging_result:
-            if hasattr(entry.bjcp_judging_result, 'bjcpciderjudgingresult'):
+        if entry.is_bjcp_judging_result():
+            if entry.is_cider_entry():
                 return 'contest/bjcp_cider_entry.html'
             else:
                 return 'contest/bjcp_beer_entry.html'
@@ -137,16 +137,16 @@ class EntryView(TemplateView, generics.DestroyAPIView):
     def get_context_data(self, **kwargs):
         entry = self.get_object()
 
-        if hasattr(entry.bjcp_judging_result, 'bjcpciderjudgingresult'):
-            form = BJCPCiderJudgingResultForm(instance=entry.bjcp_judging_result.bjcpciderjudgingresult)
-        elif hasattr(entry.bjcp_judging_result, 'bjcpbeerjudgingresult'):
-            form = BJCPBeerJudgingResultForm(instance=entry.bjcp_judging_result.bjcpbeerjudgingresult)
+        if entry.is_cider_entry():
+            forms = [[BJCPCiderJudgingResultForm(instance=result.bjcpciderjudgingresult), result] for result in entry.bjcp_judging_results.all()]
+        elif entry.is_bjcp_judging_result():
+            forms = [[BJCPBeerJudgingResultForm(instance=result.bjcpbeerjudgingresult), result] for result in entry.bjcp_judging_results.all()]
         else:
-            form = None
+            forms = None
 
         return {
             'entry': entry,
-            'form': form,  # XXX turn this view into a FormView
+            'forms': forms,  # XXX turn this view into a FormView
             'judging_results': JudgingResult.objects.filter(entry=entry), # XXX make this a method on entry
         }
 
@@ -179,11 +179,11 @@ def entry_judging_form(request):
 
         if judge_form.is_valid():
             judge_result = judge_form.save(commit = False)
+            judge_result.entry = this_entry
             judge_result.judge = request.user
             judge_result.save()
 
-            this_entry.bjcp_judging_result = judge_result
-            this_entry.score = judge_result.overall_rating()
+            this_entry.score = self.overall_rating()
             this_entry.save()
 
             judge_form = JudgingForm()

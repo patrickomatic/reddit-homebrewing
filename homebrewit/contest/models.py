@@ -193,11 +193,11 @@ class EntryManager(models.Manager):
         for entry in self.filter(style__contest_year__contest_year=year):
             total, num = 0, 0
 
-            if entry.bjcp_judging_result:
+            if entry.bjcp_judging_results.exists():
                 # if this is one using the bjcp judging result,
                 # then we're not worried about multiple judges
                 # and don't have to do an average
-                entry.score = entry.bjcp_judging_result.overall_rating()
+                entry.score = entry.overall_rating()
                 entry.save()
             else:
                 # get the average of each judge who judged this entry
@@ -224,7 +224,6 @@ class EntryManager(models.Manager):
 
 class Entry(models.Model):
     style = models.ForeignKey('BeerStyle', db_index=True)
-    bjcp_judging_result = models.ForeignKey('BJCPJudgingResult', null=True, blank=True, related_name='entries')
     beer_name = models.TextField(null=True, blank=True)
     special_ingredients = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
@@ -239,6 +238,12 @@ class Entry(models.Model):
     class Meta:
         ordering = ('style', 'score')
 
+
+    def is_bjcp_judging_result(self):
+        return not JudgingResult.objects.filter(entry_id=self.id).exists()
+
+    def is_cider_entry(self):
+        return self.is_bjcp_judging_result() and hasattr(self.bjcp_judging_results.first(), 'bjcpciderjudgingresult')
 
     def send_shipping_email(self):
         if not self.style.judge:
@@ -281,45 +286,6 @@ class Entry(models.Model):
             logger.error("Error sending shipping email: %s" % e)
             raise e
 
-
-    def get_rating_description(self):
-        if self.bjcp_judging_result:
-            return self.bjcp_judging_result.get_description()
-        else:
-            return JudgingResult.rating_description_str(self.score)
-
-
-    def __unicode__(self):
-        s = unicode(self.style)
-
-        if self.beer_name:
-            s = s + " / " + self.beer_name 
-
-        s = s + " (" + self.user.username + ")"
-
-        return s
-
-
-def integer_range(max_int):
-    return [(x, str(x)) for x in xrange(1, max_int + 1)]
-
-
-class BJCPJudgingResult(models.Model):
-    entry = models.ForeignKey(Entry, db_index=True, null=True)
-    judge = models.ForeignKey(User, db_index=True)
-    judge_bjcp_id = models.TextField(null=True, blank=True)
-
-    stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
-    technical_merit = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = significant flaws, 5 = flawless')
-    intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
-
-
-    def overall_rating(self):
-        if hasattr(self, 'bjcpbeerjudgingresult'):
-            return self.bjcpbeerjudgingresult.overall_rating()
-        elif hasattr(self, 'bjcpciderjudgingresult'):
-            return self.bjcpciderjudgingresult.overall_rating()
-
     def get_description(self):
         rating = self.overall_rating()
 
@@ -338,11 +304,54 @@ class BJCPJudgingResult(models.Model):
         else:
             return "Problematic (%d / 50)" % rating
 
-    def __unicode__(self):
-        if self.judge:
-            return self.get_description() + " (" + self.judge.username + ")"
-        else:
+    def get_rating_description(self):
+        if self.is_bjcp_judging_result():
             return self.get_description()
+        else:
+            return JudgingResult.rating_description_str(self.score)
+
+
+    def overall_rating(self):
+        results, total_points = self.bjcp_judging_results.all(), 0
+        if len(results) == 0: return None
+
+        for r in results: total_points += r.overall_rating()
+        return float(total_points) / len(results)
+
+
+    def __unicode__(self):
+        s = unicode(self.style)
+
+        if self.beer_name:
+            s = s + " / " + self.beer_name 
+
+        s = s + " (" + self.user.username + ")"
+
+        return s
+
+
+def integer_range(max_int):
+    return [(x, str(x)) for x in xrange(1, max_int + 1)]
+
+
+class BJCPJudgingResult(models.Model):
+    entry = models.ForeignKey(Entry, db_index=True, related_name='bjcp_judging_results')
+    judge = models.ForeignKey(User, db_index=True)
+    judge_bjcp_id = models.TextField(null=True, blank=True)
+
+    stylistic_accuracy = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = not to style, 5 = classic example')
+    technical_merit = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = significant flaws, 5 = flawless')
+    intangibles = models.PositiveSmallIntegerField(choices=integer_range(5), help_text='1 = lifeless, 5 = wonderful')
+
+
+    def overall_rating(self):
+        if hasattr(self, 'bjcpbeerjudgingresult'):
+            return self.bjcpbeerjudgingresult.overall_rating()
+        elif hasattr(self, 'bjcpciderjudgingresult'):
+            return self.bjcpciderjudgingresult.overall_rating()
+
+    def __unicode__(self):
+        return "%s {entry: %s, judge: %s}" % (self.id, self.entry, self.judge)
 
 
 class BJCPBeerJudgingResult(BJCPJudgingResult):

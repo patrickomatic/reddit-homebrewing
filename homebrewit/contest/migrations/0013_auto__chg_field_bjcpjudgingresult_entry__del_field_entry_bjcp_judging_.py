@@ -1,24 +1,29 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        for entry in orm.Entry.objects.filter(bjcp_judging_result_id__isnull=False):
-            entry.bjcp_judging_result.entry = entry
-            entry.bjcp_judging_result.save()
 
-        
-        # any orphans at this point have been confirmed to be bad data 
-        for result in orm.BJCPJudgingResult.objects.filter(entry_id__isnull=True):
-            result.delete()
+        # Changing field 'BJCPJudgingResult.entry'
+        db.alter_column(u'contest_bjcpjudgingresult', 'entry_id', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['contest.Entry']))
+        # Deleting field 'Entry.bjcp_judging_result'
+        db.delete_column(u'contest_entry', 'bjcp_judging_result_id')
 
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+
+        # Changing field 'BJCPJudgingResult.entry'
+        db.alter_column(u'contest_bjcpjudgingresult', 'entry_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contest.Entry'], null=True))
+        # Adding field 'Entry.bjcp_judging_result'
+        db.add_column(u'contest_entry', 'bjcp_judging_result',
+                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='entries', null=True, to=orm['contest.BJCPJudgingResult'], blank=True),
+                      keep_default=False)
+
 
     models = {
         u'auth.group': {
@@ -144,7 +149,7 @@ class Migration(DataMigration):
         },
         u'contest.bjcpjudgingresult': {
             'Meta': {'object_name': 'BJCPJudgingResult'},
-            'entry': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contest.Entry']", 'null': 'True'}),
+            'entry': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'bjcp_judging_results'", 'to': u"orm['contest.Entry']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'intangibles': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'judge': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
@@ -163,7 +168,6 @@ class Migration(DataMigration):
         u'contest.entry': {
             'Meta': {'ordering': "('style', 'score')", 'object_name': 'Entry'},
             'beer_name': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'bjcp_judging_result': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'entries'", 'null': 'True', 'to': u"orm['contest.BJCPJudgingResult']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mailed_entry': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'rank': ('django.db.models.fields.PositiveSmallIntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
@@ -204,4 +208,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['contest']
-    symmetrical = True

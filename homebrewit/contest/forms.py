@@ -26,7 +26,4 @@ class JudgeEntrySelectionForm(Form):
         self.thisyear = ContestYear.objects.latest('contest_year')
         self.user = kwargs.pop('user', None)
         super(JudgeEntrySelectionForm, self).__init__(*args, **kwargs)
-        self.fields['entry'] = ModelChoiceField(queryset = Entry.objects 
-                                                    .filter(style__in = BeerStyle.objects 
-                                                    .filter(judge = self.user, contest_year = self.thisyear)) 
-                                                    .filter(bjcp_judging_result = None))
+        self.fields['entry'] = ModelChoiceField(queryset = Entry.objects.filter(style__in = BeerStyle.objects, judge = self.user, contest_year = self.thisyear))
