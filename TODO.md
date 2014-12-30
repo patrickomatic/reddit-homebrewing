@@ -1,3 +1,4 @@
+- [ ] Fix the sorting of entries so top scores are at the top
 - [ ] A printable sheet to include when shipping (and putting the appropriate instructions in place)
 - [ ] Link to change password
 - [ ] List beer details when showing an entry
