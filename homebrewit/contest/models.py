@@ -305,6 +305,7 @@ def integer_range(max_int):
 
 
 class BJCPJudgingResult(models.Model):
+    entry = models.ForeignKey(Entry, db_index=True, null=True)
     judge = models.ForeignKey(User, db_index=True)
     judge_bjcp_id = models.TextField(null=True, blank=True)
 
