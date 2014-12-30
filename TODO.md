@@ -1,5 +1,4 @@
 - [ ] A printable sheet to include when shipping (and putting the appropriate instructions in place)
-- [ ] Reverse the relationship of entries and judging results so that you can associate multiple score sheets
 - [ ] Link to change password
 - [ ] List beer details when showing an entry
 - [ ] Add a success message when creating a new entry
@@ -13,6 +12,7 @@
 - [ ] Use PRAW rather than direct API calls
 - [ ] I18n
 
+- [X] Reverse the relationship of entries and judging results so that you can associate multiple score sheets
 - [X] Make sure that email works
 - [X] Move template files into subdirectories per app
 - [X] Make CHAR(255) fields into TEXT fields
