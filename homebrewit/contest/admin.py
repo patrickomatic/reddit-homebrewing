@@ -18,6 +18,7 @@ class BJCPJudgingResultAdminForm(forms.ModelForm):
     class Meta:
         model = BJCPJudgingResult
         widgets = {
+                'judge_bjcp_id': forms.TextInput(),
                 'aroma_description': forms.Textarea(),
                 'appearance_description': forms.Textarea(),
                 'mouthfeel_description': forms.Textarea(),
@@ -28,8 +29,6 @@ class BJCPJudgingResultAdminForm(forms.ModelForm):
 
 class BJCPJudgingResultAdmin(admin.ModelAdmin):
     search_fields = ['judge__username', 'judge_bjcp_id']
-    #inlines = (EntryInline,)
-
     form = BJCPJudgingResultAdminForm
 
 class BJCPBeerJudgingResultAdmin(BJCPJudgingResultAdmin):
