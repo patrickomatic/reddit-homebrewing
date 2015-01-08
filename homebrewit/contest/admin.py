@@ -57,7 +57,6 @@ class BeerStyleAdmin(admin.ModelAdmin):
 admin.site.register(BeerDetail)
 admin.site.register(BeerDetailChoice)
 admin.site.register(BeerStyle, BeerStyleAdmin)
-admin.site.register(BJCPJudgingResult, BJCPJudgingResultAdmin)
 admin.site.register(BJCPBeerJudgingResult, BJCPBeerJudgingResultAdmin)
 admin.site.register(BJCPCiderJudgingResult, BJCPCiderJudgingResultAdmin)
 admin.site.register(ContestYear, ContestYearAdmin)
