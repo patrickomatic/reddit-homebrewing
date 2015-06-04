@@ -9,6 +9,8 @@ from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.template.loader import render_to_string
 
+from homebrewit.signup.models import UserProfile
+
 
 logger = logging.getLogger(__name__)
 
